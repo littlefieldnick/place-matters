@@ -18,7 +18,7 @@ class Resource(db.Model):
         return '<Resource: {resource}>'.format(resource=self.name)
 
     @staticmethod
-    def generate_fake(count=15, center_lat=45.2538, center_long=69.4455):
+    def generate_fake(count=15, center_lat=43.6591, center_long=-70.2568):
         """
         Generate a number of fake resources for testing
 
@@ -34,14 +34,28 @@ class Resource(db.Model):
         from geopy.geocoders import Nominatim
 
         fake = Faker()
-        geolocator = Nominatim(user_agent="place-matters")
+        geolocater = Nominatim(user_agent="place-matters")
+
         for i in range(count):
             name = fake.name()
-            latitude = str(fake.coordinate(center=center_lat, radius=0.2))
-            longitude = str(fake.coordinate(center=center_long, radius=0.2))
 
-            location = geolocator.reverse((latitude + ", " + longitude))
+            # Generate places around Cumberland County, Maine
+            latitude = str(fake.coordinate(
+                center=center_lat,
+                radius=0.20
+            ))
+            longitude = str(fake.coordinate(
+                center=center_long,
+                radius=0.20
+            ))
 
+            location = geolocater.reverse(latitude + ', ' + longitude)
+
+            # Check to make sure a valid location is found
+            if location.address is None:
+                continue
+
+            print(location)
             resource = Resource(name = name,
                                 address = location.address,
                                 latitude = latitude,

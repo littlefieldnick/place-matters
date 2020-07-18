@@ -1,7 +1,7 @@
 from .. import db
 
 class Permission:
-    ADMINISTRATOR = 0x01
+    ADMINISTER = 0x01
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -14,7 +14,7 @@ class Role(db.Model):
 
     @staticmethod
     def insert_roles():
-        roles = {'Adminstrator': {"permissions": Permission.ADMINISTRATOR,
+        roles = {'Administer': {"permissions": Permission.ADMINISTER,
                                   "index": 'admin',
                                   "default": False}}
 

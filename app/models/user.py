@@ -35,7 +35,7 @@ class User(UserMixin, db.Model):
         return self.role is not None and (self.role.permissions & permissions) == permissions
 
     def is_admin(self):
-        return self.can(Permission.ADMINISTRATOR)
+        return self.can(Permission.ADMINISTER)
 
     @property
     def password(self):
@@ -108,7 +108,51 @@ class User(UserMixin, db.Model):
 
        return True
 
-    # TODO: Generate fake user data
+    @staticmethod
+    def generate_fake(count=15, **kwargs):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed, choice
+        from faker import Faker
+
+        fake = Faker()
+        roles = Role.query.all()
+        seed()
+
+        for i in range(count):
+            u = User(
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+                email=fake.email(),
+                password=fake.password(),
+                confirmed=True,
+                role=choice(roles),
+                **kwargs
+            )
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
+    @staticmethod
+    def create_confirmed_admin(first_name, last_name, email, password):
+        """Create a confirmed admin with the given input properties."""
+        from sqlalchemy.exc import IntegrityError
+
+        u = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            confirmed=True,
+            role=Role.query.filter_by(
+                permissions=Permission.ADMINISTER).first()
+        )
+        db.session.add(u)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
     def __repr__(self):
         return '<User {name}>'.format(name=self.full_name())
