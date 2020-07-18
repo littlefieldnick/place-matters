@@ -4,7 +4,7 @@ class Permission:
     ADMINISTRATOR = 0x01
 
 class Role(db.Model):
-    __tablename__ = 'role'
+    __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     index = db.Column(db.String(64))

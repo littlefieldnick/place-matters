@@ -8,6 +8,7 @@ class Resource(db.Model):
     """
 
     __tablename__ = 'resources'
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), index=True)
     address = db.Column(db.String(500))
     latitude = db.Column(db.Float)
@@ -15,3 +16,53 @@ class Resource(db.Model):
 
     def __repr__(self):
         return '<Resource: {resource}>'.format(resource=self.name)
+
+    @staticmethod
+    def generate_fake(count=15, center_lat=45.2538, center_long=69.4455):
+        """
+        Generate a number of fake resources for testing
+
+        :param count: number of fake resources to make
+        :param center_lat: center latitude for state
+        :param center_long: center longitude for state
+        :return: None
+        """
+
+        from sqlalchemy.exc import IntegrityError
+        from random import randint
+        from faker import Faker
+        from geopy.geocoders import Nominatim
+
+        fake = Faker()
+        geolocator = Nominatim(user_agent="place-matters")
+        for i in range(count):
+            name = fake.name()
+            latitude = str(fake.coordinate(center=center_lat, radius=0.2))
+            longitude = str(fake.coordinate(center=center_long, radius=0.2))
+
+            location = geolocator.reverse((latitude + ", " + longitude))
+
+            resource = Resource(name = name,
+                                address = location.address,
+                                latitude = latitude,
+                                longitude = longitude)
+
+            db.session.add(resource)
+
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
+    @staticmethod
+    def print_resources():
+        """
+        Print list of all resources
+
+        :return: None
+        """
+        resources = Resource.query.all()
+        for resource in resources:
+            print(resource)
+            print((resource.address))
+            print(('(%s , %s)' % (resource.latitude, resource.longitude)))
