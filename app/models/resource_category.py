@@ -1,4 +1,5 @@
-from .. import db
+from ..db import db
+
 
 class ResourceCategory(db.Model):
     """

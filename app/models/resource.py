@@ -1,4 +1,5 @@
-from .. import db
+from ..db import db
+
 
 class Resource(db.Model):
     """
@@ -16,6 +17,11 @@ class Resource(db.Model):
 
     def __repr__(self):
         return '<Resource: {resource}>'.format(resource=self.name)
+
+    @staticmethod
+    def get_resources_as_dict():
+        resources = Resource.query.fetchall()
+        return resources.__dict__
 
     @staticmethod
     def generate_fake(count=15, center_lat=43.6591, center_long=-70.2568):

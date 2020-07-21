@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 
 import os
-from app import create_app, db
-from app.models import Role, User, Resource, ResourceCategory
+from .app import create_app, db
+from .app.models import Role, User, Resource, ResourceCategory
 
 from redis import Redis
 from rq import Worker, Queue, Connection
@@ -42,17 +42,6 @@ def test():
     tests = unittest.TestLoader().discover("tests")
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-@manager.command
-def recreate_db():
-    """
-    Recreates a local database.
-
-    :return: None
-    """
-
-    db.drop_all()
-    db.create_all()
-    db.session.commit()
 
 @manager.option('-n', '--number-users',
                 default=10, type=int,

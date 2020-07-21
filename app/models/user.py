@@ -1,10 +1,13 @@
-from .. import db, login_manager
 from .role import Role, Permission
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
+
+from .. import login_manager
+from ..db import db
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
