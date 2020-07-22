@@ -1,10 +1,10 @@
 import click
-import os
 from flask_sqlalchemy import SQLAlchemy
 from flask.cli import with_appcontext
+from flask.cli import AppGroup
 
+db_cli = AppGroup('db')
 db = SQLAlchemy()
-
 def recreate_db():
     db.drop_all()
     init_db()
@@ -14,7 +14,7 @@ def init_db():
     db.session.commit()
 
 # CLI Commands for Database
-@click.command('init-db')
+@db_cli.command('init')
 @with_appcontext
 def init_db_command():
     """
@@ -24,8 +24,9 @@ def init_db_command():
     init_db()
     click.echo('Initialized the database.')
 
-@click.command('recreate-db')
+@db_cli.command('recreate')
 @with_appcontext
 def recreate_db_command():
     recreate_db()
     click.echo("Recreated the database.")
+

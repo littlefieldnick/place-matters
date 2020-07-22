@@ -5,8 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 
-from .. import login_manager
-from ..db import db
+from ..database import db
 
 
 class User(UserMixin, db.Model):
@@ -167,8 +166,8 @@ class AnonymousUser(AnonymousUserMixin):
     def is_admin(self):
         return False
 
-login_manager.anonymous_user = AnonymousUser
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+# login_manager.anonymous_user = AnonymousUser
+#
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(int(user_id))
