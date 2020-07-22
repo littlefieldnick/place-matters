@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .utils import register_template_utils
 from .assets import app_css, app_js, vendor_css, vendor_js
 
+db = SQLAlchemy()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -30,7 +31,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from .database import db, db_cli
     from . import models
     db.init_app(app)
 
@@ -41,5 +41,9 @@ def create_app(test_config=None):
     # TODO: Create App Blueprints
 
     # Configure CLI commands
+    from .database import db_cli
+    from setup import setup_cli
     app.cli.add_command(db_cli)
+    app.cli.add_command(setup_cli)
+
     return app

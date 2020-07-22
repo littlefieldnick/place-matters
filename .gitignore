@@ -133,3 +133,5 @@ dmypy.json
 
 # SQLite Files
 *.sqlite
+
+/instance/

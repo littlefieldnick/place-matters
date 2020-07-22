@@ -1,10 +1,11 @@
 import click
-from flask_sqlalchemy import SQLAlchemy
 from flask.cli import with_appcontext
 from flask.cli import AppGroup
+from .models import User, Resource
+from . import db
 
 db_cli = AppGroup('db')
-db = SQLAlchemy()
+
 def recreate_db():
     db.drop_all()
     init_db()
@@ -30,3 +31,13 @@ def recreate_db_command():
     recreate_db()
     click.echo("Recreated the database.")
 
+@db_cli.command('fake-data')
+def add_fake_data(number_users=15):
+    """
+    Adds fake resources and users to the database
+
+    :return: None
+    """
+
+    User.generate_fake(count=number_users)
+    Resource.generate_fake()
