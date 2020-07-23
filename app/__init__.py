@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from flask_nav import Nav
 from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
@@ -40,21 +40,17 @@ def create_app(test_config=None):
     from . import models
     db.init_app(app)
 
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
     # Create App Blueprints
     from .resource.view import resource_bp as resource_blueprint
     app.register_blueprint(resource_blueprint)
 
     from .error import error_bp as error_blueprint
     app.register_blueprint(error_blueprint)
-
     # Setup navigation
     # registers the "top" menubar
     nav.register_element('top', Navbar("Place Matters Maine",
-                                View('Resources', 'resource.get_resources')))
+                                        View('Resources', 'resource.get_resources')))
+
 
     nav.init_app(app)
 

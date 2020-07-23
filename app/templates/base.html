@@ -1,0 +1,12 @@
+{% extends "bootstrap/base.html" %}
+<title>{% block title %}{% endblock %} - Place Matters Maine</title>
+{% block navbar %}
+    {{nav.top.render()}}
+{% endblock %}
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+
+  {% block content %}{% endblock %}
+</section>
