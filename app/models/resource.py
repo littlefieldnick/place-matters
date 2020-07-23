@@ -19,8 +19,16 @@ class Resource(db.Model):
 
     @staticmethod
     def get_resources_as_dict():
-        resources = Resource.query.fetchall()
-        return resources.__dict__
+        resources = Resource.query.all()
+        resources_as_dicts = []
+        for resource in resources:
+            resource = resource.__dict__
+
+            if '_sa_instance_state' in resource:
+                del resource['_sa_instance_state']
+
+            resources_as_dicts.append(resource)
+        return resources_as_dicts
 
     @staticmethod
     def generate_fake(count=15, center_lat=43.6591, center_long=-70.2568):
