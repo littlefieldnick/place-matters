@@ -31,6 +31,18 @@ class Resource(db.Model):
         return resources_as_dicts
 
     @staticmethod
+    def get_single_resource_as_dict(id):
+        resource = Resource.query.get(id)
+        print(resource)
+        if resource is not None:
+            resource = resource.__dict__
+
+            if '_sa_instance_state' in resource:
+                del resource['_sa_instance_state']
+
+        return resource
+
+    @staticmethod
     def generate_fake(count=15, center_lat=43.6591, center_long=-70.2568):
         """
         Generate a number of fake resources for testing

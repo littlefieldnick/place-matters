@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Resource Not Found{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h1>Resource Not Found</h1>
+        <p> The resource you are looking for cannot be found.</p>
+        <a class="btn btn-primary" href="{{ url_for('resource.display_all_resources') }}">View all resources</a>
+    </div>
+{% endblock %}

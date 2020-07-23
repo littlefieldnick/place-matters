@@ -45,8 +45,10 @@ def create_app(test_config=None):
     app.register_blueprint(resource_blueprint)
 
     app.add_url_rule("/", "resource.display_all_resources")
-    from .error import error_bp as error_blueprint
-    app.register_blueprint(error_blueprint)
+
+    # Error handling
+    from .error import resource_not_found
+    app.register_error_handler(404, resource_not_found)
 
 
     # Setup navigation

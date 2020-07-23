@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block header %} </h1>{% block title %} {{ resource["name"] }}{% endblock %} </h1> {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h4>{{ resource["name"]}}</h4>
+        <h4>{{ resource["address"] }}</h4>
+    </div>
+{% endblock %}
+
