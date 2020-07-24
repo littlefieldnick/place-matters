@@ -4,8 +4,8 @@ from flask_nav import Nav
 from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
 from .utils import register_template_utils
-from .assets import app_css, app_js, vendor_css, vendor_js
 from flask_bootstrap import Bootstrap
+from flask_googlemaps import GoogleMaps
 
 db = SQLAlchemy()
 nav = Nav()
@@ -15,6 +15,12 @@ def create_app(test_config=None):
 
     # Configure Bootstrap
     Bootstrap(app)
+
+    print(os.getenv('FLASK_GOOGLEMAPS_KEY'))
+    # Configure Google Maps
+    GoogleMaps(app, key=os.getenv('FLASK_GOOGLEMAPS_KEY'))
+
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         SQLALCHEMY_DATABASE_URI= 'sqlite:///' + os.path.join(app.instance_path, 'pm-dev.sqlite'),
@@ -50,13 +56,10 @@ def create_app(test_config=None):
     from .error import resource_not_found
     app.register_error_handler(404, resource_not_found)
 
-
     # Setup navigation
     # registers the "top" menubar
     nav.register_element('top', Navbar("Place Matters Maine",
                                         View('Resources', 'resource.get_resources')))
-
-
     nav.init_app(app)
 
     # Configure CLI commands

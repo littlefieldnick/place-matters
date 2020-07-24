@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
-{% block header %} </h1>{% block title %} Resources{% endblock %} </h1> {% endblock %}
+{% block header %}
+    </h1>{% block title %} Resources{% endblock %} </h1>
+{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
-
         {% for re in resources %}
             <div class="card">
                 <h4 class="card-header">{{  re["name"] }}</h4>
@@ -15,7 +16,11 @@
             </div>
             <br/>
         {% endfor %}
+            {{ map.js }}
+            {{ map.html }}
 
     </div>
+
+
 {% endblock %}
 
