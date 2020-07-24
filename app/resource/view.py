@@ -11,7 +11,11 @@ def display_all_resources():
     map = Map(identifier='map',
               lat = resources[0]["latitude"],
               lng = resources[0]["longitude"],
-              markers=[(re["latitude"], re["longitude"]) for re in resources])
+              style="height:85vh;",
+              scale_control= True,
+              markers=[{"lat": re["latitude"],
+                        "lng": re["longitude"]}
+                       for re in resources])
 
     return render_template("resources/index.html", resources=resources, map=map)
 
