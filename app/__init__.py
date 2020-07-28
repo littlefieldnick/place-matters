@@ -58,7 +58,7 @@ def create_app(test_config=None):
 
     # Setup navigation
     # registers the "top" menubar
-    nav.register_element('top', Navbar("Place Matters Maine",
+    nav.register_element('top', Navbar(View("Place Matters Maine", "resource.display_all_resources"),
                                         View('Resources', 'resource.get_resources')))
     nav.init_app(app)
 

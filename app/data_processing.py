@@ -11,7 +11,6 @@ api_key = os.getenv("FLASK_GOOGLEMAPS_KEY")
 geolocater = GoogleV3(api_key=api_key)
 
 with app.app_context():
-
     init_db()
 
 def read_csv(path):

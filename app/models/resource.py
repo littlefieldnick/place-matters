@@ -10,9 +10,12 @@ class Resource(db.Model):
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), index=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('resource_categories.id'))
     address = db.Column(db.String(500))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    description = db.Column(db.String(500))
+    website = db.Column(db.String(500))
 
     def __repr__(self):
         return '<Resource: {resource}>'.format(resource=self.name)
@@ -54,7 +57,6 @@ class Resource(db.Model):
         """
 
         from sqlalchemy.exc import IntegrityError
-        from random import randint
         from faker import Faker
         from geopy.geocoders import Nominatim
 
@@ -75,12 +77,10 @@ class Resource(db.Model):
             ))
 
             location = geolocater.reverse(latitude + ', ' + longitude)
-
             # Check to make sure a valid location is found
             if location.address is None:
                 continue
 
-            print(location)
             resource = Resource(name = name,
                                 address = location.address,
                                 latitude = latitude,

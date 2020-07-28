@@ -4,8 +4,22 @@
 
 {% block content %}
     <div class="container-fluid">
-        <h4>{{ resource["name"]}}</h4>
+        <h2>{{ resource["name"]}}</h2>
         <h4>{{ resource["address"] }}</h4>
+        <button class="btn btn-primary" disabled>{{ resource["resource_cat"] }}</button>
+
+        <br/>
+        <br/>
+        <div>
+            {{ map.js }}
+            {{ map.html }}
+        </div>
+
+        <h3>Information</h3>
+        <hr/>
+        <p><b>Description: </b>{{ resource["description"] }}</p>
+        <p><b>Website: </b> <a href="{{ resource["website"] }}">{{ resource["website"] }}</a></p>
     </div>
+
 {% endblock %}
 
