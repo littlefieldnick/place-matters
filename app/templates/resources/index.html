@@ -6,18 +6,35 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div class="col-md-3" style="overflow-y: scroll; height:80vh;">
-            {% for re in resources %}
-            <div class="card">
-                <h4 class="card-header">{{  re["name"] }}</h4>
-                <div class="class-body">
-                    <h5>{{ re["address"] }}</h5>
-                </div>
-                <a href="{{ url_for("resource.display_resource", id=re["id"]) }}" class="btn btn-primary">More Info</a>
+        <div class="col-md-3">
+            <div class="row-md-3">
+                <h4>Search</h4>
+                <form method="POST" action="/">
+                    <div class="form-group">
+                        <label>{{ form.select.label }}</label>
+                        <br>
+                        {{ form.select }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.submit }}
+                    </div>
+                </form>
+                <hr/>
             </div>
-            <hr/>
-        {% endfor %}
+            <div class="row-md-3" style="overflow-y: scroll; height:80vh;">
+                {% for re in resources %}
+                <div class="card">
+                    <h4 class="card-header">{{  re["name"] }}</h4>
+                    <div class="class-body">
+                        <h5>{{ re["address"] }}</h5>
+                    </div>
+                    <a href="{{ url_for("resource.display_resource", id=re["id"]) }}" class="btn btn-primary">More Info</a>
+                </div>
+                <hr/>
+            {% endfor %}
+            </div>
         </div>
+
         <div class="col-md-9">
             {{ map.js }}
             {{ map.html }}

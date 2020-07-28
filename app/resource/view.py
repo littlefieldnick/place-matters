@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, jsonify, redirect, url_for, abort
+from flask import Blueprint, render_template, jsonify, redirect, url_for, abort, request
 from flask_googlemaps import Map
 from ..models import Resource, ResourceCategory
+from ..forms import ResourceSearchForm
 
 resource_bp = Blueprint('resource', __name__)
 
@@ -14,7 +15,7 @@ MAP_INFO_BOX = """
 @resource_bp.route("/display")
 def display_all_resources():
     resources = Resource.get_resources_as_dict()
-
+    search_form = ResourceSearchForm()
     map = Map(identifier='map',
               lat = resources[0]["latitude"],
               lng = resources[0]["longitude"],
@@ -28,7 +29,10 @@ def display_all_resources():
                                                        url=url_for("resource.display_resource", id = re["id"]))}
                        for re in resources])
 
-    return render_template("resources/index.html", resources=resources, map=map)
+    return render_template("resources/index.html",
+                           resources=resources,
+                           map=map,
+                           form=search_form)
 
 @resource_bp.route("/display/<int:id>")
 def display_resource(id):
