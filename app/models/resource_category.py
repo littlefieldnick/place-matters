@@ -23,5 +23,3 @@ class ResourceCategory(db.Model):
             cats_as_dicts.append(cat)
         return cats_as_dicts
 
-    def __repr__(self):
-        return self.name

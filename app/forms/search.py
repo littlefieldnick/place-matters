@@ -13,6 +13,7 @@ def resource_category_choices():
 
 
 class ResourceSearchForm(FlaskForm):
-    select = QuerySelectField("Select a category", query_factory=resource_category_choices)
-    search = StringField()
+    choices = []
+    category = SelectField("Category", choices=choices)
+    name = StringField("Name", description="Search by name")
     submit = SubmitField()
