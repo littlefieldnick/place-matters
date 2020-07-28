@@ -7,8 +7,9 @@ resource_bp = Blueprint('resource', __name__)
 MAP_INFO_BOX = """
 <h4>{resourcename}</h4>
 <p>{address}</p>
-<a href='{{ url_for('resource.display_resource', id={id} }}' class='btn btn-primary'>More Information</a>
+<a href={url} class="btn btn-primary">More Information</a>
 """
+
 
 @resource_bp.route("/display")
 def display_all_resources():
@@ -22,7 +23,9 @@ def display_all_resources():
               scale_control=True,
               markers=[{"lat": re["latitude"],
                         "lng": re["longitude"],
-                        "infobox": MAP_INFO_BOX.format(resourcename=re["name"], address=re["address"], id=re["id"])}
+                        "infobox": MAP_INFO_BOX.format(resourcename=re["name"],
+                                                       address=re["address"],
+                                                       url=url_for("resource.display_resource", id = re["id"]))}
                        for re in resources])
 
     return render_template("resources/index.html", resources=resources, map=map)
@@ -44,8 +47,7 @@ def display_resource(id):
         style="height:50vh;",
         scale_control=True,
         markers=[{"lat": resource["latitude"],
-                  "lng": resource["longitude"],
-                  "maxWidth": 30}])
+                  "lng": resource["longitude"]}])
     return render_template("resources/resource.html", resource=resource, map=map)
 
 @resource_bp.route("/resources")
