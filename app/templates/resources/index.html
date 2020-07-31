@@ -21,17 +21,20 @@
                     </div>
                     <div class="form-group">
                         {{ form.submit }}
+                        <a class="btn btn-primary" href="{{ url_for('resource.display_all_resources') }}">Reset</a>
                     </div>
                 </form>
                 <hr/>
             </div>
-            <div class="row-md-3" style="overflow-y: scroll; height:80vh;">
+            <div class="row-md-3" style="overflow-y: scroll; height:50vh;">
                 {% for re in resources %}
                 <div class="card">
                     <h4 class="card-header">{{  re["name"] }}</h4>
                     <div class="class-body">
                         <h5>{{ re["address"] }}</h5>
+                        <button>{{ re["category"] }}</button>
                     </div>
+                    <br/>
                     <a href="{{ url_for("resource.display_resource", id=re["id"]) }}" class="btn btn-primary">More Info</a>
                 </div>
                 <hr/>

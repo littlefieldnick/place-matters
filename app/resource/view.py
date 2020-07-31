@@ -8,6 +8,8 @@ resource_bp = Blueprint('resource', __name__)
 MAP_INFO_BOX = """
 <h4>{resourcename}</h4>
 <p>{address}</p>
+<button class=btn btn-outline-primary>{cat}</button>
+<br> <br>
 <a href={url} class="btn btn-primary">More Information</a>
 """
 
@@ -15,6 +17,7 @@ def convert_resources_to_dict(resources):
     resources_as_dicts = []
     for resource in resources:
         resource = resource.__dict__
+        resource["category"] = ResourceCategory.get_resource_category_name(resource["category_id"])
 
         if '_sa_instance_state' in resource:
             del resource['_sa_instance_state']
@@ -29,6 +32,7 @@ def get_gmap(resources):
                         "lng": re["longitude"],
                         "infobox": MAP_INFO_BOX.format(resourcename=re["name"],
                                                        address=re["address"],
+                                                       cat= re["category"],
                                                        url=url_for("resource.display_resource", id = re["id"]))}
                        for re in resources])
 
@@ -62,7 +66,7 @@ def search():
 def display_all_resources(resources=None):
     # No subset of resources to display, display all resources
     if resources is None:
-        resources = Resource.get_resources_as_dict()
+        resources = convert_resources_to_dict(Resource.query.all())
 
     # Setup search form
     search_form = ResourceSearchForm()
@@ -84,7 +88,7 @@ def display_resource(id):
         return redirect(url_for("resource.display_all_resources"))
 
     resource_category = ResourceCategory.query.get(resource["category_id"])
-    resource["resource_cat"] = resource_category.name
+    resource["category"] = resource_category.name
     return render_template("resources/resource.html", resource=resource, map=get_gmap([resource]))
 
 @resource_bp.route("/resources")

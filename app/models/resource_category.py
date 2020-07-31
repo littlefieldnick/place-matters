@@ -23,3 +23,7 @@ class ResourceCategory(db.Model):
             cats_as_dicts.append(cat)
         return cats_as_dicts
 
+    @staticmethod
+    def get_resource_category_name(id):
+        return ResourceCategory.query.get(id).name
+
