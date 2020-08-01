@@ -1,50 +1,46 @@
-{% extends 'base.html' %}
+{% extends './base.html' %}
+{% import 'macros/nav_macro.html' as nav %}
+{% import 'macros/form_macros.html' as f %}
 
-{% block header %}
-    </h1>{% block title %} Resources {% endblock %} </h1>
-{% endblock %}
+{% block title %}Resources{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
-        <div class="col-md-3">
-            <div class="row-md-3">
-                <h4>Search</h4>
-                <form method="POST" action="{{ url_for("resource.search") }}" role="form">
-                    <div class="form-group">
-                        {{ form.name.label }} <br>
-                        {{ form.name(placeholder="Search by name") }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.category.label }}
-                        <br>
-                        {{ form.category(placeholder=None) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.submit }}
-                        <a class="btn btn-primary" href="{{ url_for('resource.display_all_resources') }}">Reset</a>
-                    </div>
-                </form>
-                <hr/>
-            </div>
-            <div class="row-md-3" style="overflow-y: scroll; height:50vh;">
-                {% for re in resources %}
-                <div class="card">
-                    <h4 class="card-header">{{  re["name"] }}</h4>
-                    <div class="class-body">
-                        <h5>{{ re["address"] }}</h5>
-                        <button>{{ re["category"] }}</button>
-                    </div>
-                    <br/>
-                    <a href="{{ url_for("resource.display_resource", id=re["id"]) }}" class="btn btn-primary">More Info</a>
+        {{ nav.load_nav() }}
+        <div class="row">
+            <div class="col-3">
+                <div class="row-3">
+                    <h4 class="search">Search</h4>
+                    {{ f.begin_form(form, action=url_for("resource.search")) }}
+                    {{ f.render_form_field(form.category, class="form-control") }}
+                    {{ f.render_form_field(form.name, class="form-control", placeholder="Search by name") }}
+                    {{ f.render_form_field(form.submit, class="btn btn-primary btn-block") }}
+                    {{ f.end_form() }}
                 </div>
-                <hr/>
-            {% endfor %}
-            </div>
-        </div>
+                <a class="btn btn-secondary btn-block" href="{{ url_for('resource.display_all_resources') }}">Reset</a>
+                <hr>
 
-        <div class="col-md-9">
-            {{ map.js }}
-            {{ map.html }}
+                <div class="row-3" style="overflow-y: scroll; height:50vh;">
+                    {% for re in resources %}
+                        <div class="card">
+                            <h5 class="card-header">{{ re["name"] }}</h5>
+                            <div class="card-body">
+                                <h5>{{ re["address"] }}</h5>
+                                <button>{{ re["category"] }}</button>
+                            </div>
+                            <br/>
+                            <a href="{{ url_for("resource.display_resource", id=re["id"]) }}"
+                               class="btn btn-sm btn-primary">More Info</a>
+                        </div>
+                        <hr/>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-9">
+                {{ map.js }}
+                {{ map.html }}
+            </div>
         </div>
     </div>
 {% endblock %}

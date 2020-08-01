@@ -1,22 +1,27 @@
-{% extends "bootstrap/base.html" %}
-<title>{% block title %}{% endblock %} - Place Matters Maine</title>
-{% block navbar %}
-    {{nav.top.render()}}
-{% endblock %}
+<html lang="en">
+    <head>
+        {% block head %}
+            <!-- Required meta tags -->
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
+            {% block styles %}
+                <!-- Bootstrap CSS -->
+                {{ bootstrap.load_css() }}
 
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-  {% endwith %}
-  {% block content %}{% endblock %}
-</section>
+            {% endblock %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+            <title>Place Matters Maine -- {% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Your page content -->
+        {% block content %}{% endblock %}
+
+        {% block scripts %}
+            <!-- Optional JavaScript -->
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+    </body>
+</html>

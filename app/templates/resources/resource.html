@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
+{% import 'macros/nav_macro.html' as nav %}
 
 {% block header %} </h1>{% block title %} {{ resource["name"] }}{% endblock %} </h1> {% endblock %}
 
 {% block content %}
+    {{ nav.load_nav() }}
+
     <div class="container-fluid">
         <h2>{{ resource["name"]}}</h2>
         <h4>{{ resource["address"] }}</h4>

@@ -1,6 +1,5 @@
 import os
 from flask import Flask, render_template
-from flask_nav import Nav
 from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
 from .utils import register_template_utils
@@ -8,7 +7,6 @@ from flask_bootstrap import Bootstrap
 from flask_googlemaps import GoogleMaps
 
 db = SQLAlchemy()
-nav = Nav()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -55,12 +53,6 @@ def create_app(test_config=None):
     # Error handling
     from .error import resource_not_found
     app.register_error_handler(404, resource_not_found)
-
-    # Setup navigation
-    # registers the "top" menubar
-    nav.register_element('top', Navbar(View("Place Matters Maine", "resource.display_all_resources"),
-                                        View('Resources', 'resource.get_resources')))
-    nav.init_app(app)
 
     # Configure CLI commands
     from .database import db_cli
