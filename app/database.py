@@ -1,10 +1,9 @@
 import click
-from flask.cli import with_appcontext
-from flask.cli import AppGroup
-from .models import User, Resource
+from flask.cli import AppGroup, with_appcontext
+from .models import User, Resource, ResourceCategory
 from . import db
 
-db_cli = AppGroup('db')
+db_cli = AppGroup('database')
 
 def recreate_db():
     db.drop_all()
@@ -16,7 +15,6 @@ def init_db():
 
 # CLI Commands for Database
 @db_cli.command('init')
-@with_appcontext
 def init_db_command():
     """
     Clear the existing data and create new tables
@@ -26,7 +24,6 @@ def init_db_command():
     click.echo('Initialized the database.')
 
 @db_cli.command('recreate')
-@with_appcontext
 def recreate_db_command():
     recreate_db()
     click.echo("Recreated the database.")
@@ -40,4 +37,5 @@ def add_fake_data(number_users=15):
     """
 
     User.generate_fake(count=number_users)
+    ResourceCategory.generate_fake()
     Resource.generate_fake()
