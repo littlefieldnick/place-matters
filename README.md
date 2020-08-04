@@ -28,6 +28,12 @@ export FLASK_ENV=development
 export FLASK_GOOGLEMAPS_KEY= XXXXXXXXXXXXXXXX
 ```
 
+5. Setup data and dev server
+```
+flask setup dev
+flask database fake-data
+```
+
 ## Running the App
 ```
 $ source venv/bin/activate

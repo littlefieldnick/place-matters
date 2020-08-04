@@ -1,6 +1,5 @@
 import os
-from flask import Flask, render_template
-from flask_nav.elements import *
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .utils import register_template_utils
 from flask_bootstrap import Bootstrap
@@ -55,8 +54,8 @@ def create_app(test_config=None):
     app.register_error_handler(404, resource_not_found)
 
     # Configure CLI commands
-    from .database import db_cli
-    from setup import setup_cli
+    from app.cli.database import db_cli
+    from app.cli.setup import setup_cli
     app.cli.add_command(db_cli)
     app.cli.add_command(setup_cli)
 

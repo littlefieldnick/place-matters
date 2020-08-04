@@ -11,7 +11,7 @@ def import_env_settings():
     if os.path.exists('.env'):
         print("Importing environment from .env file")
 
-        with open('env') as f:
+        with open('../../env') as f:
             for line in f.readlines():
                 var = line.strip().split('=')
                 if len(var) == 2:
@@ -26,7 +26,7 @@ def test():
     """
     import unittest
 
-    tests = unittest.TestLoader().discover("tests")
+    tests = unittest.TestLoader().discover("../../tests")
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 

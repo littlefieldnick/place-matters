@@ -1,7 +1,7 @@
 import click
 from flask.cli import AppGroup, with_appcontext
-from .models import User, Resource, ResourceCategory
-from . import db
+from app.models import User, Resource, ResourceCategory
+from app import db
 
 db_cli = AppGroup('database')
 

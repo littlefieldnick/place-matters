@@ -1,5 +1,5 @@
-from ..database import db
-from sqlalchemy import Column, Integer, Float, String
+from app.cli.database import db
+
 
 class GeocoderCache(db.Model):
     """

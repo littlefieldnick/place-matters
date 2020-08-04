@@ -4,7 +4,7 @@ from sqlite3 import IntegrityError
 from geopy.geocoders import GoogleV3
 from app.models import Resource, ResourceCategory
 from app import db, create_app
-from app.database import init_db
+from app.cli.database import init_db
 
 app = create_app()
 api_key = os.getenv("FLASK_GOOGLEMAPS_KEY")

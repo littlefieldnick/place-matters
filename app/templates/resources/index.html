@@ -20,20 +20,24 @@
                 <a class="btn btn-secondary btn-block" href="{{ url_for('resource.display_all_resources') }}">Reset</a>
                 <hr>
 
-                <div class="row-3" style="overflow-y: scroll; height:50vh;">
-                    {% for re in resources %}
-                        <div class="card">
-                            <h5 class="card-header">{{ re["name"] }}</h5>
-                            <div class="card-body">
-                                <h5>{{ re["address"] }}</h5>
-                                <button>{{ re["category"] }}</button>
+                <div class="row-3" style="overflow-y: scroll; height:45vh;">
+                    {% if resources | count == 0 %}
+                        <p>No resources were found matching those search parameters.</p>
+                    {% else %}
+                        {% for re in resources %}
+                            <div class="card">
+                                <h5 class="card-header">{{ re["name"] }}</h5>
+                                <div class="card-body">
+                                    <h5>{{ re["address"] }}</h5>
+                                    <button class="btn btn-outline-primary">{{ re["category"] }}</button>
+                                </div>
+                                <br/>
+                                <a href="{{ url_for("resource.display_resource", id=re["id"]) }}"
+                                   class="btn btn-sm btn-primary">More Info</a>
                             </div>
-                            <br/>
-                            <a href="{{ url_for("resource.display_resource", id=re["id"]) }}"
-                               class="btn btn-sm btn-primary">More Info</a>
-                        </div>
-                        <hr/>
-                    {% endfor %}
+                            <hr/>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
 

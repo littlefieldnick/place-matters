@@ -1,5 +1,7 @@
-from app import db
+from sqlalchemy.exc import IntegrityError
 
+from app import db
+from faker import Faker
 
 class ResourceCategory(db.Model):
     """
@@ -26,4 +28,19 @@ class ResourceCategory(db.Model):
     @staticmethod
     def get_resource_category_name(id):
         return ResourceCategory.query.get(id).name
+
+    @staticmethod
+    def generate_fake(count=15):
+        fake = Faker()
+        for i in range(count):
+            cat = fake.bs()
+
+            resource = ResourceCategory(name=cat)
+
+            db.session.add(resource)
+
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 

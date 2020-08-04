@@ -1,4 +1,8 @@
+from random import choice
+
 from app import db
+from .resource_category import ResourceCategory
+
 
 class Resource(db.Model):
     """
@@ -62,7 +66,7 @@ class Resource(db.Model):
 
         fake = Faker()
         geolocater = Nominatim(user_agent="place-matters")
-
+        categories = ResourceCategory.query.all()
         for i in range(count):
             name = fake.name()
 
@@ -83,8 +87,11 @@ class Resource(db.Model):
 
             resource = Resource(name = name,
                                 address = location.address,
+                                category_id=choice(categories).id,
                                 latitude = latitude,
-                                longitude = longitude)
+                                longitude = longitude,
+                                website=fake.url(),
+                                description=fake.text())
 
             db.session.add(resource)
 
