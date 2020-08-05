@@ -36,7 +36,8 @@ def get_gmap(resources, lat=44.1912, lng=-70.1707):
                         "infobox": MAP_INFO_BOX.format(resourcename=re["name"],
                                                        address=re["address"],
                                                        cat= re["category"],
-                                                       url=url_for("resource.display_resource", id = re["id"]))}
+                                                       url=url_for("resource.display_resource",
+                                                       id = re["id"]))}
                        for re in resources])
 
     return map
@@ -63,8 +64,8 @@ def search():
 
    # Convert filtered resources to dict
    resources_as_dict = convert_resources_to_dict(resources.all())
-   return render_template("resources/index.html", resources= resources_as_dict,
-                                                  map = get_gmap(resources_as_dict),
+   return render_template("resources/index.html", resources=resources_as_dict,
+                                                  map=get_gmap(resources_as_dict),
                                                   form=search_form)
 
 @resource_bp.route("/display")
@@ -77,7 +78,7 @@ def display_all_resources(resources=None):
     search_form = ResourceSearchForm()
     cats = ResourceCategory.get_resource_categories_as_dict()
     search_form.category.choices = [cat["name"] for cat in cats]
-    print(resources)
+
     # Render page
     return render_template("resources/index.html",
                            resources=resources,

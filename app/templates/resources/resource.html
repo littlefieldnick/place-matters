@@ -5,23 +5,35 @@
 
 {% block content %}
     {{ nav.load_nav() }}
-
     <div class="container-fluid">
-        <h2>{{ resource["name"]}}</h2>
-        <h4>{{ resource["address"] }}</h4>
-        <button class="btn btn-primary" disabled>{{ resource["category"] }}</button>
 
-        <br/>
-        <br/>
-        <div>
-            {{ map.js }}
-            {{ map.html }}
+        <div class="row">
+            <div class="col-3">
+                <a href="/" class="btn btn-md btn-outline-primary">
+                    <span class="pull-left"><i class="fa fa-caret-square-o-left fa-fw"
+                                                   style="font-size: 25px"
+                                                   aria-hidden="true"></i> </span>
+                         Back to Resources
+                </a>
+
+
+                <br><br>
+                <div class="row-3">
+                    <h5>{{ resource["name"]}}</h5>
+                    <p>{{ resource["address"] }}</p>
+                    <button class="btn btn-sm btn-outline-primary" disabled>{{ resource["category"] }}</button>
+                    <hr>
+
+                    <p><b>Website: </b> <a href="{{ resource["website"] }}">{{ resource["website"] }}</a></p>
+                    <p><b>Description: </b>{{ resource["description"] }}</p>
+                </div>
+            </div>
+            <div class="col-9">
+                {{ map.js }}
+                {{ map.html }}
+            </div>
         </div>
 
-        <h3>Information</h3>
-        <hr/>
-        <p><b>Description: </b>{{ resource["description"] }}</p>
-        <p><b>Website: </b> <a href="{{ resource["website"] }}">{{ resource["website"] }}</a></p>
     </div>
 
 {% endblock %}
