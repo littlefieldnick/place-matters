@@ -4,19 +4,21 @@ from flask_sqlalchemy import SQLAlchemy
 from .utils import register_template_utils
 from flask_bootstrap import Bootstrap
 from flask_googlemaps import GoogleMaps
+from flask_cors import CORS
 
 db = SQLAlchemy()
 
 def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, static_folder='static')
 
     # Configure Bootstrap
     Bootstrap(app)
 
-    print(os.getenv('FLASK_GOOGLEMAPS_KEY'))
+    # Enable CORS
+    CORS(app)
+
     # Configure Google Maps
     GoogleMaps(app, key=os.getenv('FLASK_GOOGLEMAPS_KEY'))
-
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -47,7 +49,8 @@ def create_app(test_config=None):
     from .resource.view import resource_bp as resource_blueprint
     app.register_blueprint(resource_blueprint)
 
-    app.add_url_rule("/", "resource.display_all_resources")
+    # Register map for all resources as index page
+    app.add_url_rule('/', "resource.display_all_resources")
 
     # Error handling
     from .error import resource_not_found
