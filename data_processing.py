@@ -1,14 +1,15 @@
 import csv
 import os
 from sqlite3 import IntegrityError
-from geopy.geocoders import GoogleV3
+from geopy.geocoders import Nominatim
 from app.models import Resource, ResourceCategory
 from app import db, create_app
 from app.cli.database import init_db
 
 app = create_app()
 api_key = os.getenv("FLASK_GOOGLEMAPS_KEY")
-geolocater = GoogleV3(api_key=api_key)
+print(api_key)
+geolocater = Nominatim(user_agent="place-matters")
 
 with app.app_context():
     init_db()
@@ -22,8 +23,9 @@ def read_csv(path):
     return rows
 
 with app.app_context():
-    rows = read_csv("../data/androscoggin_data.csv")
-    unique_categories = set(x[1] for x in rows)
+    rows = read_csv("data/androscoggin_data.csv")
+    unique_categories = set(x[1] for x in rows[1:])
+    print(unique_categories)
     for category in unique_categories:
         rc = ResourceCategory(name=category)
         db.session.add(rc)
