@@ -2,12 +2,23 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .utils import register_template_utils
-from .assets import app_css, app_js, vendor_css, vendor_js
+from flask_bootstrap import Bootstrap
+from flask_googlemaps import GoogleMaps
+from flask_cors import CORS
 
 db = SQLAlchemy()
 
 def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, static_folder='static')
+
+    # Configure Bootstrap
+    Bootstrap(app)
+
+    # Enable CORS
+    CORS(app)
+
+    # Configure Google Maps
+    GoogleMaps(app, key=os.getenv('FLASK_GOOGLEMAPS_KEY'))
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -34,16 +45,22 @@ def create_app(test_config=None):
     from . import models
     db.init_app(app)
 
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # Create App Blueprints
+    from .resource.view import resource_bp as resource_blueprint
+    app.register_blueprint(resource_blueprint)
 
-    # TODO: Create App Blueprints
+    # Register map for all resources as index page
+    app.add_url_rule('/', "resource.display_all_resources")
+
+    # Error handling
+    from .error import resource_not_found
+    app.register_error_handler(404, resource_not_found)
 
     # Configure CLI commands
-    from .database import db_cli
-    from setup import setup_cli
+    from app.cli.database import db_cli
+    from app.cli.setup import setup_cli
     app.cli.add_command(db_cli)
     app.cli.add_command(setup_cli)
 
     return app
+
