@@ -4,14 +4,14 @@ from app import db
 from .resource_category import ResourceCategory
 
 
-class Resource(db.Model):
+class ResourceInfo(db.Model):
     """
     Basic schema for a resource
 
     TODO: Add descriptors and associations
     """
 
-    __tablename__ = 'resources'
+    __tablename__ = 'resource'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('resource_categories.id'))
@@ -26,7 +26,7 @@ class Resource(db.Model):
 
     @staticmethod
     def get_resources_as_dict():
-        resources = Resource.query.all()
+        resources = ResourceInfo.query.all()
         resources_as_dicts = []
         for resource in resources:
             resource = resource.__dict__
@@ -39,8 +39,7 @@ class Resource(db.Model):
 
     @staticmethod
     def get_single_resource_as_dict(id):
-        resource = Resource.query.get(id)
-        print(resource)
+        resource = ResourceInfo.query.get(id)
         if resource is not None:
             resource = resource.__dict__
 
@@ -52,9 +51,9 @@ class Resource(db.Model):
     @staticmethod
     def generate_fake(count=15, center_lat=43.6591, center_long=-70.2568):
         """
-        Generate a number of fake resources for testing
+        Generate a number of fake api for testing
 
-        :param count: number of fake resources to make
+        :param count: number of fake api to make
         :param center_lat: center latitude for state
         :param center_long: center longitude for state
         :return: None
@@ -85,7 +84,7 @@ class Resource(db.Model):
             if location.address is None:
                 continue
 
-            resource = Resource(name = name,
+            resource = ResourceInfo(name = name,
                                 address = location.address,
                                 category_id=choice(categories).id,
                                 latitude = latitude,
@@ -103,12 +102,12 @@ class Resource(db.Model):
     @staticmethod
     def print_resources():
         """
-        Print list of all resources
+        Print list of all api
 
         :return: None
         """
-        resources = Resource.query.all()
+        resources = ResourceInfo.query.all()
         for resource in resources:
             print(resource)
-            print((resource.address))
+            print(resource.address)
             print(('(%s , %s)' % (resource.latitude, resource.longitude)))

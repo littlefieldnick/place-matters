@@ -1,6 +1,6 @@
 import click
 from flask.cli import AppGroup, with_appcontext
-from app.models import User, Resource, ResourceCategory
+from app.models import User, ResourceInfo, ResourceCategory
 from app import db
 
 db_cli = AppGroup('database')
@@ -31,11 +31,11 @@ def recreate_db_command():
 @db_cli.command('fake-data')
 def add_fake_data(number_users=15):
     """
-    Adds fake resources and users to the database
+    Adds fake api and users to the database
 
     :return: None
     """
 
     User.generate_fake(count=number_users)
     ResourceCategory.generate_fake()
-    Resource.generate_fake()
+    ResourceInfo.generate_fake()
