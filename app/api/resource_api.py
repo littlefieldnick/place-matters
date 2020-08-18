@@ -1,6 +1,5 @@
-from flask_restful import Resource, reqparse, fields
+from flask_restful import Resource
 from ..models import ResourceInfo
-import jsonify
 
 class ResourceInfoApi(Resource):
     def get(self, id=None):

@@ -37,10 +37,11 @@ def configure_extensions(app):
     db.init_app(app)
 
 def configure_api(app):
-    from app.api import resource_api
+    from app.api import resource_api, resource_category_api
     api = Api(app)
-    api.add_resource(resource_api.ResourceInfoApi, "/resources/", "/resources/<int:id>")
 
+    api.add_resource(resource_api.ResourceInfoApi, "/resources", "/resources/<int:id>")
+    api.add_resource(resource_category_api.ResourceCategoryApi, "/categories", "/categories/<int:id>")
 
 def configure_cli(app):
     from app.cli.database import db_cli
