@@ -6,7 +6,7 @@ from .extensions import db, cors
 
 
 def create_app():
-    app = Flask(__name__, static_folder='static')
+    app = Flask(__name__, static_folder='static', instance_relative_config=True)
 
     # Configure basic app
     app.config.from_object(Config)
@@ -37,11 +37,11 @@ def configure_extensions(app):
     db.init_app(app)
 
 def configure_api(app):
-    from app.api import resource_api, resource_category_api
+    from app.api import resource_info, resource_category
     api = Api(app)
 
-    api.add_resource(resource_api.ResourceInfoApi, "/resources", "/resources/<int:id>")
-    api.add_resource(resource_category_api.ResourceCategoryApi, "/categories", "/categories/<int:id>")
+    api.add_resource(resource_info.ResourceInfoApi, "/resources/", "/resources/<int:id>")
+    api.add_resource(resource_category.ResourceCategoryApi, "/categories/", "/categories/<int:id>")
 
 def configure_cli(app):
     from app.cli.database import db_cli

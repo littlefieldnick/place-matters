@@ -7,14 +7,13 @@ from .resource_category import ResourceCategory
 class ResourceInfo(db.Model):
     """
     Basic schema for a resource
-
-    TODO: Add descriptors and associations
     """
 
     __tablename__ = 'resource'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('resource_categories.id'))
+    category = db.relationship('ResourceCategory', backref=db.backref("resource"))
     address = db.Column(db.String(500))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
