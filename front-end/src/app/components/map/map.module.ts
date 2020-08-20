@@ -16,6 +16,8 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatSelectModule} from "@angular/material/select";
 import {MapComponent} from "./map.component";
 import {CommonModule} from "@angular/common";
+import { environment} from "../../../environments/environment";
+
 @NgModule({
   declarations: [
     MapComponent
@@ -23,7 +25,7 @@ import {CommonModule} from "@angular/common";
   imports: [
     CommonModule,
     AgmCoreModule.forRoot({
-      apiKey: '' //Replace me
+      apiKey: environment.gm_api //Replace me
     }),
     FlexLayoutModule,
     BrowserAnimationsModule,
