@@ -1,6 +1,6 @@
 from random import choice
 
-from app import db
+from server import db
 from .resource_category import ResourceCategory
 
 

@@ -2,9 +2,9 @@ import csv
 import os
 from sqlite3 import IntegrityError
 from geopy.geocoders import Nominatim
-from app.models import ResourceInfo, ResourceCategory
-from app import db, create_app
-from app.cli.database import init_db
+from server.models import ResourceInfo, ResourceCategory
+from server import db, create_app
+from server.cli.database import init_db
 
 app = create_app()
 api_key = os.getenv("FLASK_GOOGLEMAPS_KEY")

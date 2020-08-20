@@ -2,7 +2,7 @@
 
 import os
 from flask.cli import AppGroup
-from app.models import User, Role
+from server.models import User, Role
 
 setup_cli = AppGroup('setup')
 

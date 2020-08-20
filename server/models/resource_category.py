@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 
-from app import db
+from server import db
 from faker import Faker
 
 class ResourceCategory(db.Model):

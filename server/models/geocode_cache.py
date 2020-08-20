@@ -1,4 +1,4 @@
-from app.cli.database import db
+from server.cli.database import db
 
 
 class GeocoderCache(db.Model):

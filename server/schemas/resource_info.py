@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate
-from app.schemas import ResourceCategorySchema
+from server.schemas import ResourceCategorySchema
 
 class ResourceInfoSchema(Schema):
     name = fields.String(required=True, validate=[validate.Length(max=500)])

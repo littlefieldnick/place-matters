@@ -1,4 +1,4 @@
-from app import db
+from server import db
 
 class Permission:
     ADMINISTER = 0x01

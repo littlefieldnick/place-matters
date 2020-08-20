@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from flask_restful import Resource
 from ..models import ResourceInfo
-from app.schemas import ResourceInfoSchema
+from server.schemas import ResourceInfoSchema
 
 resource_schema = ResourceInfoSchema()
 
