@@ -49,9 +49,11 @@ export class MapComponent implements OnInit {
   resetSearchForm(){
     this.searchForm.reset()
 
-    this.resourceService.getAllResources().subscribe((data: Resource[]) =>{
-      this.resources = data;
+    this.resourceService.getAllResources().subscribe((data) =>{
+      this.resources = data.resources;
     })
+
+    console.log(this.resources)
   }
 
   @HostListener('window:resize', ['$event'])

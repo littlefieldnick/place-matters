@@ -23,7 +23,7 @@ import {CommonModule} from "@angular/common";
   imports: [
     CommonModule,
     AgmCoreModule.forRoot({
-      apiKey: 'XXXXXXXXXXXXXXXXXX' //Replace me
+      apiKey: '' //Replace me
     }),
     FlexLayoutModule,
     BrowserAnimationsModule,

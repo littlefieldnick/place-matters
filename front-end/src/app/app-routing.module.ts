@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {MapComponent} from "./components/map/map.component";
+import {ResourceResolver} from "./resolvers/resource.resolver";
+import {CategoryResolver} from "./resolvers/category.resolver";
 
 const routes: Routes = [
   {
     path: 'map',
-    component: MapComponent
+    component: MapComponent,
+    resolve: {
+      resources: ResourceResolver,
+      categories: CategoryResolver
+    }
   },
   {
     path: '',
