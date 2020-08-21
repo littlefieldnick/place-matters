@@ -10,17 +10,19 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
-import {AgmCoreModule} from "@agm/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {CommonModule} from "@angular/common";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {MapModule} from "./components/map/map.module";
+import {HttpClientModule} from "@angular/common/http";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {GoogleMapsModule} from "@angular/google-maps";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, MapComponent
   ],
   imports: [
     CommonModule,
@@ -29,8 +31,21 @@ import {MapModule} from "./components/map/map.module";
     AppRoutingModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    CommonModule,
+    GoogleMapsModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
-    MapModule
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    ScrollingModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

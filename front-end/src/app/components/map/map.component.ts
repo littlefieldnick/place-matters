@@ -1,23 +1,34 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { SearchForm } from "../../forms/search-form";
-import { Resource } from "../../models/resource";
-import { ResourceCategory } from "../../models/resource_category";
-import { ActivatedRoute } from "@angular/router";
-import { ResourceService } from "../../services/resource.service";
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {SearchForm} from "../../forms/search-form";
+import {Resource} from "../../models/resource";
+import {ResourceCategory} from "../../models/resource_category";
+import {ActivatedRoute} from "@angular/router";
+import {ResourceService} from "../../services/resource.service";
+import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 
 @Component({
   selector: 'map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
+
 export class MapComponent implements OnInit {
-  title = 'Place Matters Maine';
+  // Google Map Parameters
+  @ViewChild(GoogleMap, { static: false }) map: GoogleMap
+  @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow
+  center: google.maps.LatLngLiteral;
+  infoContent:string = ''
+  mapMarkers: Array<any> = []
+  zoom = 15;
+  width="950"
+  height="650"
   mapOpen = false;
+
+  title = 'Place Matters Maine';
   searchForm: SearchForm
   resources: Array<Resource>
   categories: Array<ResourceCategory>
 
-  zoom=15;
   constructor(private route: ActivatedRoute, private resourceService: ResourceService) {
     this.searchForm = new SearchForm()
   }
@@ -25,31 +36,70 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.categories = this.route.snapshot.data.categories;
     this.resources = this.route.snapshot.data.resources;
+
+    //Set map center to the location of the first resource
+    this.center = {
+      lat: this.resources[0].latitude,
+      lng: this.resources[0].longitude
+    }
+
+    this.loadMarkers();
+  }
+
+  loadMarkers() {
+    for (let re in this.resources) {
+      let marker = {
+        position: {
+          lat: this.resources[re].latitude,
+          lng: this.resources[re].longitude
+        },
+
+        title: this.resources[re].name,
+
+        markerInfo: {
+          name: this.resources[re].name,
+          address: this.resources[re].address,
+          category: this.resources[re].category["name"]
+        }
+      }
+
+      this.mapMarkers.push(marker)
+    }
+  }
+
+  openInfoMarker(mapMarker: MapMarker, markerInfo){
+    this.infoContent = '<b>' + markerInfo.name + '</b>' + '' +
+      '<br/> <p>' + markerInfo.address + '</p>' +
+      '<button mat-flat-button color="primary">' + markerInfo.category + '</button>'
+    this.infoWindow.open(mapMarker);
   }
 
   //Load hidden map (when screen size is smaller than md device)
-  toggleMap(){
+  toggleMap()
+  {
     this.mapOpen = !this.mapOpen
   }
 
-  search(){
+  search()
+  {
     let category = this.searchForm.get("category").value;
     let resourceName = this.searchForm.get("name").value;
-    if(category.length == 0){
+    if (category.length == 0) {
       category = ''
     }
 
-    if(resourceName.length == null){
+    if (resourceName.length == null) {
       resourceName = ''
     }
 
     //TODO: Implement Search functionality
   }
 
-  resetSearchForm(){
+  resetSearchForm()
+  {
     this.searchForm.reset()
 
-    this.resourceService.getAllResources().subscribe((data) =>{
+    this.resourceService.getAllResources().subscribe((data) => {
       this.resources = data.resources;
     })
 
@@ -57,9 +107,10 @@ export class MapComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(event)
+  {
     console.log("Resize event fired!")
-    if (this.mapOpen){
+    if (this.mapOpen) {
       this.mapOpen = false;
     }
   }

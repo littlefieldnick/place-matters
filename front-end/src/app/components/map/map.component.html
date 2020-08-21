@@ -26,7 +26,7 @@
       <div *cdkVirtualFor="let resource of resources">
         <mat-card>
           <mat-card-content>
-            <h2>{{resource.name}}</h2>
+            <h2>{{resource.name}}</h2> <br>
             <h4>{{resource.address}}</h4>
             <mat-chip-list>
               <mat-chip color="accent" selected>
@@ -41,19 +41,21 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </div>
-      <div fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-sm]="mapOpen" style="padding-left: 10px">
-        <agm-map [latitude]="resources[0].latitude" [longitude]="resources[0].longitude" [zoom]="zoom">
-          <agm-marker *ngFor="let resource of resources" [latitude]="resource.latitude" [longitude]="resource.longitude">
-            <agm-info-window>
-              {{resource.name}}
-              {{resource.address}}
-              <button>{{resource.category.name}}</button>
-            </agm-info-window>
-          </agm-marker>
-        </agm-map>
-      </div>
-      <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
-        <br>
-        <button mat-raised-button color="primary" (click)="toggleMap()">Show Map</button>
-     </div>
+  <div fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-sm]="mapOpen" style="padding-left: 10px">
+    <google-map [center]="center" [zoom]="zoom" [height]="height" [width]="width">
+      <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers"
+                  [position]="marker.position"
+                  [label]="marker.label"
+                  [title]="marker.title"
+                  (mapClick)="openInfoMarker(markerElem, marker.markerInfo)">
+        <map-info-window>
+          <div [innerHTML]="infoContent"></div>
+        </map-info-window>
+      </map-marker>
+    </google-map>
+  </div>
+  <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
+    <br>
+    <button mat-raised-button color="primary" (click)="toggleMap()">Show Map</button>
+  </div>
 </div>
