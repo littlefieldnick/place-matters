@@ -43,13 +43,16 @@
   </div>
   <div fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-sm]="mapOpen" style="padding-left: 10px">
     <google-map [center]="center" [zoom]="zoom" [height]="height" [width]="width">
-      <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers"
+      <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers; let idx = index"
                   [position]="marker.position"
                   [label]="marker.label"
                   [title]="marker.title"
-                  (mapClick)="openInfoMarker(markerElem, marker.markerInfo)">
-        <map-info-window>
-          <div [innerHTML]="infoContent"></div>
+                  (mapClick)="openInfoMarker(markerElem, idx)">
+
+        <map-info-window [options]="marker.options" (close)="this.userClosed()">
+          <h3 class="mat-h3">{{ marker.markerInfo.name }}</h3>
+          <p>{{ marker.markerInfo.address }}</p>
+          <button mat-raised-button color="primary">More Info</button>
         </map-info-window>
       </map-marker>
     </google-map>

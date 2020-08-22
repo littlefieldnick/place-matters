@@ -1,10 +1,11 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {SearchForm} from "../../forms/search-form";
 import {Resource} from "../../models/resource";
 import {ResourceCategory} from "../../models/resource_category";
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../services/resource.service";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'map',
@@ -15,9 +16,9 @@ import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 export class MapComponent implements OnInit {
   // Google Map Parameters
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap
-  @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow
+  @ViewChildren(MapInfoWindow) infoWindows: QueryList<MapInfoWindow>
   center: google.maps.LatLngLiteral;
-  infoContent:string = ''
+  currentInfoMarker: MapInfoWindow;
   mapMarkers: Array<any> = []
   zoom = 15;
   width="950"
@@ -29,7 +30,7 @@ export class MapComponent implements OnInit {
   resources: Array<Resource>
   categories: Array<ResourceCategory>
 
-  constructor(private route: ActivatedRoute, private resourceService: ResourceService) {
+  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private resourceService: ResourceService) {
     this.searchForm = new SearchForm()
   }
 
@@ -67,11 +68,25 @@ export class MapComponent implements OnInit {
     }
   }
 
-  openInfoMarker(mapMarker: MapMarker, markerInfo){
-    this.infoContent = '<b>' + markerInfo.name + '</b>' + '' +
-      '<br/> <p>' + markerInfo.address + '</p>' +
-      '<button mat-flat-button color="primary">' + markerInfo.category + '</button>'
-    this.infoWindow.open(mapMarker);
+  userClosed(){
+    this.currentInfoMarker = undefined;
+  }
+
+  openInfoMarker(mapMarker: MapMarker, markerIndex){
+    let curIdx = 0;
+
+    //Close current open info window
+    if(this.currentInfoMarker != undefined)
+      this.currentInfoMarker.close()
+
+    this.infoWindows.forEach((window) => {
+      if (curIdx == markerIndex){
+        window.open(mapMarker)
+        this.currentInfoMarker = window
+      }
+
+      curIdx++
+    });
   }
 
   //Load hidden map (when screen size is smaller than md device)
