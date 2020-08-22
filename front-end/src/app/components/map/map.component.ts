@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren} fro
 import {SearchForm} from "../../forms/search-form";
 import {Resource} from "../../models/resource";
 import {ResourceCategory} from "../../models/resource_category";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ResourceService} from "../../services/resource.service";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
@@ -30,13 +30,13 @@ export class MapComponent implements OnInit {
   resources: Array<Resource>
   categories: Array<ResourceCategory>
 
-  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private resourceService: ResourceService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private resourceService: ResourceService) {
     this.searchForm = new SearchForm()
   }
 
   ngOnInit(): void {
-    this.categories = this.route.snapshot.data.categories;
-    this.resources = this.route.snapshot.data.resources;
+    this.categories = this.activatedRoute.snapshot.data.categories;
+    this.resources = this.activatedRoute.snapshot.data.resources;
 
     //Set map center to the location of the first resource
     this.center = {
@@ -47,7 +47,7 @@ export class MapComponent implements OnInit {
     this.loadMarkers();
   }
 
-  loadMarkers() {
+  loadMarkers(): void {
     for (let re in this.resources) {
       let marker = {
         position: {
@@ -58,6 +58,7 @@ export class MapComponent implements OnInit {
         title: this.resources[re].name,
 
         markerInfo: {
+          id: this.resources[re].id,
           name: this.resources[re].name,
           address: this.resources[re].address,
           category: this.resources[re].category["name"]
@@ -68,11 +69,11 @@ export class MapComponent implements OnInit {
     }
   }
 
-  userClosed(){
+  userClosed(): void {
     this.currentInfoMarker = undefined;
   }
 
-  openInfoMarker(mapMarker: MapMarker, markerIndex){
+  openInfoMarker(mapMarker: MapMarker, markerIndex): void {
     let curIdx = 0;
 
     //Close current open info window
@@ -90,7 +91,7 @@ export class MapComponent implements OnInit {
   }
 
   //Load hidden map (when screen size is smaller than md device)
-  toggleMap()
+  toggleMap(): void
   {
     this.mapOpen = !this.mapOpen
   }
@@ -110,7 +111,7 @@ export class MapComponent implements OnInit {
     //TODO: Implement Search functionality
   }
 
-  resetSearchForm()
+  resetSearchForm(): void
   {
     this.searchForm.reset()
 
@@ -122,7 +123,7 @@ export class MapComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event)
+  onResize(event): void
   {
     console.log("Resize event fired!")
     if (this.mapOpen) {

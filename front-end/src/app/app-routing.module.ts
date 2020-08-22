@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {MapComponent} from "./components/map/map.component";
 import {ResourceResolver} from "./resolvers/resource.resolver";
 import {CategoryResolver} from "./resolvers/category.resolver";
+import {ResourceInfoComponent} from "./components/resource-info/resource-info.component";
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
       resources: ResourceResolver,
       categories: CategoryResolver
     }
+  },
+  {
+    path: 'info/:id',
+    component: ResourceInfoComponent
   },
   {
     path: '',

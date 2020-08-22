@@ -19,10 +19,11 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {GoogleMapsModule} from "@angular/google-maps";
+import { ResourceInfoComponent } from './components/resource-info/resource-info.component';
 
 @NgModule({
   declarations: [
-    AppComponent, MapComponent
+    AppComponent, MapComponent, ResourceInfoComponent
   ],
   imports: [
     CommonModule,

@@ -23,7 +23,7 @@
       </div>
     </form>
     <cdk-virtual-scroll-viewport itemSize="50" class="map-list-viewport">
-      <div *cdkVirtualFor="let resource of resources">
+      <div *cdkVirtualFor="let resource of resources; let idx = index">
         <mat-card>
           <mat-card-content>
             <h2>{{resource.name}}</h2> <br>
@@ -34,7 +34,7 @@
               </mat-chip>
             </mat-chip-list>
             <br>
-            <button mat-raised-button color="primary">More Information</button>
+            <a [routerLink]="['/info/', resource.id]" mat-raised-button color="primary">More Information</a>
           </mat-card-content>
         </mat-card>
         <hr>
@@ -52,7 +52,7 @@
         <map-info-window [options]="marker.options" (close)="this.userClosed()">
           <h3 class="mat-h3">{{ marker.markerInfo.name }}</h3>
           <p>{{ marker.markerInfo.address }}</p>
-          <button mat-raised-button color="primary">More Info</button>
+            <a [routerLink]="['/info/', marker.markerInfo.id]" mat-raised-button color="primary">More Information</a>
         </map-info-window>
       </map-marker>
     </google-map>
