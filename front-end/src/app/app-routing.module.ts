@@ -4,6 +4,7 @@ import {MapComponent} from "./components/map/map.component";
 import {ResourceResolver} from "./resolvers/resource.resolver";
 import {CategoryResolver} from "./resolvers/category.resolver";
 import {ResourceInfoComponent} from "./components/resource-info/resource-info.component";
+import {SingleResourceResolver} from "./resolvers/single-resource.resolver";
 
 const routes: Routes = [
   {
@@ -16,7 +17,10 @@ const routes: Routes = [
   },
   {
     path: 'info/:id',
-    component: ResourceInfoComponent
+    component: ResourceInfoComponent,
+    resolve: {
+      id: SingleResourceResolver
+    }
   },
   {
     path: '',
