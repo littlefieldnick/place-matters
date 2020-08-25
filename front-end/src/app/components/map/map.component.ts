@@ -108,7 +108,9 @@ export class MapComponent implements OnInit {
       resourceName = ''
     }
 
-    //TODO: Implement Search functionality
+    this.resourceService.searchResources(resourceName, category).subscribe((data: Resource[]) => {
+      this.resources = data["results"];
+    })
   }
 
   resetSearchForm(): void
