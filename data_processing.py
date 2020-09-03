@@ -2,9 +2,9 @@ import csv
 import os
 from sqlite3 import IntegrityError
 from geopy.geocoders import Nominatim
-from app.models import Resource, ResourceCategory
-from app import db, create_app
-from app.cli.database import init_db
+from server.models import ResourceInfo, ResourceCategory
+from server import db, create_app
+from server.cli.database import init_db
 
 app = create_app()
 api_key = os.getenv("FLASK_GOOGLEMAPS_KEY")
@@ -46,7 +46,7 @@ with app.app_context():
         if loc is None or loc.latitude is None or loc.longitude is None:
             continue
 
-        re = Resource(name=re[0],
+        re = ResourceInfo(name=re[0],
                       category_id=ResourceCategory.query.filter_by(name=re[1]).first().id,
                       address=address,
                       latitude=loc.latitude,
