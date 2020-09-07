@@ -20,10 +20,11 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {GoogleMapsModule} from "@angular/google-maps";
 import { ResourceInfoComponent } from './components/resource-info/resource-info.component';
+import {MapContainerDirective} from "./directives/map-container.directive";
 
 @NgModule({
   declarations: [
-    AppComponent, MapComponent, ResourceInfoComponent
+    MapContainerDirective, AppComponent, MapComponent, ResourceInfoComponent
   ],
   imports: [
     CommonModule,

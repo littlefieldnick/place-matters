@@ -1,5 +1,5 @@
 <div fxLayout="row wrap" fxLayout.sm="column" style="margin-left:10px; margin-right: 10px">
-  <div fxFlex.lt-xl="25%" fxFlex.lt-sm="100%" [fxHide]="mapOpen">
+  <div fxFlex.gt-md="25%" fxFlex-md="75%" fxFlex.lt-md="100%" [fxHide]="mapOpen">
     <h3 style="text-align: center; padding-top:10px">Search</h3>
     <form [formGroup]="searchForm" (ngSubmit)="search()">
       <div *ngFor="let control of searchForm.formControls">
@@ -41,7 +41,7 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </div>
-  <div fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-sm]="mapOpen" style="padding-left: 10px">
+  <div mapContainer (mapSizeChanged)="this.resizeMap($event)" fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-md]="mapOpen" style="padding-left: 10px" #mapDisplay>
     <google-map [center]="center" [zoom]="zoom" [height]="height" [width]="width">
       <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers; let idx = index"
                   [position]="marker.position"
@@ -57,8 +57,10 @@
       </map-marker>
     </google-map>
   </div>
+  <div>
+</div>
   <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
     <br>
-    <button mat-raised-button color="primary" (click)="toggleMap()">Show Map</button>
+    <button id="showMap" mat-raised-button color="primary"  (click)="toggleMap()">Show Map</button>
   </div>
 </div>

@@ -1,4 +1,13 @@
-import {Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {SearchForm} from "../../forms/search-form";
 import {Resource} from "../../models/resource";
 import {ResourceCategory} from "../../models/resource_category";
@@ -6,6 +15,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ResourceService} from "../../services/resource.service";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DeviceSize} from "../../models/devices";
 
 @Component({
   selector: 'map',
@@ -13,16 +23,18 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
   styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, AfterViewInit {
   // Google Map Parameters
-  @ViewChild(GoogleMap, { static: false }) map: GoogleMap
+  @ViewChild(GoogleMap, {static: false}) map: GoogleMap
   @ViewChildren(MapInfoWindow) infoWindows: QueryList<MapInfoWindow>
+  @ViewChild('mapDisplay') mapDisplay: ElementRef;
+
   center: google.maps.LatLngLiteral;
   currentInfoMarker: MapInfoWindow;
   mapMarkers: Array<any> = []
   zoom = 15;
-  width="950"
-  height="650"
+  width;
+  height;
   mapOpen = false;
 
   title = 'Place Matters Maine';
@@ -31,23 +43,24 @@ export class MapComponent implements OnInit {
   categories: Array<ResourceCategory>
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private resourceService: ResourceService) {
-    this.searchForm = new SearchForm()
+    this.searchForm = new SearchForm();
+
+  }
+
+  ngAfterViewInit():void {
+    this.width = this.mapDisplay.nativeElement.offsetWidth;
+    this.height = this.mapDisplay.nativeElement.offsetHeight;
   }
 
   ngOnInit(): void {
     this.categories = this.activatedRoute.snapshot.data.categories;
     this.resources = this.activatedRoute.snapshot.data.resources;
 
-    //Set map center to the location of the first resource
-    this.center = {
-      lat: this.resources[0].latitude,
-      lng: this.resources[0].longitude
-    }
-
-    this.loadMarkers();
+    // Load map markers and set map center to the location of the first resource
+    this.loadMarkersAndCenter();
   }
 
-  loadMarkers(): void {
+  loadMarkersAndCenter(): void {
     for (let re in this.resources) {
       let marker = {
         position: {
@@ -67,6 +80,8 @@ export class MapComponent implements OnInit {
 
       this.mapMarkers.push(marker)
     }
+
+    this.createMapCenter();
   }
 
   userClosed(): void {
@@ -77,11 +92,11 @@ export class MapComponent implements OnInit {
     let curIdx = 0;
 
     //Close current open info window
-    if(this.currentInfoMarker != undefined)
+    if (this.currentInfoMarker != undefined)
       this.currentInfoMarker.close()
 
     this.infoWindows.forEach((window) => {
-      if (curIdx == markerIndex){
+      if (curIdx == markerIndex) {
         window.open(mapMarker)
         this.currentInfoMarker = window
       }
@@ -91,13 +106,15 @@ export class MapComponent implements OnInit {
   }
 
   //Load hidden map (when screen size is smaller than md device)
-  toggleMap(): void
-  {
+  toggleMap(): void {
     this.mapOpen = !this.mapOpen
+    if (this.mapOpen) {
+      this.height = this.mapDisplay.nativeElement.outerHeight;
+      this.width = this.mapDisplay.nativeElement.outerWidth;
+    }
   }
 
-  search()
-  {
+  search(): void {
     let category = this.searchForm.get("category").value;
     let resourceName = this.searchForm.get("name").value;
     if (category.length == 0) {
@@ -113,8 +130,7 @@ export class MapComponent implements OnInit {
     })
   }
 
-  resetSearchForm(): void
-  {
+  resetSearchForm(): void {
     this.searchForm.reset()
 
     this.resourceService.getAllResources().subscribe((data) => {
@@ -124,12 +140,24 @@ export class MapComponent implements OnInit {
     console.log(this.resources)
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event): void
-  {
-    console.log("Resize event fired!")
-    if (this.mapOpen) {
-      this.mapOpen = false;
-    }
+  resizeMap(size):void {
+    this.height = size.height;
+    this.width = size.width;
+  }
+
+  createMapCenter(): void {
+    console.log("Create map center!")
+    let latCenter = 0.0;
+    let lngCenter = 0.0
+
+    this.mapMarkers.forEach((loc) => {
+      latCenter += loc.position.lat;
+      lngCenter += loc.position.lng;
+    })
+
+    this.center = {
+      lat: latCenter/this.mapMarkers.length,
+      lng: lngCenter/this.mapMarkers.length
+    };
   }
 }
