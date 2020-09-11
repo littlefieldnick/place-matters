@@ -21,6 +21,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {GoogleMapsModule} from "@angular/google-maps";
 import { ResourceInfoComponent } from './components/resource-info/resource-info.component';
 import {MapContainerDirective} from "./directives/map-container.directive";
+import {LayoutModule} from "@angular/cdk/layout";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {MapContainerDirective} from "./directives/map-container.directive";
   imports: [
     CommonModule,
     BrowserModule,
+    LayoutModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,

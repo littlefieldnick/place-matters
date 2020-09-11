@@ -2,21 +2,14 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  Host,
-  HostListener,
-  Input,
-  Output,
-  Renderer2,
-  ViewChild
+  Output
 } from '@angular/core';
-import {DeviceSize} from "../models/devices";
-import {D} from "@angular/cdk/keycodes";
 
 @Directive({
   selector: '[mapContainer]',
-   host: {
-    '(window:resize)': 'onResize()'
-    }
+  host: {
+    '(window:resize)': 'this.resize()'
+  }
 })
 
 export class MapContainerDirective {
@@ -24,10 +17,10 @@ export class MapContainerDirective {
   mapSizeChanged: EventEmitter<any> = new EventEmitter<number>()
 
   constructor(private elementRef: ElementRef) {
-    this.onResize();
+    this.resize()
   }
 
-  onResize(){
+  resize(){
     this.mapSizeChanged.emit({
         width: this.elementRef.nativeElement.offsetWidth,
         height: this.elementRef.nativeElement.offsetHeight

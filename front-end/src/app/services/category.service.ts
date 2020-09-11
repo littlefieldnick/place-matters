@@ -14,6 +14,6 @@ export class CategoryService{
 
   getAllResourceCategories(): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
-    return this.http.get<ResourceCategory>('http://localhost:5000/categories/', {headers})
+    return this.http.get<ResourceCategory>('http://192.168.1.23:5000/categories/', {headers})
   }
 }

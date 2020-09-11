@@ -1,12 +1,11 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
-  HostListener,
+  ElementRef, HostListener,
   OnInit,
   QueryList,
   ViewChild,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import {SearchForm} from "../../forms/search-form";
 import {Resource} from "../../models/resource";
@@ -15,7 +14,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ResourceService} from "../../services/resource.service";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {DeviceSize} from "../../models/devices";
 
 @Component({
   selector: 'map',
@@ -33,9 +31,9 @@ export class MapComponent implements OnInit, AfterViewInit {
   currentInfoMarker: MapInfoWindow;
   mapMarkers: Array<any> = []
   zoom = 15;
-  width;
-  height;
-  mapOpen = false;
+  width: number;
+  height: number;
+  mapOpen = true;
 
   title = 'Place Matters Maine';
   searchForm: SearchForm
@@ -44,18 +42,20 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private resourceService: ResourceService) {
     this.searchForm = new SearchForm();
-
   }
 
   ngAfterViewInit():void {
-    this.width = this.mapDisplay.nativeElement.offsetWidth;
-    this.height = this.mapDisplay.nativeElement.offsetHeight;
+
+    setTimeout(() => {
+      this.width = this.mapDisplay.nativeElement.innerWidth - 175;
+      this.height = this.mapDisplay.nativeElement.innerHeight;
+    });
   }
 
   ngOnInit(): void {
     this.categories = this.activatedRoute.snapshot.data.categories;
     this.resources = this.activatedRoute.snapshot.data.resources;
-
+    this.mapOpen=false;
     // Load map markers and set map center to the location of the first resource
     this.loadMarkersAndCenter();
   }
@@ -108,10 +108,13 @@ export class MapComponent implements OnInit, AfterViewInit {
   //Load hidden map (when screen size is smaller than md device)
   toggleMap(): void {
     this.mapOpen = !this.mapOpen
-    if (this.mapOpen) {
-      this.height = this.mapDisplay.nativeElement.outerHeight;
-      this.width = this.mapDisplay.nativeElement.outerWidth;
-    }
+    setTimeout(() => {
+      this.width = this.mapDisplay.nativeElement.offsetWidth;
+      this.height = this.mapDisplay.nativeElement.offsetHeight;
+    }, 3000)
+
+
+
   }
 
   search(): void {
@@ -136,17 +139,17 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.resourceService.getAllResources().subscribe((data) => {
       this.resources = data.resources;
     })
-
-    console.log(this.resources)
   }
 
   resizeMap(size):void {
     this.height = size.height;
     this.width = size.width;
+
+    console.log(this.height);
+    console.log(this.width);
   }
 
   createMapCenter(): void {
-    console.log("Create map center!")
     let latCenter = 0.0;
     let lngCenter = 0.0
 

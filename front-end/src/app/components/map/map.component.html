@@ -7,7 +7,7 @@
           <mat-label>{{control.label}}</mat-label>
           <div *ngIf="control.modelProperty == 'category'; else inputBlock">
             <mat-select formControlName="{{control.modelProperty}}">
-              <mat-option value="" selected></mat-option>
+              <mat-option value=""></mat-option>
               <mat-option *ngFor="let cat of categories" value="{{cat.name}}">{{cat.name}}</mat-option>
             </mat-select>
           </div>
@@ -41,7 +41,7 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </div>
-  <div mapContainer (mapSizeChanged)="this.resizeMap($event)" fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-md]="mapOpen" style="padding-left: 10px" #mapDisplay>
+  <div mapContainer (mapSizeChanged)="this.resizeMap($event)" fxLayout="row" fxLayout.xs="column"  fxFlex.lt-sm="100" fxFlex.gt-sm="75"  #mapDisplay>
     <google-map [center]="center" [zoom]="zoom" [height]="height" [width]="width">
       <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers; let idx = index"
                   [position]="marker.position"
@@ -52,15 +52,17 @@
         <map-info-window [options]="marker.options" (close)="this.userClosed()">
           <h3 class="mat-h3">{{ marker.markerInfo.name }}</h3>
           <p>{{ marker.markerInfo.address }}</p>
-            <a [routerLink]="['/info/', marker.markerInfo.id]" mat-raised-button color="primary">More Information</a>
+          <a [routerLink]="['/info/', marker.markerInfo.id]" mat-raised-button color="primary">More Information</a>
         </map-info-window>
       </map-marker>
     </google-map>
   </div>
-  <div>
-</div>
-  <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
-    <br>
+  <div *ngIf="!mapOpen else closeMap" fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
     <button id="showMap" mat-raised-button color="primary"  (click)="toggleMap()">Show Map</button>
   </div>
+  <ng-template #closeMap>
+    <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
+      <button id="hideMap" mat-raised-button color="primary"  (click)="toggleMap()">Hide Map</button>
+    </div>
+  </ng-template>
 </div>
