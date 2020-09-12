@@ -11,6 +11,7 @@ export class MapComponent implements OnInit, AfterViewInit {
    // Google Map Parameters
   @ViewChild(GoogleMap, {static: false}) map: GoogleMap
   @ViewChildren(MapInfoWindow) infoWindows: QueryList<MapInfoWindow>
+  @ViewChildren(MapMarker) mapMarkersList: QueryList<MapMarker>
   @ViewChild('mapDisplay') mapDisplay: ElementRef;
 
   center: google.maps.LatLngLiteral;
@@ -87,8 +88,25 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.currentInfoMarker = undefined;
   }
 
-  openInfoMarker(mapMarker: MapMarker, markerIndex): void {
+  findCorrectMapMarker(idx){
     let curIdx = 0;
+    let foundMarker = undefined;
+    this.mapMarkersList.forEach((marker) => {
+      if (idx == curIdx){
+         foundMarker = marker;
+      }
+
+      curIdx++;
+    });
+
+    return foundMarker;
+  }
+
+  openInfoMarker(markerIndex, mapMarker?: MapMarker): void {
+    let curIdx = 0;
+    if(!mapMarker){
+      mapMarker = this.findCorrectMapMarker(markerIndex);
+    }
 
     //Close current open info window
     if (this.currentInfoMarker != undefined)
@@ -103,5 +121,4 @@ export class MapComponent implements OnInit, AfterViewInit {
       curIdx++
     });
   }
-
 }
