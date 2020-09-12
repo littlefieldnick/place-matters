@@ -27,10 +27,12 @@ export class MainComponent implements OnInit {
   private mapComponent: MapComponent;
 
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private resourceService: ResourceService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+              private resourceService: ResourceService) {
     this.searchForm = new SearchForm();
   }
 
+  //Get the page data loaded by the resolver
   ngOnInit(): void {
     this.categories = this.activatedRoute.snapshot.data.categories;
     this.resources = this.activatedRoute.snapshot.data.resources;
@@ -41,6 +43,7 @@ export class MainComponent implements OnInit {
     this.mapOpen = !this.mapOpen
   }
 
+  //Search for a resource based on category and/or name
   search(): void {
     let category = this.searchForm.get("category").value;
     let resourceName = this.searchForm.get("name").value;
@@ -54,9 +57,10 @@ export class MainComponent implements OnInit {
 
     this.resourceService.searchResources(resourceName, category).subscribe((data: Resource[]) => {
       this.resources = data["results"];
-    })
+    });
   }
 
+  //Clear the search form
   resetSearchForm(): void {
     this.searchForm.reset()
     this.resourceService.getAllResources().subscribe((data) => {
@@ -64,7 +68,8 @@ export class MainComponent implements OnInit {
     })
   }
 
+  //Open an info box located on the map
   openInfoBox(idxToOpen){
-    this.mapComponent.openInfoMarker(idxToOpen, undefined);
+    this.mapComponent.openInfoMarker(idxToOpen);
   }
 }

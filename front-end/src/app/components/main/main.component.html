@@ -35,7 +35,7 @@
             </mat-chip-list>
             <br>
             <a [routerLink]="['/info/', resource.id]" mat-raised-button color="primary">More Information</a>
-            <a (click)="this.openInfoBox(idx)" mat-raised-button color="primary">Show on Map</a>
+            <a (click)="this.openInfoBox(resource.id - 1)" mat-raised-button color="primary">Show on Map</a>
 
 
           </mat-card-content>
