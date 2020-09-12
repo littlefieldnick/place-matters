@@ -22,8 +22,23 @@ export class MapContainerDirective {
 
   resize(){
     this.mapSizeChanged.emit({
-        width: this.elementRef.nativeElement.offsetWidth,
-        height: this.elementRef.nativeElement.offsetHeight
+        width: this.getWidth(),
+        height: this.getHeight()
     });
+  }
+
+  getWidth(){
+    if (this.elementRef.nativeElement.offsetWidth == 0)
+      return window.outerWidth;
+
+    return this.elementRef.nativeElement.offsetWidth
+  }
+
+   getHeight(){
+    if (this.elementRef.nativeElement.offsetHeight== 0)
+      return window.outerHeight * 0.75;
+
+
+    return this.elementRef.nativeElement.offsetHeight
   }
 }

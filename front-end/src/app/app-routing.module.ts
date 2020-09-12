@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {MapComponent} from "./components/map/map.component";
+import {MainComponent} from "./components/main/main.component";
 import {ResourceResolver} from "./resolvers/resource.resolver";
 import {CategoryResolver} from "./resolvers/category.resolver";
 import {ResourceInfoComponent} from "./components/resource-info/resource-info.component";
@@ -8,8 +8,8 @@ import {SingleResourceResolver} from "./resolvers/single-resource.resolver";
 
 const routes: Routes = [
   {
-    path: 'map',
-    component: MapComponent,
+    path: '',
+    component: MainComponent,
     resolve: {
       resources: ResourceResolver,
       categories: CategoryResolver
@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'map',
+    redirectTo: 'main',
     pathMatch: 'full'
   }
 ];
