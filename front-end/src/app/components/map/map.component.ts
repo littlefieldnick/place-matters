@@ -7,13 +7,13 @@ import {Resource} from "../../models/resource";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
+
 export class MapComponent implements OnInit, AfterViewInit {
    // Google Map Parameters
   @ViewChild(GoogleMap, {static: false}) map: GoogleMap
   @ViewChildren(MapInfoWindow) infoWindows: QueryList<MapInfoWindow>
   @ViewChildren(MapMarker) mapMarkersList: QueryList<MapMarker>
   @ViewChild('mapDisplay') mapDisplay: ElementRef;
-
   center: google.maps.LatLngLiteral;
   currentInfoMarker: MapInfoWindow;
   mapMarkers: Array<any> = []

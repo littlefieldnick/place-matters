@@ -7,7 +7,7 @@
           <mat-label>{{control.label}}</mat-label>
           <div *ngIf="control.modelProperty == 'category'; else inputBlock">
             <mat-select formControlName="{{control.modelProperty}}">
-              <mat-option value=""></mat-option>
+              <mat-option></mat-option>
               <mat-option *ngFor="let cat of categories" value="{{cat.name}}">{{cat.name}}</mat-option>
             </mat-select>
           </div>
@@ -22,7 +22,7 @@
         <button mat-raised-button class="reset" (click)="this.resetSearchForm()">Reset</button>
       </div>
     </form>
-    <cdk-virtual-scroll-viewport itemSize="50" class="map-list-viewport">
+    <cdk-virtual-scroll-viewport itemSize="10" class="map-list-viewport">
       <div *cdkVirtualFor="let resource of resources; let idx = index">
         <mat-card>
           <mat-card-content>
@@ -36,8 +36,6 @@
             <br>
             <a [routerLink]="['/info/', resource.id]" mat-raised-button color="primary">More Information</a>
             <a (click)="this.openInfoBox(resource.id - 1)" mat-raised-button color="primary">Show on Map</a>
-
-
           </mat-card-content>
         </mat-card>
         <hr>
@@ -45,7 +43,7 @@
     </cdk-virtual-scroll-viewport>
   </div>
 
-  <map-display fxFlex.lt-sm="100" fxFlex.gt-sm="75" [fxShow.lt-sm]="mapOpen"  [resources]="resources"></map-display>
+  <map-display class="map-format" fxFlex.lt-sm="100" fxFlex.gt-sm="75"  [fxShow.lt-md]="mapOpen"  [resources]="resources"></map-display>
 
   <div *ngIf="!mapOpen else closeMap" fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
     <button id="showMap" mat-raised-button color="primary"  (click)="toggleMap()">Show Map</button>

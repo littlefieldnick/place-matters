@@ -14,3 +14,7 @@ agm-map {
   background-color: darkslategrey;
   color:white;
 }
+
+.map-format{
+  padding: 10px 10px 10px 10px;
+}
