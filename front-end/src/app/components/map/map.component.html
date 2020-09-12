@@ -1,48 +1,5 @@
-<div fxLayout="row wrap" fxLayout.sm="column" style="margin-left:10px; margin-right: 10px">
-  <div fxFlex.gt-md="25%" fxFlex-md="75%" fxFlex.lt-md="100%" [fxHide]="mapOpen">
-    <h3 style="text-align: center; padding-top:10px">Search</h3>
-    <form [formGroup]="searchForm" (ngSubmit)="search()">
-      <div *ngFor="let control of searchForm.formControls">
-        <mat-form-field fxFlex="100%">
-          <mat-label>{{control.label}}</mat-label>
-          <div *ngIf="control.modelProperty == 'category'; else inputBlock">
-            <mat-select formControlName="{{control.modelProperty}}">
-              <mat-option value=""></mat-option>
-              <mat-option *ngFor="let cat of categories" value="{{cat.name}}">{{cat.name}}</mat-option>
-            </mat-select>
-          </div>
-          <ng-template #inputBlock>
-            <input type="text" matInput formControlName="{{control.modelProperty}}">
-          </ng-template>
-        </mat-form-field>
-      </div>
-      <div fxLayout="column">
-        <button mat-raised-button color="primary" type="submit">Search</button>
-        <br/>
-        <button mat-raised-button class="reset" (click)="this.resetSearchForm()">Reset</button>
-      </div>
-    </form>
-    <cdk-virtual-scroll-viewport itemSize="50" class="map-list-viewport">
-      <div *cdkVirtualFor="let resource of resources; let idx = index">
-        <mat-card>
-          <mat-card-content>
-            <h2>{{resource.name}}</h2>
-            <h4>{{resource.address}}</h4>
-            <mat-chip-list>
-              <mat-chip color="accent" selected>
-                {{resource.category["name"]}}
-              </mat-chip>
-            </mat-chip-list>
-            <br>
-            <a [routerLink]="['/info/', resource.id]" mat-raised-button color="primary">More Information</a>
-          </mat-card-content>
-        </mat-card>
-        <hr>
-      </div>
-    </cdk-virtual-scroll-viewport>
-  </div>
-  <div mapContainer (mapSizeChanged)="this.resizeMap($event)" fxLayout="row" fxLayout.xs="column"  fxFlex.lt-sm="100" fxFlex.gt-sm="75"  #mapDisplay>
-    <google-map [center]="center" [zoom]="zoom" [height]="height" [width]="width">
+<div mapContainer (mapSizeChanged)="this.resizeMap($event)" class="map-responsive" #mapDisplay>
+    <google-map [center]="center" [zoom]="zoom" [height]="this.height" [width]="this.width">
       <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers; let idx = index"
                   [position]="marker.position"
                   [label]="marker.label"
@@ -57,12 +14,3 @@
       </map-marker>
     </google-map>
   </div>
-  <div *ngIf="!mapOpen else closeMap" fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
-    <button id="showMap" mat-raised-button color="primary"  (click)="toggleMap()">Show Map</button>
-  </div>
-  <ng-template #closeMap>
-    <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
-      <button id="hideMap" mat-raised-button color="primary"  (click)="toggleMap()">Hide Map</button>
-    </div>
-  </ng-template>
-</div>
