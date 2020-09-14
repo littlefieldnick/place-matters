@@ -22,13 +22,15 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   @Input()
   resources: Array<Resource>;
-  height: number = 650;
-  width: number = 500;
+  height: string;
+  width: string;
 
   constructor() { }
 
   ngAfterViewInit():void {
     setTimeout(() => {
+      console.log(this.mapDisplay.nativeElement.offsetWidth);
+      console.log(this.mapDisplay.nativeElement.offsetHeight);
       if(this.mapDisplay.nativeElement.offsetWidth != 0)
         this.width = this.mapDisplay.nativeElement.offsetWidth;
       if(this.mapDisplay.nativeElement.offsetHeight != 0)
@@ -41,8 +43,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   resizeMap(size):void {
-    this.height = size.height;
-    this.width = size.width;
+    this.height = size.height + 'px';
+    this.width = size.width + 'px';
   }
 
   createMapCenter(): void {

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   OnInit, Output, ViewChild
 } from '@angular/core';
@@ -15,12 +16,12 @@ import {MapComponent} from "../map/map.component";
   styleUrls: ['./main.component.css']
 })
 
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, AfterViewInit{
   title = 'Place Matters Maine';
   searchForm: SearchForm
   resources: Array<Resource>
   categories: Array<ResourceCategory>
-  mapOpen = false;
+  mapOpen: boolean = true;
 
   //Needed to communicate with the map and open info markers
   @ViewChild(MapComponent)
@@ -71,5 +72,14 @@ export class MainComponent implements OnInit {
   //Open an info box located on the map
   openInfoBox(idxToOpen){
     this.mapComponent.openInfoMarker(idxToOpen);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.mapOpen = false;
+
+      //Check device size, if smaller than a certain size, set mapOpen to true to
+      //render map, then set to false to hide it
+    });
   }
 }
