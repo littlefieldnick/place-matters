@@ -50,13 +50,10 @@ def configure_api(app):
     api.add_resource(resource_info.ResourceInfoApi, "/resources/", "/resources/<int:id>")
     api.add_resource(resource_category.ResourceCategoryApi, "/categories/", "/categories/<int:id>")
     api.add_resource(resource_search.ResourceInfoSearch, "/resources/search")
+
 def configure_cli(app):
     from server.cli.database import db_cli
     from server.cli.setup import setup_cli
     app.cli.add_command(db_cli)
     app.cli.add_command(setup_cli)
 
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run()
