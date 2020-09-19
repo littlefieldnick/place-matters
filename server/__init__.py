@@ -29,11 +29,6 @@ def create_app():
     # Configure API
     configure_api(app)
 
-    @app.route("/Maine_Boundaries_County_Polygon.kml")
-    @app.route("/maine_androscoggin.kml")
-    def serve_kml():
-        return send_from_directory(app.static_folder, filename="kml/" + request.path[1:])
-
     # Configure server to serve front-end
     @app.route("/")
     def index():
