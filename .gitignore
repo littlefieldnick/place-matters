@@ -135,5 +135,4 @@ dmypy.json
 *.sqlite
 
 /instance/
-/server/static
 /server/templates

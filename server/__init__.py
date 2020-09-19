@@ -1,5 +1,5 @@
 import os
-from flask import Flask, make_response, url_for, render_template
+from flask import Flask, request, render_template, send_from_directory
 from flask_restful import Api
 from .config import Config
 from .extensions import db, cors
@@ -28,6 +28,11 @@ def create_app():
 
     # Configure API
     configure_api(app)
+
+    @app.route("./Maine_Boundaries_County_Polygon.kml")
+    @app.route("./maine_androscoggin.kml")
+    def serve_kml():
+        return send_from_directory(app.static_folder, filename="kml/" + request.path[1:])
 
     # Configure server to serve front-end
     @app.route("/")
