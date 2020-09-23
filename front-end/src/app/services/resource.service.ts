@@ -12,12 +12,12 @@ export class ResourceService {
   getAllResources(): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
 
-    return this.http.get<Resource>('http://localhost:5000/resources/', {headers})
+    return this.http.get<Resource>('http://192.168.1.23:5000/resources/', {headers})
   }
 
   getResource(id): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
-    return this.http.get<Resource>('http://localhost:5000/resources/' + id, {headers})
+    return this.http.get<Resource>('http://192.168.1.23:5000/resources/' + id, {headers})
   }
 
   searchResources(name: string, category: string): Observable<any> {
@@ -31,7 +31,7 @@ export class ResourceService {
     if(category.length > 0){
       params["category"] = category
     }
-    return this.http.get<Resource>("http://localhost:5000/resources/search",
+    return this.http.get<Resource>("http://192.168.1.23:5000/resources/search",
       {headers: headers, params: params})
   }
 

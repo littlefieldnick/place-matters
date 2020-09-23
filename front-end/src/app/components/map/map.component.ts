@@ -1,53 +1,68 @@
-import {Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {SearchForm} from "../../forms/search-form";
-import {Resource} from "../../models/resource";
-import {ResourceCategory} from "../../models/resource_category";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ResourceService} from "../../services/resource.service";
+import {AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {Resource} from "../../models/resource";
 
 @Component({
-  selector: 'map',
+  selector: 'map-display',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.scss']
 })
 
-export class MapComponent implements OnInit {
-  // Google Map Parameters
-  @ViewChild(GoogleMap, { static: false }) map: GoogleMap
+export class MapComponent implements OnInit, AfterViewInit {
+   // Google Map Parameters
+  @ViewChild(GoogleMap, {static: false}) map: GoogleMap
   @ViewChildren(MapInfoWindow) infoWindows: QueryList<MapInfoWindow>
+  @ViewChildren(MapMarker) mapMarkersList: QueryList<MapMarker>
+  @ViewChild('mapDisplay') mapDisplay: ElementRef;
   center: google.maps.LatLngLiteral;
   currentInfoMarker: MapInfoWindow;
   mapMarkers: Array<any> = []
   zoom = 15;
-  width="950"
-  height="650"
-  mapOpen = false;
 
-  title = 'Place Matters Maine';
-  searchForm: SearchForm
-  resources: Array<Resource>
-  categories: Array<ResourceCategory>
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private resourceService: ResourceService) {
-    this.searchForm = new SearchForm()
+  @Input()
+  resources: Array<Resource>;
+  height: string;
+  width: string;
+
+  constructor() { }
+
+  ngAfterViewInit():void {
+    setTimeout(() => {
+      console.log(this.mapDisplay.nativeElement.offsetWidth);
+      console.log(this.mapDisplay.nativeElement.offsetHeight);
+      if(this.mapDisplay.nativeElement.offsetWidth != 0)
+        this.width = this.mapDisplay.nativeElement.offsetWidth;
+      if(this.mapDisplay.nativeElement.offsetHeight != 0)
+        this.height = this.mapDisplay.nativeElement.offsetHeight;
+    });
   }
 
   ngOnInit(): void {
-    this.categories = this.activatedRoute.snapshot.data.categories;
-    this.resources = this.activatedRoute.snapshot.data.resources;
-
-    //Set map center to the location of the first resource
-    this.center = {
-      lat: this.resources[0].latitude,
-      lng: this.resources[0].longitude
-    }
-
-    this.loadMarkers();
+    this.loadMarkersAndCenter();
   }
 
-  loadMarkers(): void {
+  resizeMap(size):void {
+    this.height = size.height + 'px';
+    this.width = size.width + 'px';
+  }
+
+  createMapCenter(): void {
+    let latCenter = 0.0;
+    let lngCenter = 0.0
+
+    this.mapMarkers.forEach((loc) => {
+      latCenter += loc.position.lat;
+      lngCenter += loc.position.lng;
+    })
+
+    this.center = {
+      lat: latCenter/this.mapMarkers.length,
+      lng: lngCenter/this.mapMarkers.length
+    };
+  }
+
+  loadMarkersAndCenter(): void {
     for (let re in this.resources) {
       let marker = {
         position: {
@@ -67,69 +82,45 @@ export class MapComponent implements OnInit {
 
       this.mapMarkers.push(marker)
     }
+
+    this.createMapCenter();
   }
 
   userClosed(): void {
     this.currentInfoMarker = undefined;
   }
 
-  openInfoMarker(mapMarker: MapMarker, markerIndex): void {
+  findCorrectMapMarker(idx){
     let curIdx = 0;
+    let foundMarker = undefined;
+    this.mapMarkersList.forEach((marker) => {
+      if (idx == curIdx){
+         foundMarker = marker;
+      }
+
+      curIdx++;
+    });
+
+    return foundMarker;
+  }
+
+  openInfoMarker(markerIndex, mapMarker?: MapMarker): void {
+    let curIdx = 0;
+    if(!mapMarker){
+      mapMarker = this.findCorrectMapMarker(markerIndex);
+    }
 
     //Close current open info window
-    if(this.currentInfoMarker != undefined)
+    if (this.currentInfoMarker != undefined)
       this.currentInfoMarker.close()
 
     this.infoWindows.forEach((window) => {
-      if (curIdx == markerIndex){
+      if (curIdx == markerIndex) {
         window.open(mapMarker)
         this.currentInfoMarker = window
       }
 
       curIdx++
     });
-  }
-
-  //Load hidden map (when screen size is smaller than md device)
-  toggleMap(): void
-  {
-    this.mapOpen = !this.mapOpen
-  }
-
-  search()
-  {
-    let category = this.searchForm.get("category").value;
-    let resourceName = this.searchForm.get("name").value;
-    if (category.length == 0) {
-      category = ''
-    }
-
-    if (resourceName.length == null) {
-      resourceName = ''
-    }
-
-    this.resourceService.searchResources(resourceName, category).subscribe((data: Resource[]) => {
-      this.resources = data["results"];
-    })
-  }
-
-  resetSearchForm(): void
-  {
-    this.searchForm.reset()
-
-    this.resourceService.getAllResources().subscribe((data) => {
-      this.resources = data.resources;
-    })
-
-    console.log(this.resources)
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event): void
-  {
-    console.log("Resize event fired!")
-    if (this.mapOpen) {
-      this.mapOpen = false;
-    }
   }
 }

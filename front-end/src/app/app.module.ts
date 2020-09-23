@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MapComponent } from './components/map/map.component';
+import { MainComponent } from './components/main/main.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import {ScrollingModule} from "@angular/cdk/scrolling";
@@ -20,14 +20,18 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {GoogleMapsModule} from "@angular/google-maps";
 import { ResourceInfoComponent } from './components/resource-info/resource-info.component';
+import {MapContainerDirective} from "./directives/map-container.directive";
+import {LayoutModule} from "@angular/cdk/layout";
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
-    AppComponent, MapComponent, ResourceInfoComponent
+    MapContainerDirective, AppComponent, MainComponent, ResourceInfoComponent, MapComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
+    LayoutModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
