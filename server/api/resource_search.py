@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from flask import request
 from flask_restful import Resource, reqparse
 from sqlalchemy import join, and_, intersect
 
@@ -15,7 +14,6 @@ parser.add_argument('category', dest='category')
 class ResourceInfoSearch(Resource):
     def get(self):
         args = parser.parse_args()
-
 
         name_res = None
         cat_res = None

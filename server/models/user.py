@@ -148,6 +148,7 @@ class User(UserMixin, db.Model):
             role=Role.query.filter_by(
                 permissions=Permission.ADMINISTER).first()
         )
+
         db.session.add(u)
         try:
             db.session.commit()
