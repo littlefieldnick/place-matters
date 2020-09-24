@@ -3,7 +3,7 @@ import {
   Component,
   OnInit, Output, ViewChild
 } from '@angular/core';
-import {SearchForm} from "../../forms/search-form";
+import {SearchForm} from "../../forms/search.form";
 import {Resource} from "../../models/resource";
 import {ResourceCategory} from "../../models/resource_category";
 import {ActivatedRoute, Router} from "@angular/router";

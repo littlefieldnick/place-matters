@@ -23,35 +23,38 @@ import { ResourceInfoComponent } from './components/resource-info/resource-info.
 import {MapContainerDirective} from "./directives/map-container.directive";
 import {LayoutModule} from "@angular/cdk/layout";
 import { MapComponent } from './components/map/map.component';
+import { LoginComponent } from './components/admin-dashboard/login/login.component';
+import {MatDividerModule} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
-    MapContainerDirective, AppComponent, MainComponent, ResourceInfoComponent, MapComponent
+    MapContainerDirective, AppComponent, MainComponent, ResourceInfoComponent, MapComponent, LoginComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    LayoutModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    CommonModule,
-    GoogleMapsModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    ScrollingModule,
-    MatButtonModule,
-    MatChipsModule,
-    MatSelectModule,
-    MatToolbarModule,
-  ],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        LayoutModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FlexLayoutModule,
+        CommonModule,
+        GoogleMapsModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatGridListModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        ScrollingModule,
+        MatButtonModule,
+        MatChipsModule,
+        MatSelectModule,
+        MatToolbarModule,
+        MatDividerModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
