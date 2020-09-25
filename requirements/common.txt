@@ -1,10 +1,12 @@
 alembic==1.4.2
 aniso8601==8.0.0
 async==0.6.2
+bcrypt==3.2.0
 blinker==1.4
 Bootstrap-Flask==1.4
 Brotli==1.0.7
 certifi==2020.6.20
+cffi==1.14.3
 chardet==3.0.4
 click==7.1.2
 decorator==4.4.2
@@ -18,6 +20,7 @@ Flask-Assets==2.0
 Flask-Compress==1.5.0
 Flask-Cors==3.0.8
 flask-googlemaps==0.4.0
+Flask-JWT-Extended==3.24.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
 Flask-Migrate==2.5.3
@@ -49,6 +52,7 @@ mccabe==0.6.1
 pep8==1.7.1
 psycopg2-binary==2.8.5
 pycodestyle==2.6.0
+pycparser==2.20
 pyflakes==2.2.0
 PyJWT==1.7.1
 PySocks==1.7.1
@@ -65,6 +69,7 @@ text-unidecode==1.3
 twilio==6.44.0
 urllib3==1.25.9
 visitor==0.1.3
+webargs==6.1.1
 webassets==2.0
 Werkzeug==1.0.1
 WTForms==2.3.1
