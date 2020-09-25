@@ -1,12 +1,11 @@
 from .role import Role, Permission
 from flask import current_app
-from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 from . import db
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     confirmed = db.Column(db.Boolean, default=False)
@@ -15,8 +14,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(500), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-
-    # TODO: Add CSV storage/containers for users
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -138,7 +135,7 @@ class User(UserMixin, db.Model):
     def create_confirmed_admin(first_name, last_name, email, password):
         """Create a confirmed admin with the given input properties."""
         from sqlalchemy.exc import IntegrityError
-
+        print(password)
         u = User(
             first_name=first_name,
             last_name=last_name,
@@ -157,16 +154,3 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {name}>'.format(name=self.full_name())
-
-class AnonymousUser(AnonymousUserMixin):
-    def can(self, _):
-        return False
-
-    def is_admin(self):
-        return False
-
-# login_manager.anonymous_user = AnonymousUser
-#
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))

@@ -2,6 +2,7 @@
 
 import os
 from flask.cli import AppGroup
+from flask_bcrypt import generate_password_hash
 from server.models import User, Role
 
 setup_cli = AppGroup('setup')
@@ -51,7 +52,9 @@ def setup_dev():
 
     admin_email = os.environ.get("ADMIN_EMAIL")
     if User.query.filter_by(email=admin_email).first() is None:
-        User.create_confirmed_admin("Default", "Admin", admin_email, "password123")
+        hash = generate_password_hash("password123")
+        print(hash)
+        User.create_confirmed_admin("Default", "Admin", admin_email, hash)
 
 @setup_cli.command('prod')
 def setup_prod():
