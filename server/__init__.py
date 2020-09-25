@@ -53,6 +53,7 @@ def configure_api(app):
     api.add_resource(resource_category.ResourceCategoryApi, "/categories/", "/categories/<int:id>")
     api.add_resource(resource_search.ResourceInfoSearch, "/resources/search")
     api.add_resource(user.Users, "/users/")
+    api.add_resource(user.UserRegistration, "/users/register")
     api.add_resource(user.UserLogin, "/users/login")
 
 
