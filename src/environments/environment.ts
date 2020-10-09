@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  gm_api: '',
   api: 'http://localhost:5000/'
 };
 
