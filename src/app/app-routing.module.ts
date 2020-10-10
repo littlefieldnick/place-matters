@@ -5,7 +5,6 @@ import {ResourceResolver} from "./resolvers/resource.resolver";
 import {CategoryResolver} from "./resolvers/category.resolver";
 import {ResourceInfoComponent} from "./components/resource-info/resource-info.component";
 import {SingleResourceResolver} from "./resolvers/single-resource.resolver";
-import {LoginComponent} from "./components/admin-dashboard/login/login.component";
 
 const routes: Routes = [
   {
@@ -24,13 +23,14 @@ const routes: Routes = [
     }
   },
   {
-    path: '',
-    redirectTo: 'main',
-    pathMatch: 'full'
+    path: "admin",
+    loadChildren: () => import("./components/admin/admin.module")
+        .then(m => m.AdminModule),
   },
   {
-    path:'admin/login',
-    component: LoginComponent
+    path: '**',
+    redirectTo: 'main',
+    pathMatch: 'full'
   }
 ];
 

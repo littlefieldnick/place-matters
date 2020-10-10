@@ -1,7 +1,4 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
-const DBSOURCE = "./instance/place_matters_dev.db";
-
 const cors = require("cors")
 const bodyParser = require("body-parser");
 const md5 = require("md5");
@@ -9,16 +6,11 @@ const {Client} = require("@googlemaps/google-maps-services-js");
 const port = 5000;
 const app_folder = 'dist/place-matters';
 
+const db = require("database");
+const auth = require("auth.middleware");
 const app = express();
-let db = new sqlite3.Database(DBSOURCE, (err) => {
-    if(err){
-        console.error(err.message);
-        throw err;
-    } else {
-        console.log("Successfully connected to the database.");
-    }
-})
 
+app.use(auth)
 app.use(cors())
 app.use(bodyParser.json());
 

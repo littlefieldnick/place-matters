@@ -4,7 +4,20 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:5000/'
+  external_api: null,
+  api_routes: {
+    getResources: 'api/resources/',
+    getCategories: 'api/categories/',
+    search: 'api/search',
+    getUsers: 'api/users/',
+    registerUser: 'api/users/register',
+    login: 'auth/login',
+    verifyJwt: 'auth/verify'
+  },
+  maine_center_coords: {
+    lat: 45.2538,
+    lng: -69.4455
+  }
 };
 
 /*
