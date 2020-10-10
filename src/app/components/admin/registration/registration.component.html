@@ -1,0 +1,33 @@
+<div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
+  <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
+    <p class="mat-headline" style="color:indigo">User Registration</p>
+    <span><mat-divider></mat-divider></span>
+    <form novalidate [formGroup]="registerForm" (ngSubmit)="registerUser()">
+      <mat-card *ngIf="formSubmitted && registerForm.invalid">
+        There are problems with the form
+        <ul>
+          <li *ngFor="let error of registerForm.getFormValidationMessages()">
+            {{error}}
+          </li>
+        </ul>
+      </mat-card>
+      <div *ngFor="let control of registerForm.formControls">
+        <mat-form-field fxFlex="100%" appearance="outline">
+          <mat-label>
+            {{control.label}}
+          </mat-label>
+          <div *ngIf="control.modelProperty.toLowerCase().search('password') >= 0; else inputBlock">
+            <input type="password" matInput formControlName="{{control.modelProperty}}">
+          </div>
+          <ng-template #inputBlock>
+            <input type="text" matInput formControlName="{{control.modelProperty}}">
+          </ng-template>
+          <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+            A {{control.modelProperty}} is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary">Register</button>
+    </form>
+  </div>
+</div>
