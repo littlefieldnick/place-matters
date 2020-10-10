@@ -17,6 +17,7 @@ module.exports = function (req, res, next) {
     //Login user
     console.log(req.url + " " + req.url.endsWith("/auth/login"))
     if (req.url.endsWith("/auth/login") && req.method == "POST") {
+        console.log(req.body);
         if (req.body) {
             let email = req.body.email;
             let password = req.body.password;
@@ -50,7 +51,6 @@ module.exports = function (req, res, next) {
         return;
     } else if(req.url.endsWith("/auth/verify") && req.method == "POST"){
         let token = req.headers["authorization"] || "";
-        console.log("Verifying token: " + token);
         if (token.length == 0){
             res.json({success: false, errors: "There is no JWT token to verify."})
             return;
@@ -62,7 +62,6 @@ module.exports = function (req, res, next) {
             try{
                 jwt.verify(token, APP_SECRET);
                 res.send({success:true});
-                next()
                 return;
             } catch (err) {
                 res.send({success:false, errors: err});

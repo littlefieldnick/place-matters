@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  external_api: null,
+  external_api: "http://localhost:5000/",
   api_routes: {
     getResources: 'api/resources/',
     getCategories: 'api/categories/',

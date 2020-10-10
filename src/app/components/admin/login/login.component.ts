@@ -26,8 +26,9 @@ export class LoginComponent implements OnInit {
         this.loginForm.get("email").value,
         this.loginForm.get("password").value
       ).then((data) => {
+          console.log(data);
           if(data)
-            this.router.navigateByUrl("/dash")
+            this.router.navigateByUrl("admin/dash");
       });
     }
   }

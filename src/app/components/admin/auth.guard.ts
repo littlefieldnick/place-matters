@@ -9,13 +9,18 @@ export class AuthGuard {
     constructor(private router: Router,
                 private auth: AuthService) { }
 
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot): boolean {
+     canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot): Promise<boolean> {
 
-        if (!this.auth.isAuthenticated()) {
-            this.router.navigateByUrl("admin/login");
-            return false;
-        }
-        return true;
+        return new Promise((resolve) => {
+            this.auth.isAuthenticated().then(isAuth =>  {
+                if(isAuth) {
+                    resolve(true);
+                } else {
+                    this.router.navigateByUrl('admin/login');
+                    resolve(false);
+                }
+            });
+        });
     }
 }

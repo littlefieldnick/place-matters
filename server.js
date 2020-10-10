@@ -6,13 +6,14 @@ const {Client} = require("@googlemaps/google-maps-services-js");
 const port = 5000;
 const app_folder = 'dist/place-matters';
 
-const db = require("database");
-const auth = require("auth.middleware");
+const db = require("./database.js");
+const auth = require("./auth.middleware");
 const app = express();
 
-app.use(auth)
 app.use(cors())
 app.use(bodyParser.json());
+app.use(auth)
+
 
 // ---- API Routing ---- //
 async function geocodeResource(client, address) {

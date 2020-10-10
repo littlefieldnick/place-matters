@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {mergeMap, catchError, map} from "rxjs/operators";
-import { Observable, throwError, from } from "rxjs";
 import { environment } from '../../environments/environment';
 
-export class LoginResponse {
-    message: string
-    jwt_token: string
-    refresh_token: string
-}
 
 @Injectable({
     providedIn: 'root'
@@ -17,16 +10,6 @@ export class AuthService {
     apiRoute: string;
     constructor(private http: HttpClient) {
         this.apiRoute = (environment.external_api || "/");
-    }
-
-    // Handle authentication errors
-    private errorHandler(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-            console.error(`authentication error: ${error.error.message}`);
-        } else {
-            console.error(`bad auth response: ${error.status}: ${error.statusText} ${JSON.stringify(error.error)}`);
-        }
-        return throwError('Login attempt failed');
     }
 
     async loginUser(userEmail, userPass) {
@@ -41,11 +24,11 @@ export class AuthService {
             password: userPass
         };
 
-        return await this.http.post(this.apiRoute + "api/auth/login", loginUser, httpOptions)
+        return this.http.post(this.apiRoute + "auth/login", loginUser)
             .toPromise().then(data => {
                 localStorage.setItem("accessToken", data["token"])
                 return data["success"];
-            });
+            }).catch(err => console.log(err));
     }
 
     async register(firstName, lastName, email, password){
@@ -69,16 +52,15 @@ export class AuthService {
         let headers = new HttpHeaders({
             authorization: "Bearer " + jwtToken
         })
-        console.log(this.apiRoute + "api/auth/verify");
-        return this.http.post(this.apiRoute + "api/auth/verify", {}, {headers: headers}).toPromise();
+        return this.http.post(this.apiRoute + "auth/verify", {}, {headers: headers}).toPromise();
     }
 
-    async isAuthenticated(): Promise<boolean>{
+    async isAuthenticated() {
         let jwtToken = localStorage.getItem("accessToken");
         console.log(jwtToken);
         let verified = false;
 
-        return this.verifyJWT(jwtToken).then(authenticated => authenticated["success"]);
-
+        await this.verifyJWT(jwtToken).then(authenticated => verified = authenticated["success"]);
+        return verified;
     }
 }
