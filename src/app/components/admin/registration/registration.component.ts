@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {RegistrationForm} from "../../../forms/registration.form";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs";
 
 @Component({
   selector: 'registration',
@@ -39,10 +41,10 @@ export class RegistrationComponent implements OnInit {
         this.authService.loginUser(
           this.registerForm.get("email").value,
           this.registerForm.get("password").value
-        ).then(data => {
+        ).subscribe(data => {
           if(data)
             this.router.navigateByUrl("/admin/dash");
-        });
+        }, catchError(err => of(err)));
       });
     }
 

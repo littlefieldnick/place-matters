@@ -32,10 +32,11 @@ module.exports = function (req, res, next) {
                 console.log(rows);
                 if (rows !== undefined && rows.email == email && rows.password == md5(password)) {
                     let token = jwt.sign({data: rows.email, expiresIn: "1h"}, APP_SECRET);
-                    res.json({success: true, token: token})
+                    console.log("User found! Returning JWT token!!");
+                    res.status(200).json({success: true, token: token})
                     return;
                 } else {
-                    res.json({
+                    res.status(401).json({
                         success: false,
                         errors: "User could not be logged in. The email or password provided was incorrect"
                     });
@@ -43,7 +44,7 @@ module.exports = function (req, res, next) {
                 }
             });
         } else {
-            res.json({
+            res.status(401).json({
                 success: false,
                 errors: "User could not be logged in. Either an email or password were not provided."
             });
@@ -52,7 +53,7 @@ module.exports = function (req, res, next) {
     } else if(req.url.endsWith("/auth/verify") && req.method == "POST"){
         let token = req.headers["authorization"] || "";
         if (token.length == 0){
-            res.json({success: false, errors: "There is no JWT token to verify."})
+            res.status(401).json({success: false, errors: "There is no JWT token to verify."})
             return;
         }
 
@@ -64,12 +65,12 @@ module.exports = function (req, res, next) {
                 res.send({success:true});
                 return;
             } catch (err) {
-                res.send({success:false, errors: err});
+                res.status(401).send({success:false, errors: err});
                 return;
             }
         }
 
-        res.json({success:false, errors: "Token cannot be verified."})
+        res.status(401).json({success:false, errors: "Token cannot be verified."})
         return;
     }
     else if (requiresAuthentication(req.method, req.url)) { //authentication needed
@@ -82,12 +83,12 @@ module.exports = function (req, res, next) {
                 next()
                 return;
             } catch (err) {
-                res.send({success:false, errors: err});
+                res.status(401).send({success:false, errors: err});
                 console.log("Verification failed!");
             }
         }
 
-        res.statusCode = 401;
+        res.status = 401;
         return;
     }
     next()

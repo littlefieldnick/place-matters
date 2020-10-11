@@ -22,14 +22,12 @@
           <ng-template #inputBlock>
             <input type="text" matInput formControlName="{{control.modelProperty}}">
           </ng-template>
-          <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
-            A {{control.modelProperty}} is required.
-          </mat-error>
         </mat-form-field>
-
+        <div *ngIf="control.invalid && (control.dirty || control.touched)">
+          <mat-error *ngFor="let err of control.getValidationMessages()">{{err}}</mat-error>
+        </div>
       </div>
-
-      <button mat-raised-button color="primary">Login</button>
+      <button mat-raised-button color="primary" [disabled]="formSubmitted && loginForm.invalid">Login</button>
       <a routerLink="/admin/register" style="float:right">Not a user? Register here.</a>
     </form>
   </div>

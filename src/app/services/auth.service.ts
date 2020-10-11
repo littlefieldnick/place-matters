@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import { environment } from '../../environments/environment';
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
 
 
 @Injectable({
@@ -12,7 +14,7 @@ export class AuthService {
         this.apiRoute = (environment.external_api || "/");
     }
 
-    async loginUser(userEmail, userPass) {
+    loginUser(userEmail, userPass) {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -24,11 +26,12 @@ export class AuthService {
             password: userPass
         };
 
-        return this.http.post(this.apiRoute + "auth/login", loginUser)
-            .toPromise().then(data => {
-                localStorage.setItem("accessToken", data["token"])
-                return data["success"];
-            }).catch(err => console.log(err));
+        return this.http.post(this.apiRoute + "auth/login", loginUser).pipe(
+            catchError(err => {
+                let errMsg = this.processServerError(err);
+                return throwError(errMsg);
+            })
+        );
     }
 
     async register(firstName, lastName, email, password){
@@ -44,23 +47,67 @@ export class AuthService {
             password: password
         }
 
-        return await this.http.post(this.apiRoute + "api/users/register", user, httpOptions)
-            .toPromise().then(data => data["success"]);
+        return this.http.post(this.apiRoute + "api/users/register", user, httpOptions)
+            .pipe(
+                catchError(err => {
+                    let errMsg = this.processServerError(err);
+                    return throwError(errMsg);
+                })
+            );
     }
 
     verifyJWT(jwtToken){
         let headers = new HttpHeaders({
             authorization: "Bearer " + jwtToken
         })
-        return this.http.post(this.apiRoute + "auth/verify", {}, {headers: headers}).toPromise();
+        return this.http.post(this.apiRoute + "auth/verify", {}, {headers: headers}).pipe(
+            catchError(err => {
+                let errMsg = this.processServerError(err);
+                return throwError(errMsg);
+            })
+        );
     }
 
-    async isAuthenticated() {
+    isAuthenticated() {
         let jwtToken = localStorage.getItem("accessToken");
         console.log(jwtToken);
-        let verified = false;
 
-        await this.verifyJWT(jwtToken).then(authenticated => verified = authenticated["success"]);
-        return verified;
+        return this.verifyJWT(jwtToken).pipe(
+            catchError(err => {
+                let errMsg = this.processServerError(err);
+                return throwError(errMsg);
+            })
+        );
+    }
+
+    private processServerError(err: HttpErrorResponse): string{
+        let errMsg: string;
+        if(err.error instanceof ErrorEvent){
+            errMsg = 'Error: ' + err.error.message;
+        } else {
+            errMsg = this.getServerErrorMessage(err);
+        }
+
+        return errMsg;
+    }
+
+    private getServerErrorMessage(error: HttpErrorResponse): string {
+        switch (error.status) {
+            case 404: {
+                return `Not Found: ${error.message}`;
+            }
+            case 403: {
+                return `Access Denied: ${error.message}`;
+            }
+            case 401: {
+                return `Unauthorized: ${error.message}`;
+            }
+            case 500: {
+                return `Internal Server Error: ${error.message}`;
+            }
+            default: {
+                return `Unknown Server Error: ${error.message}`;
+            }
+        }
     }
 }

@@ -24,8 +24,9 @@ const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        redirectTo: 'dash',
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
     }
 ];
 
