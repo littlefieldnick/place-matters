@@ -70,8 +70,6 @@ export class AuthService {
 
     isAuthenticated() {
         let jwtToken = localStorage.getItem("accessToken");
-        console.log(jwtToken);
-
         return this.verifyJWT(jwtToken).pipe(
             catchError(err => {
                 let errMsg = this.processServerError(err);
@@ -83,7 +81,7 @@ export class AuthService {
     private processServerError(err: HttpErrorResponse): string{
         let errMsg: string;
         if(err.error instanceof ErrorEvent){
-            errMsg = 'Error: ' + err.error.message;
+            errMsg = 'Error: ' + err.message;
         } else {
             errMsg = this.getServerErrorMessage(err);
         }
@@ -94,19 +92,19 @@ export class AuthService {
     private getServerErrorMessage(error: HttpErrorResponse): string {
         switch (error.status) {
             case 404: {
-                return `Not Found: ${error.message}`;
+                return `Not Found: ${error.error.errors}`;
             }
             case 403: {
-                return `Access Denied: ${error.message}`;
+                return `Access Denied: ${error.error.errors}`;
             }
             case 401: {
-                return `Unauthorized: ${error.message}`;
+                return `Unauthorized: ${error.error.errors}`;
             }
             case 500: {
-                return `Internal Server Error: ${error.message}`;
+                return `Internal Server Error: ${error.error.errors}`;
             }
             default: {
-                return `Unknown Server Error: ${error.message}`;
+                return `Unknown Server Error: ${error.error.errors}`;
             }
         }
     }

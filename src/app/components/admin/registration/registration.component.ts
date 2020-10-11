@@ -13,7 +13,7 @@ import {of} from "rxjs";
 export class RegistrationComponent implements OnInit {
   registerForm: RegistrationForm
   formSubmitted: boolean
-
+  errors: string [];
   constructor(private authService: AuthService, private router: Router) {
     this.registerForm = new RegistrationForm();
     this.formSubmitted = false;
@@ -23,10 +23,11 @@ export class RegistrationComponent implements OnInit {
   }
 
   async registerUser() {
+    this.errors = []
     this.formSubmitted = true;
     if (this.registerForm.valid) {
       if (this.registerForm.get("password").value != this.registerForm.get("confirmPassword").value) {
-        console.log("Passwords do not match!");
+        this.errors.push("Password and Confirm Password do not match!");
         return;
       }
 
@@ -47,6 +48,5 @@ export class RegistrationComponent implements OnInit {
         }, catchError(err => of(err)));
       });
     }
-
   }
 }
