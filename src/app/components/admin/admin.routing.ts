@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {Routes, RouterModule, Router} from '@angular/router';
 import {LoginComponent} from "./login/login.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {DashComponent} from "./dash/dash.component";
@@ -14,7 +14,7 @@ const routes: Routes = [
         canActivate: [IsSignedInGuard]
     },
     {
-        path: 'register',
+        path: 'users/add',
         component: RegistrationComponent,
         canActivate:[AuthGuard]
 
@@ -36,4 +36,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

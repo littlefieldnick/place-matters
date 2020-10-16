@@ -33,7 +33,6 @@ export class AppConfigService {
 
             for (let icon in iconFiles) {
                 let iconName = iconFiles[icon].split("-")[0]
-                console.log(iconName);
                 this.iconRegistry.addSvgIcon(iconName,
                     this.domSanitizer.bypassSecurityTrustResourceUrl(this.assetsDirectory + "/icons/" + iconFiles[icon]));
             }

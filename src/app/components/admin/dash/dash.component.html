@@ -5,11 +5,11 @@
         <mat-divider></mat-divider>
         <mat-grid-list cols="5" rowHeight="300">
             <mat-grid-tile *ngFor="let route of card.routes" [colspan]="route.cols" [rowspan]="route.rows">
-                <mat-card class="dashboard-card" matTooltip="{{route.tooltip}}">
+                <mat-card (click)="navigate(route.route)" class="dashboard-card" matTooltip="{{route.tooltip}}">
                     <mat-card-title>
                         {{route.title}}
                     </mat-card-title>
-                    <mat-card-content class="dashboard-card-content">
+                    <mat-card-content  class="dashboard-card-content">
                         <mat-icon class="card-icon" [svgIcon]="route.icon"></mat-icon>
                     </mat-card-content>
                 </mat-card>

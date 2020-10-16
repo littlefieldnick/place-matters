@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {DomSanitizer} from "@angular/platform-browser";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'dash',
@@ -23,7 +24,7 @@ export class DashComponent {
         { section: 'Categories',
           routes:[
             {title: "View Categories",icon: "category", cols: 1, rows: 1, route: "admin/categories", tooltip: "View, edit, or delete a category"},
-            {title: "Add Categories", icon: "add", cols: 1, rows: 1,route: "admin/categories/add", tooltip: "Add a new category"}
+            {title: "Add Categories", icon: "add", cols: 1, rows: 1, route: "admin/categories/add", tooltip: "Add a new category"}
           ]
         },
         { section: 'Admin',
@@ -36,5 +37,10 @@ export class DashComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, private sanitizer: DomSanitizer) {}
+  constructor(private router: Router, private breakpointObserver: BreakpointObserver,
+              private sanitizer: DomSanitizer) {}
+
+  navigate(url){
+    this.router.navigate([url]);
+  }
 }
