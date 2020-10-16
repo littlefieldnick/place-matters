@@ -4,6 +4,7 @@ import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
 import {of, throwError} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   formSubmitted: boolean;
   errMsg: string;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {
     this.loginForm = new LoginForm()
     this.formSubmitted = false;
   }
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
           this.loginForm.get("email").value,
           this.loginForm.get("password").value
       ).pipe(catchError(err => {
-        this.errMsg = err;
+        this.displayServerError(err);
         return of([])
       })).subscribe((response) => {
         console.log(response);
@@ -42,4 +43,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  displayServerError(err:string){
+    this.snackBar.open(err, undefined,{
+      verticalPosition: "top",
+    });
+  }
 }

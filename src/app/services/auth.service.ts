@@ -83,7 +83,7 @@ export class AuthService {
         if(err.error instanceof ErrorEvent){
             errMsg = 'Error: ' + err.message;
         } else {
-            errMsg = this.getServerErrorMessage(err);
+            errMsg = err.error.errors;
         }
 
         return errMsg;

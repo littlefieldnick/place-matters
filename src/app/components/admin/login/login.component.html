@@ -1,10 +1,10 @@
 <div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
   <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
-    <mat-error>{{this.errMsg}}</mat-error>
     <p class="mat-headline" style="color:indigo">Admin Login</p>
     <span><mat-divider></mat-divider></span>
     <form novalidate [formGroup]="loginForm" (ngSubmit)="loginUser()">
-      <mat-card *ngIf="formSubmitted && loginForm.invalid">
+      <mat-card style="background-color: rgba(217,83,79,0.5); padding-bottom: 3px"
+                *ngIf="formSubmitted && loginForm.invalid">
         There are problems with the form
         <ul>
           <li *ngFor="let error of loginForm.getFormValidationMessages()">
@@ -23,13 +23,10 @@
           <ng-template #inputBlock>
             <input type="text" matInput formControlName="{{control.modelProperty}}">
           </ng-template>
-        </mat-form-field>
-        <div *ngIf="control.invalid && (control.dirty || control.touched)">
           <mat-error *ngFor="let err of control.getValidationMessages()">{{err}}</mat-error>
-        </div>
+        </mat-form-field>
       </div>
       <button mat-raised-button color="primary" [disabled]="formSubmitted && loginForm.invalid">Login</button>
-      <a routerLink="/admin/register" style="float:right">Not a user? Register here.</a>
     </form>
   </div>
 </div>
