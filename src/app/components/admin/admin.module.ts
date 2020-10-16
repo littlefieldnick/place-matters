@@ -9,6 +9,7 @@ import {AdminRoutingModule} from "./admin.routing";
 import {MaterialModule} from "../../app-material/material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {LayoutModule} from "@angular/cdk/layout";
+import {IsSignedInGuard} from "./isSignedIn.guard";
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import {LayoutModule} from "@angular/cdk/layout";
         ReactiveFormsModule,
         MaterialModule,
         AdminRoutingModule],
-    providers: [AuthGuard],
+    providers: [AuthGuard, IsSignedInGuard],
     declarations: [DashComponent, LoginComponent, RegistrationComponent]
 })
 export class AdminModule {}

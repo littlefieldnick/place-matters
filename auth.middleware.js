@@ -17,7 +17,6 @@ module.exports = function (req, res, next) {
     //Login user
     console.log(req.url + " " + req.url.endsWith("/auth/login"))
     if (req.url.endsWith("/auth/login") && req.method == "POST") {
-        console.log(req.body);
         if (req.body) {
             let email = req.body.email;
             let password = req.body.password;

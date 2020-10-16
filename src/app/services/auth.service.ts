@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
+import {Observable, of, throwError} from "rxjs";
 
 
 @Injectable({
@@ -70,6 +70,11 @@ export class AuthService {
 
     isAuthenticated() {
         let jwtToken = localStorage.getItem("accessToken");
+        // if(jwtToken == null){
+        //     console.log("jwtToken is null! You must login!!");
+        //     return of(false);
+        // }
+
         return this.verifyJWT(jwtToken).pipe(
             catchError(err => {
                 let errMsg = this.processServerError(err);

@@ -4,12 +4,14 @@ import {LoginComponent} from "./login/login.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {DashComponent} from "./dash/dash.component";
 import {AuthGuard} from "./auth.guard";
+import {IsSignedInGuard} from "./isSignedIn.guard";
 
 
 const routes: Routes = [
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [IsSignedInGuard]
     },
     {
         path: 'register',

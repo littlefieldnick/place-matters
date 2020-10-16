@@ -14,14 +14,15 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class LoginComponent implements OnInit {
   loginForm: LoginForm
   formSubmitted: boolean;
-  errMsg: string;
 
   constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {
     this.loginForm = new LoginForm()
     this.formSubmitted = false;
+
   }
 
   ngOnInit(): void {
+
   }
 
   loginUser(){
@@ -34,7 +35,6 @@ export class LoginComponent implements OnInit {
         this.displayServerError(err);
         return of([])
       })).subscribe((response) => {
-        console.log(response);
         if (response["success"]) {
           localStorage.setItem("accessToken", response["token"]);
           this.router.navigateByUrl("admin/dash");
