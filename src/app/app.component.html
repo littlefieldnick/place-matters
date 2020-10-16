@@ -1,8 +1,11 @@
 <mat-toolbar color="primary">
   <span>Place Matters Maine</span>
   <span class="pull-right"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon svgIcon="person"></mat-icon>
+  <button mat-icon-button
+          matTooltip="Admin Login"
+          aria-label="Admin Login"
+          routerLink="admin/login">
+    <mat-icon [svgIcon]="loginIcon"></mat-icon>
   </button>
 </mat-toolbar>
 

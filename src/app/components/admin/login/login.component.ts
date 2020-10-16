@@ -3,7 +3,7 @@ import {LoginForm} from "../../../forms/login.form";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
-import {of, throwError} from "rxjs";
+import {of} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {
     this.loginForm = new LoginForm()
     this.formSubmitted = false;
-
   }
 
   ngOnInit(): void {
@@ -36,6 +35,7 @@ export class LoginComponent implements OnInit {
         return of([])
       })).subscribe((response) => {
         if (response["success"]) {
+          this.snackBar.dismiss(); //dismiss server error if open
           localStorage.setItem("accessToken", response["token"]);
           this.router.navigateByUrl("admin/dash");
         }

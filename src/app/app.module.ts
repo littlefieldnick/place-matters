@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,15 @@ import {MapContainerDirective} from "./directives/map-container.directive";
 import {LayoutModule} from "@angular/cdk/layout";
 import { MapComponent } from './components/map/map.component';
 import {MaterialModule} from "./app-material/material.module";
+import {AppConfigService} from "./services/app-config.service";
+
+export function appInit(appConfigService: AppConfigService) {
+    return () => appConfigService.initializeAppConfigurations();
+}
+
+export function iconRegistryInit(appConfigService: AppConfigService) {
+    return () => appConfigService.initializeIconRegistry();
+}
 
 @NgModule({
   declarations: [
@@ -39,7 +48,21 @@ import {MaterialModule} from "./app-material/material.module";
         ReactiveFormsModule,
         MaterialModule,
     ],
-  providers: [],
+  providers: [
+      AppConfigService,
+      {
+          provide: APP_INITIALIZER,
+          useFactory: appInit,
+          multi: true,
+          deps: [AppConfigService]
+      },
+      {
+          provide: APP_INITIALIZER,
+          useFactory: iconRegistryInit,
+          multi: true,
+          deps: [AppConfigService]
+      }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,11 +2,23 @@
   margin: 20px;
 }
 
-.icon{
-  height: 50%;
+.card-icon{
+  width: 100px;
+  height: 100px;
+  font-size: 36px;
 }
 
-.dashboard-card {
+.dashboard-card{
+  width:200px;
+  height:200px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+.dashboard-expansion{
   position: absolute;
   top: 15px;
   left: 15px;

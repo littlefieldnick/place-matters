@@ -3,23 +3,26 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Resource } from "../models/resource";
 import { environment} from "../../environments/environment";
+import {AppConfigService} from "./app-config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResourceService {
-  apiURL: string = environment.external_api || '/';
-  constructor(public http: HttpClient) {}
+  apiURL: string = this.appConfigService.externalApi || '/';
+  constructor(private http: HttpClient, private appConfigService: AppConfigService) {
+    console.log(this.appConfigService.externalApi);
+  }
 
   getAllResources(): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
 
-    return this.http.get<Resource>('api/resources/', {headers})
+    return this.http.get<Resource>(this.apiURL + 'api/resources/', {headers})
   }
 
   getResource(id): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
-    return this.http.get<Resource>('api/resources/' + id, {headers})
+    return this.http.get<Resource>(this.apiURL + 'api/resources/' + id, {headers})
   }
 
   searchResources(name: string, category: string): Observable<any> {
@@ -33,7 +36,7 @@ export class ResourceService {
     if(category.length > 0){
       params["category"] = category
     }
-    return this.http.get<Resource>("api/resources/search",
+    return this.http.get<Resource>(this.apiURL +"api/resources/search",
       {headers: headers, params: params})
   }
 

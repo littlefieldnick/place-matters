@@ -14,6 +14,7 @@ export const environment = {
     login: 'auth/login',
     verifyJwt: 'auth/verify'
   },
+  assets_directory: 'assets',
   maine_center_coords: {
     lat: 45.2538,
     lng: -69.4455

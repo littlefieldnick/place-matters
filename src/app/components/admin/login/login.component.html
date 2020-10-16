@@ -3,7 +3,7 @@
     <p class="mat-headline" style="color:indigo">Admin Login</p>
     <span><mat-divider></mat-divider></span>
     <form novalidate [formGroup]="loginForm" (ngSubmit)="loginUser()">
-      <mat-card style="background-color: rgba(217,83,79,0.5); padding-bottom: 10px"
+      <mat-card style="background-color: rgba(217,83,79,0.5);"
                 *ngIf="formSubmitted && loginForm.invalid">
         <mat-card-header>There are problems with the form:</mat-card-header>
         <ul>
@@ -13,7 +13,7 @@
         </ul>
         <br/><br/>
       </mat-card>
-      <div *ngFor="let control of loginForm.formControls">
+      <div *ngFor="let control of loginForm.formControls" style="padding-top:3px">
         <mat-form-field fxFlex="100%" appearance="outline">
           <mat-label>
             {{control.label}}
