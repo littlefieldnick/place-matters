@@ -1,0 +1,148 @@
+{
+  "main": [
+    {
+      "section": "Resources",
+      "routes": [
+        {
+          "title": "View Resources",
+          "icon": "location_on",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/resources",
+          "tooltip": "View, edit, or delete a resource"
+        },
+        {
+          "title": "Add Resources",
+          "icon": "add_location_alt",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/resources/add",
+          "tooltip": "Add a new resource"
+        },
+        {
+          "title": "Upload Resources",
+          "icon": "cloud_upload",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/resources/upload",
+          "tooltip": "Upload a CSV containing multiple resources"
+        }
+      ]
+    },
+    {
+      "section": "Categories",
+      "routes": [
+        {
+          "title": "View Categories",
+          "icon": "category",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/categories",
+          "tooltip": "View, edit, or delete a category"
+        },
+        {
+          "title": "Add Categories",
+          "icon": "add",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/categories/add",
+          "tooltip": "Add a new category"
+        }
+      ]
+    },
+    {
+      "section": "Admin",
+      "routes": [
+        {
+          "title": "View Administrators",
+          "icon": "supervisor_account",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/users",
+          "tooltip": "View, edit, or delete a administrator"
+        },
+        {
+          "title": "Add Administrators",
+          "icon": "person_add",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/users/add",
+          "tooltip": "Add a new administrator"
+        }
+      ]
+    }
+  ],
+  "mobile": [
+    {
+      "section": "Resources",
+      "routes": [
+        {
+          "title": "View Resources",
+          "icon": "location_on",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/resources",
+          "tooltip": ""
+        },
+        {
+          "title": "Add Resources",
+          "icon": "add_location_alt",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/resources/add",
+          "tooltip": ""
+        },
+        {
+          "title": "Upload Resources",
+          "icon": "cloud_upload",
+          "cols": 1,
+          "rows": 1,
+          "route": "admin/resources/upload",
+          "tooltip": ""
+        }
+      ]
+    },
+    {
+      "section": "Categories",
+      "routes": [
+        {
+          "title": "View Categories",
+          "icon": "category",
+          "cols": 2,
+          "rows": 1,
+          "route": "admin/categories",
+          "tooltip": ""
+        },
+        {
+          "title": "Add Categories",
+          "icon": "add",
+          "cols": 2,
+          "rows": 1,
+          "route": "admin/categories/add",
+          "tooltip": ""
+        }
+      ]
+    },
+    {
+      "section": "Admin",
+      "routes": [
+        {
+          "title": "View Administrators",
+          "icon": "supervisor_account",
+          "cols": 2,
+          "rows": 1,
+          "route": "admin/users",
+          "tooltip": ""
+        },
+        {
+          "title": "Add Administrators",
+          "icon": "person_add",
+          "cols": 2,
+          "rows": 1,
+          "route": "admin/users/add",
+          "tooltip": ""
+        }
+      ]
+    }
+  ]
+}

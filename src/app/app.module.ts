@@ -25,6 +25,10 @@ export function iconRegistryInit(appConfigService: AppConfigService) {
     return () => appConfigService.initializeIconRegistry();
 }
 
+export function dashboardLayoutInit(appConfigService: AppConfigService){
+    return () => appConfigService.initializeDashboardLayouts();
+}
+
 @NgModule({
   declarations: [
     MapContainerDirective,
@@ -59,6 +63,12 @@ export function iconRegistryInit(appConfigService: AppConfigService) {
       {
           provide: APP_INITIALIZER,
           useFactory: iconRegistryInit,
+          multi: true,
+          deps: [AppConfigService]
+      },
+      {
+          provide: APP_INITIALIZER,
+          useFactory: dashboardLayoutInit,
           multi: true,
           deps: [AppConfigService]
       }

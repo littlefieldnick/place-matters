@@ -3,7 +3,7 @@
     <div *ngFor="let card of cards | async">
         <h1 class="mat-h1">{{card.section}}</h1>
         <mat-divider></mat-divider>
-        <mat-grid-list cols="5" rowHeight="300">
+        <mat-grid-list [cols]="columns" [rowHeight]="rowHeight">
             <mat-grid-tile *ngFor="let route of card.routes" [colspan]="route.cols" [rowspan]="route.rows">
                 <mat-card (click)="navigate(route.route)" class="dashboard-card" matTooltip="{{route.tooltip}}">
                     <mat-card-title>

@@ -15,6 +15,7 @@ export class AppConfigService {
     public apiRoutes: Object;
     public assetsDirectory: string;
     public maineCenterCoords: Object;
+    public dashLayout: Object;
 
     constructor(private http: HttpClient, private domSanitizer: DomSanitizer, private iconRegistry: MatIconRegistry){
 
@@ -38,6 +39,13 @@ export class AppConfigService {
             }
 
             return iconFiles;
+        });
+    }
+
+    initializeDashboardLayouts(){
+        return this.http.get("assets/dash.layout.schema.json").toPromise().then((layout) => {
+            this.dashLayout = layout;
+            return layout;
         });
     }
 }
