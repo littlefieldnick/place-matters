@@ -12,17 +12,15 @@ import {AppConfigService} from "../../../services/app-config.service";
 })
 export class DashComponent {
   /** Based on the screen size, switch from standard to one column per row **/
-  columns: number;
-  rowHeight: number
+  columns: number = 4;
+  rowHeight: number = 200
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if(matches){
         this.columns = 2;
-        this.rowHeight = 200;
         return this.appConfigService.dashLayout["mobile"];
       }
 
-      this.rowHeight = 300;
       this.columns = 4;
       return this.appConfigService.dashLayout["main"];
     })

@@ -8,7 +8,7 @@
           "icon": "location_on",
           "cols": 1,
           "rows": 1,
-          "route": "admin/resources",
+          "route": "admin/view/resources",
           "tooltip": "View, edit, or delete a resource"
         },
         {
@@ -16,7 +16,7 @@
           "icon": "add_location_alt",
           "cols": 1,
           "rows": 1,
-          "route": "admin/resources/add",
+          "route": "admin/add/resources",
           "tooltip": "Add a new resource"
         },
         {
@@ -24,7 +24,7 @@
           "icon": "cloud_upload",
           "cols": 1,
           "rows": 1,
-          "route": "admin/resources/upload",
+          "route": "admin/upload/",
           "tooltip": "Upload a CSV containing multiple resources"
         }
       ]
@@ -37,7 +37,7 @@
           "icon": "category",
           "cols": 1,
           "rows": 1,
-          "route": "admin/categories",
+          "route": "admin/view/categories",
           "tooltip": "View, edit, or delete a category"
         },
         {
@@ -45,7 +45,7 @@
           "icon": "add",
           "cols": 1,
           "rows": 1,
-          "route": "admin/categories/add",
+          "route": "admin/add/categories",
           "tooltip": "Add a new category"
         }
       ]
@@ -58,7 +58,7 @@
           "icon": "supervisor_account",
           "cols": 1,
           "rows": 1,
-          "route": "admin/users",
+          "route": "admin/view/admins",
           "tooltip": "View, edit, or delete a administrator"
         },
         {
@@ -66,7 +66,7 @@
           "icon": "person_add",
           "cols": 1,
           "rows": 1,
-          "route": "admin/users/add",
+          "route": "admin/add/admins",
           "tooltip": "Add a new administrator"
         }
       ]
@@ -81,7 +81,7 @@
           "icon": "location_on",
           "cols": 1,
           "rows": 1,
-          "route": "admin/resources",
+          "route": "admin/view/resources",
           "tooltip": ""
         },
         {
@@ -89,7 +89,7 @@
           "icon": "add_location_alt",
           "cols": 1,
           "rows": 1,
-          "route": "admin/resources/add",
+          "route": "admin/add/resources/",
           "tooltip": ""
         },
         {
@@ -97,7 +97,7 @@
           "icon": "cloud_upload",
           "cols": 1,
           "rows": 1,
-          "route": "admin/resources/upload",
+          "route": "admin/upload",
           "tooltip": ""
         }
       ]
@@ -110,7 +110,7 @@
           "icon": "category",
           "cols": 2,
           "rows": 1,
-          "route": "admin/categories",
+          "route": "admin/view/categories",
           "tooltip": ""
         },
         {
@@ -118,7 +118,7 @@
           "icon": "add",
           "cols": 2,
           "rows": 1,
-          "route": "admin/categories/add",
+          "route": "admin/add/categories/",
           "tooltip": ""
         }
       ]
@@ -131,7 +131,7 @@
           "icon": "supervisor_account",
           "cols": 2,
           "rows": 1,
-          "route": "admin/users",
+          "route": "admin/view/users",
           "tooltip": ""
         },
         {
@@ -139,7 +139,7 @@
           "icon": "person_add",
           "cols": 2,
           "rows": 1,
-          "route": "admin/users/add",
+          "route": "admin/add/admins",
           "tooltip": ""
         }
       ]
