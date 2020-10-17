@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                first_name TEXT,
-                                last_name TEXT,
+                                firstName TEXT,
+                                lastName TEXT,
                                 email TEXT UNIQUE,
                                 password TEXT,
                                 CONSTRAINT email_unique UNIQUE(email));

@@ -12,7 +12,7 @@ export class MainViewComponent implements OnInit {
   tabMappings = {
     "resources": 0,
     "categories": 1,
-    "admins": 2
+    "users": 2
   }
 
   constructor(private activatedRoute: ActivatedRoute) {

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Resource } from "../models/resource";
 import {AppConfigService} from "./app-config.service";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class ResourceService {
   getAllResources(): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
 
-    return this.http.get<Resource>(this.apiURL + 'api/resources/', {headers})
+    return this.http.get<Resource>(this.apiURL + 'api/resources/', {headers}).pipe(map(resources => {
+      return resources["data"];
+    }));
   }
 
   getResource(id): Observable<any>{

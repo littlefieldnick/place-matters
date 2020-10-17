@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ResourceService} from "../../../../services/resource.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'resource-view',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./resource-view.component.scss']
 })
 export class ResourceViewComponent implements OnInit {
+  displayedColumns: string[] = ["id", "name", "category", "description", "address", "website"];
+  dataSource: Observable<any>
 
-  constructor() { }
+  constructor(private resourceService: ResourceService) { }
 
   ngOnInit(): void {
+    this.dataSource = this.resourceService.getAllResources();
   }
 
 }

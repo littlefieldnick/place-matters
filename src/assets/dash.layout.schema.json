@@ -58,7 +58,7 @@
           "icon": "supervisor_account",
           "cols": 1,
           "rows": 1,
-          "route": "admin/view/admins",
+          "route": "admin/view/users",
           "tooltip": "View, edit, or delete a administrator"
         },
         {
@@ -66,7 +66,7 @@
           "icon": "person_add",
           "cols": 1,
           "rows": 1,
-          "route": "admin/add/admins",
+          "route": "admin/add/users",
           "tooltip": "Add a new administrator"
         }
       ]
@@ -139,7 +139,7 @@
           "icon": "person_add",
           "cols": 2,
           "rows": 1,
-          "route": "admin/add/admins",
+          "route": "admin/add/user",
           "tooltip": ""
         }
       ]

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import { environment } from '../../environments/environment';
-import {catchError} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 import {Observable, of, throwError} from "rxjs";
+import {AppConfigService} from "./app-config.service";
+import {User} from "../models/user";
 
 
 @Injectable({
@@ -10,8 +12,8 @@ import {Observable, of, throwError} from "rxjs";
 })
 export class AuthService {
     apiRoute: string;
-    constructor(private http: HttpClient) {
-        this.apiRoute = (environment.external_api || "/");
+    constructor(private http: HttpClient, private appConfigService: AppConfigService) {
+        this.apiRoute = appConfigService.externalApi || "/";
     }
 
     loginUser(userEmail, userPass) {
@@ -56,6 +58,10 @@ export class AuthService {
             );
     }
 
+    getJWTTokenFromStorage(){
+        return localStorage.getItem("accessToken");
+    }
+
     verifyJWT(jwtToken){
         let headers = new HttpHeaders({
             authorization: "Bearer " + jwtToken
@@ -69,11 +75,7 @@ export class AuthService {
     }
 
     isAuthenticated() {
-        let jwtToken = localStorage.getItem("accessToken");
-        // if(jwtToken == null){
-        //     console.log("jwtToken is null! You must login!!");
-        //     return of(false);
-        // }
+        let jwtToken = this.getJWTTokenFromStorage();
 
         return this.verifyJWT(jwtToken).pipe(
             catchError(err => {
@@ -81,6 +83,18 @@ export class AuthService {
                 return throwError(errMsg);
             })
         );
+    }
+
+    getAllUsers(){
+        let headers = new HttpHeaders({
+            authorization: "Bearer " + this.getJWTTokenFromStorage()
+        });
+
+        return this.http.get(this.apiRoute + "api/users", {headers: headers})
+            .pipe(map((users: Array<User>) => {
+                console.log(users);
+                return users["data"];
+            }));
     }
 
     private processServerError(err: HttpErrorResponse): string{
