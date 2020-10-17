@@ -5,6 +5,7 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {DashComponent} from "./dash/dash.component";
 import {AuthGuard} from "./auth.guard";
 import {IsSignedInGuard} from "./isSignedIn.guard";
+import {MainViewComponent} from "./view/main-view.component";
 
 
 const routes: Routes = [
@@ -12,6 +13,16 @@ const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         canActivate: [IsSignedInGuard]
+    },
+    {
+        path: 'view', //No tab name given will activate the first tab
+        component: MainViewComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'view/:tabName', //Tab name is used to activate a given tab
+        component: MainViewComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'users/add',

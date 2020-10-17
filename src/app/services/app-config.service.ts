@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {catchError} from "rxjs/operators";
-import {Observable, of, throwError} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material/icon";
 
