@@ -2,20 +2,21 @@
   margin: 20px;
 }
 
+.grid-tile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .card-icon{
-  width: 100px;
-  height: 100px;
+  width: 25px;
+  height: 25px;
   font-size: 36px;
 }
 
 .dashboard-card{
-  width:200px;
-  height:200px;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .dashboard-expansion{

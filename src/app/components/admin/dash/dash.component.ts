@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {DomSanitizer} from "@angular/platform-browser";
 import {Router} from "@angular/router";
 import {AppConfigService} from "../../../services/app-config.service";
+import {MatSidenav} from "@angular/material/sidenav";
 
 @Component({
   selector: 'dash',
@@ -32,4 +33,5 @@ export class DashComponent {
   navigate(url){
     this.router.navigate([url]);
   }
+
 }

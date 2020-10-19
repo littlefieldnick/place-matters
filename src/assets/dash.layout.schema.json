@@ -54,7 +54,7 @@
       "section": "Admin",
       "routes": [
         {
-          "title": "View Administrators",
+          "title": "View Users",
           "icon": "supervisor_account",
           "cols": 1,
           "rows": 1,
@@ -62,7 +62,7 @@
           "tooltip": "View, edit, or delete a administrator"
         },
         {
-          "title": "Add Administrators",
+          "title": "Add Users",
           "icon": "person_add",
           "cols": 1,
           "rows": 1,
@@ -127,7 +127,7 @@
       "section": "Admin",
       "routes": [
         {
-          "title": "View Administrators",
+          "title": "View Users",
           "icon": "supervisor_account",
           "cols": 2,
           "rows": 1,
@@ -135,7 +135,7 @@
           "tooltip": ""
         },
         {
-          "title": "Add Administrators",
+          "title": "Add Users",
           "icon": "person_add",
           "cols": 2,
           "rows": 1,
