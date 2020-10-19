@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import { environment } from '../../environments/environment';
 import {catchError, map} from "rxjs/operators";
-import {Observable, of, throwError} from "rxjs";
+import {throwError} from "rxjs";
 import {AppConfigService} from "./app-config.service";
 import {User} from "../models/user";
 
@@ -36,12 +35,14 @@ export class AuthService {
         );
     }
 
-    async register(firstName, lastName, email, password){
+    register(firstName, lastName, email, password){
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
-            })
+            }),
+            authorization: 'Bearer ' + this.getJWTTokenFromStorage()
         }
+
         let user = {
             firstName: firstName,
             lastName: lastName,
@@ -53,10 +54,24 @@ export class AuthService {
             .pipe(
                 catchError(err => {
                     let errMsg = this.processServerError(err);
-                    return throwError(errMsg);
+                    return errMsg;
                 })
             );
     }
+
+    getSingleUser(id){
+        let httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            }),
+            authorization: "Bearer " + this.getJWTTokenFromStorage()
+        }
+
+        return this.http.get(this.apiRoute + "api/users/" + id, httpOptions).pipe(catchError((err) => {
+            return this.processServerError(err);
+        }));
+    }
+
 
     getJWTTokenFromStorage(){
         return localStorage.getItem("accessToken");

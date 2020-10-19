@@ -16,7 +16,7 @@
           "icon": "add_location_alt",
           "cols": 1,
           "rows": 1,
-          "route": "admin/add/resources",
+          "route": "admin/resources/add",
           "tooltip": "Add a new resource"
         },
         {
@@ -24,7 +24,7 @@
           "icon": "cloud_upload",
           "cols": 1,
           "rows": 1,
-          "route": "admin/upload/",
+          "route": "admin/resources/upload/",
           "tooltip": "Upload a CSV containing multiple resources"
         }
       ]
@@ -45,7 +45,7 @@
           "icon": "add",
           "cols": 1,
           "rows": 1,
-          "route": "admin/add/categories",
+          "route": "admin/categories/add",
           "tooltip": "Add a new category"
         }
       ]
@@ -66,7 +66,7 @@
           "icon": "person_add",
           "cols": 1,
           "rows": 1,
-          "route": "admin/add/users",
+          "route": "admin/users/add",
           "tooltip": "Add a new administrator"
         }
       ]
@@ -89,7 +89,7 @@
           "icon": "add_location_alt",
           "cols": 1,
           "rows": 1,
-          "route": "admin/add/resources/",
+          "route": "admin/resources/add/",
           "tooltip": ""
         },
         {
@@ -97,7 +97,7 @@
           "icon": "cloud_upload",
           "cols": 1,
           "rows": 1,
-          "route": "admin/upload",
+          "route": "admin/resources/upload",
           "tooltip": ""
         }
       ]
@@ -118,7 +118,7 @@
           "icon": "add",
           "cols": 2,
           "rows": 1,
-          "route": "admin/add/categories/",
+          "route": "admin/categories/add",
           "tooltip": ""
         }
       ]
@@ -139,7 +139,7 @@
           "icon": "person_add",
           "cols": 2,
           "rows": 1,
-          "route": "admin/add/user",
+          "route": "admin/user/add",
           "tooltip": ""
         }
       ]

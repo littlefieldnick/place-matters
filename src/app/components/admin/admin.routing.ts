@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
-import {Routes, RouterModule, Router} from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 import {LoginComponent} from "./login/login.component";
-import {RegistrationComponent} from "./registration/registration.component";
 import {DashComponent} from "./dash/dash.component";
 import {AuthGuard} from "./auth.guard";
 import {IsSignedInGuard} from "./isSignedIn.guard";
 import {MainViewComponent} from "./view/main-view.component";
+import {CreateEditResourceComponent} from "./create-edit/resource/create-edit-resource.component";
+import {CreateEditCategoryComponent} from "./create-edit/category/create-edit-category.component";
+import {CreateEditUserComponent} from "./create-edit/user/create-edit-user.component";
 
 
 const routes: Routes = [
@@ -20,16 +22,41 @@ const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'resources/:mode',
+        component: CreateEditResourceComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'resources/:mode/:id',
+        component: CreateEditResourceComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'categories/:mode',
+        component: CreateEditCategoryComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'categories/:mode/:id',
+        component: CreateEditCategoryComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'users/:mode',
+        component: CreateEditUserComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'users/:mode/:id',
+        component: CreateEditUserComponent,
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'view/:tabName', //Tab name is used to activate a given tab
         component: MainViewComponent,
         canActivate: [AuthGuard]
     },
-    {
-        path: 'users/add',
-        component: RegistrationComponent,
-        canActivate:[AuthGuard]
 
-    },
     {
         path: 'dash',
         component: DashComponent,
