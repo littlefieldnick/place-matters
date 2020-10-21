@@ -1,11 +1,10 @@
 <div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
     <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
-        <h1 class="mat-headline" *ngIf="!this.editing; else elseBlock">Add a User</h1>
-        <ng-template #elseBlock>
-            <h1 class="mat-headline">Edit User Information</h1>
-        </ng-template>
+        <h1 class="mat-headline">
+            {{!this.editing ? "Add a User" : "Edit User Information"}}
+        </h1>
         <mat-divider></mat-divider>
-        <form novalidate [formGroup]="registerForm" (ngSubmit)="registerUser()">
+        <form novalidate [formGroup]="registerForm" (ngSubmit)="submitForm()">
             <mat-card *ngIf="formSubmitted && registerForm.invalid">
                 There are problems with the form
                 <ul>
@@ -30,10 +29,9 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <button *ngIf="!editing; else submitElseBlock"mat-raised-button color="primary">Register</button>
-            <ng-template #submitElseBlock >
-                <button mat-raised-button color="primary">Update User Information</button>
-            </ng-template>
+            <button mat-raised-button color="primary">
+                {{!this.editing ? 'Register User' : 'Update User Information'}}
+            </button>
         </form>
     </div>
 </div>

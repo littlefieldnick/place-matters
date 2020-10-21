@@ -4,8 +4,8 @@ const db = require("./database");
 
 const APP_SECRET = "placemattersecret";
 const auth_mappings = {
-    get: ["/api/users"],
-    post: ["/api/resources", "/api/categories", "/auth/verify"] // /api/users/register
+    get: ["/api/users", "/api/users/:id"],
+    post: ["/api/resources", "/api/categories", "/auth/verify", "/api/users/register"]
 }
 
 function requiresAuthentication(method, endpoint) {
@@ -15,12 +15,10 @@ function requiresAuthentication(method, endpoint) {
 
 module.exports = function (req, res, next) {
     //Login user
-    console.log(req.url + " " + req.url.endsWith("/auth/login"))
     if (req.url.endsWith("/auth/login") && req.method == "POST") {
         if (req.body) {
             let email = req.body.email;
             let password = req.body.password;
-            console.log(email + " " + password);
             let sql = 'SELECT email, password FROM user WHERE email = ? LIMIT 1'
             let params = [email];
             db.get(sql, params, function(err, rows) {
@@ -31,7 +29,6 @@ module.exports = function (req, res, next) {
                 console.log(rows);
                 if (rows !== undefined && rows.email == email && rows.password == md5(password)) {
                     let token = jwt.sign({data: rows.email, expiresIn: "1h"}, APP_SECRET);
-                    console.log("User found! Returning JWT token!!");
                     res.status(200).json({success: true, token: token})
                     return;
                 } else {
@@ -58,7 +55,6 @@ module.exports = function (req, res, next) {
 
         if(token.startsWith("Bearer ")){
             token = token.substring(7, token.length);
-            console.log("Processed token: " + token)
             try{
                 jwt.verify(token, APP_SECRET);
                 res.send({success:true});
@@ -76,7 +72,6 @@ module.exports = function (req, res, next) {
         let token = req.headers["authorization"] || "";
         if (token.startsWith("Bearer ")) {
             token = token.substring(7, token.length);
-            console.log("Processed token: " + token)
             try {
                 jwt.verify(token, APP_SECRET);
                 next()

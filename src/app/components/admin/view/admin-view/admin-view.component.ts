@@ -8,7 +8,7 @@ import {AuthService} from "../../../../services/auth.service";
 })
 export class AdminViewComponent implements OnInit {
   displayedColumns: string[] = ["id", "firstName", "lastName", "email", "action"];
-  dataSource = this.authService.getAllUsers();
+  dataSource = this.authService.getUser();
 
   constructor(private authService: AuthService) { }
 
