@@ -65,6 +65,7 @@ export class CreateEditUserComponent implements OnInit {
                     this.router.navigate(["admin/view/users"]);
                 } else {
                     this.registerForm.reset();
+                    this.user = new User();
                     this.formSubmitted = false;
                 }
             });

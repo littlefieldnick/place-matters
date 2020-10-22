@@ -74,6 +74,7 @@ module.exports = function (req, res, next) {
             token = token.substring(7, token.length);
             try {
                 jwt.verify(token, APP_SECRET);
+                console.log("Verification successful")
                 next()
                 return;
             } catch (err) {

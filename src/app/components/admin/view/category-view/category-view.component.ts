@@ -11,13 +11,11 @@ import { Observable } from 'rxjs';
 })
 export class CategoryViewComponent implements OnInit {
   displayedColumns = ["id", "name", "description", "action"]
-  dataSource = this.categoryService.getAllResourceCategories();
+  dataSource = this.categoryService.getCategories();
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.categoryService.getAllResourceCategories()
 
-    console.log(this.dataSource);
   }
 
 }

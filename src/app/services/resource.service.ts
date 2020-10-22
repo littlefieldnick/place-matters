@@ -4,14 +4,15 @@ import { Observable } from "rxjs";
 import { Resource } from "../models/resource";
 import {AppConfigService} from "./app-config.service";
 import {map} from "rxjs/operators";
+import {ErrorHandlerService} from "./error-handler.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResourceService {
   apiURL: string = this.appConfigService.externalApi || '/';
-  constructor(private http: HttpClient, private appConfigService: AppConfigService) {
-    console.log(this.appConfigService.externalApi);
+  constructor(private http: HttpClient, private errorHandler: ErrorHandlerService,
+              private appConfigService: AppConfigService) {
   }
 
   getAllResources(): Observable<any>{

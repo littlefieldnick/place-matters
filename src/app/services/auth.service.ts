@@ -4,6 +4,7 @@ import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {AppConfigService} from "./app-config.service";
 import {User} from "../models/user";
+import {ErrorHandlerService} from "./error-handler.service";
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import {User} from "../models/user";
 export class AuthService {
     apiRoute: string;
 
-    constructor(private http: HttpClient, private appConfigService: AppConfigService) {
+    constructor(private http: HttpClient, private errorHandler: ErrorHandlerService, private appConfigService: AppConfigService) {
         this.apiRoute = appConfigService.externalApi || "/";
     }
 
@@ -30,7 +31,7 @@ export class AuthService {
 
         return this.http.post(this.apiRoute + "auth/login", loginUser).pipe(
             catchError(err => {
-                let errMsg = this.processServerError(err);
+                let errMsg = this.errorHandler.processServerError(err);
                 return throwError(errMsg);
             })
         );
@@ -43,19 +44,17 @@ export class AuthService {
             }),
             authorization: 'Bearer ' + this.getJWTTokenFromStorage()
         }
-        console.log(user.id);
+
         if (user.id) {
-            console.log(this.apiRoute + "api/users/" + user.id);
             return this.http.put(this.apiRoute + "api/users/" + user.id, {user: user}, httpOptions)
                 .pipe(catchError((err) => {
-                    return this.processServerError(err);
+                    return this.errorHandler.processServerError(err);
                 }));
         }
 
-        console.log("PUT not executed!");
-        return this.http.post(this.apiRoute + "api/users/", user, httpOptions)
+        return this.http.post(this.apiRoute + "api/users/", {user: user}, httpOptions)
             .pipe(catchError(err => {
-                return this.processServerError(err);
+                return this.errorHandler.processServerError(err);
             }));
     }
 
@@ -83,57 +82,18 @@ export class AuthService {
         return localStorage.getItem("accessToken");
     }
 
-    verifyJWT(jwtToken) {
-        let headers = new HttpHeaders({
-            authorization: "Bearer " + jwtToken
-        })
-        return this.http.post(this.apiRoute + "auth/verify", {}, {headers: headers}).pipe(
-            catchError(err => {
-                let errMsg = this.processServerError(err);
-                return throwError(errMsg);
-            })
-        );
-    }
-
     isAuthenticated() {
         let jwtToken = this.getJWTTokenFromStorage();
 
-        return this.verifyJWT(jwtToken).pipe(
+        let headers = new HttpHeaders({
+            authorization: "Bearer " + jwtToken
+        })
+
+        return this.http.post(this.apiRoute + "auth/verify", {}, {headers: headers}).pipe(
             catchError(err => {
-                let errMsg = this.processServerError(err);
+                let errMsg = this.errorHandler.processServerError(err);
                 return throwError(errMsg);
             })
         );
-    }
-
-    private processServerError(err: HttpErrorResponse): string {
-        let errMsg: string;
-        if (err.error instanceof ErrorEvent) {
-            errMsg = 'Error: ' + err.message;
-        } else {
-            errMsg = err.error.errors;
-        }
-
-        return errMsg;
-    }
-
-    private getServerErrorMessage(error: HttpErrorResponse): string {
-        switch (error.status) {
-            case 404: {
-                return `Not Found: ${error.error.errors}`;
-            }
-            case 403: {
-                return `Access Denied: ${error.error.errors}`;
-            }
-            case 401: {
-                return `Unauthorized: ${error.error.errors}`;
-            }
-            case 500: {
-                return `Internal Server Error: ${error.error.errors}`;
-            }
-            default: {
-                return `Unknown Server Error: ${error.error.errors}`;
-            }
-        }
     }
 }

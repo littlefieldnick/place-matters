@@ -44,9 +44,25 @@ app.get("/api/categories", (req, res, next) => {
     });
 });
 
+app.get("/api/categories/:id", (req, res, next) => {
+    let sql = "select * from resource_category where id = ?"
+    let params = [req.params.id];
+    db.get(sql, params, (err, rows) => {
+        if(err){
+            res.status(400).json({error: err.message});
+            return;
+        }
+
+        res.status(200).json({
+            data: rows
+        });
+    });
+});
+
 app.post("/api/categories", (req, res, next) => {
     let sql = 'INSERT INTO resource_category(name) VALUES(?)'
-    let params = [req.body.name]
+    console.log("POSTING CATEGORY");
+    let params = [req.body.category.name]
 
     db.run(sql, params, function (err) {
         if (err) {
@@ -58,13 +74,27 @@ app.post("/api/categories", (req, res, next) => {
     });
 });
 
+app.put("/api/categories/:id", (req, res, next) => {
+    let category = req.body.category;
+    console.log(req.body);
+    let sql = 'UPDATE resource_category SET name = ? WHERE id = ?'
+    let params = [category.name, category.id];
+    db.run(sql, params, (err, rows) => {
+        if(err) {
+            res.status(400).json({success:false, errors: err.message});
+            return;
+        }
+
+        res.status(200).json({success: true});
+    });
+});
 /**********************************************/
 /*              Resource API Routes           */
 /**********************************************/
 app.get("/api/resources/", (req, res, next) => {
     let sql = 'select * from resource';
     let params = [];
-    db.all(sql, params, (err, rows) => {
+    db.get(sql, params, (err, rows) => {
         if (err) {
             res.status(400).json({"error": err.message});
             return;
@@ -181,7 +211,6 @@ app.post("/api/users/", (req, res, next) => {
 
 
 app.put("/api/users/:id", (req, res, next) => {
-    console.log("Updating user information!");
     let user = req.body.user;
     let sql = 'UPDATE user SET firstName = ?, lastName = ?, email = ? WHERE id = ?'
     let params = [user.firstName, user.lastName, user.email, user.id];
