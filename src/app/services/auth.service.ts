@@ -18,12 +18,6 @@ export class AuthService {
     }
 
     loginUser(userEmail, userPass) {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-            })
-        }
-
         let loginUser = {
             email: userEmail,
             password: userPass
@@ -38,40 +32,28 @@ export class AuthService {
     }
 
     saveUser(user: User) {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + this.getJWTTokenFromStorage()
-            }),
-        }
-
         if (user.id) {
-            return this.http.put(this.apiRoute + "api/users/" + user.id, {user: user}, httpOptions)
+            return this.http.put(this.apiRoute + "api/users/" + user.id, {user: user}, this.getOptions())
                 .pipe(catchError((err) => {
                     return this.errorHandler.processServerError(err);
                 }));
         }
 
-        return this.http.post(this.apiRoute + "api/users/", {user: user}, httpOptions)
+        return this.http.post(this.apiRoute + "api/users/", {user: user}, this.getOptions())
             .pipe(catchError(err => {
                 return this.errorHandler.processServerError(err);
             }));
     }
 
     getUser(id?: number){
-        let headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            authorization: "Bearer " + this.getJWTTokenFromStorage()
-        })
-
         if(id){
-            return this.http.get(this.apiRoute + "api/users/" + id, {headers: headers})
+            return this.http.get(this.apiRoute + "api/users/" + id, this.getOptions())
                 .pipe(map((users: User) => {
                     return users["data"];
                 }))
         }
 
-        return this.http.get(this.apiRoute + "api/users", {headers: headers})
+        return this.http.get(this.apiRoute + "api/users", this.getOptions())
             .pipe(map((users: Array<User>) => {
                 return users["data"];
             }));
@@ -89,11 +71,21 @@ export class AuthService {
             authorization: "Bearer " + jwtToken
         })
 
-        return this.http.post(this.apiRoute + "auth/verify", {}, {headers: headers}).pipe(
+        return this.http.post(this.apiRoute + "auth/verify", {}, this.getOptions()).pipe(
             catchError(err => {
                 let errMsg = this.errorHandler.processServerError(err);
                 return throwError(errMsg);
             })
         );
     }
+
+    getOptions() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + this.getJWTTokenFromStorage()
+            })
+        }
+    }
+
 }

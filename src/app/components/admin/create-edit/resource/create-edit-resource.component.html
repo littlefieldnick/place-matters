@@ -1,0 +1,34 @@
+<div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
+    <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
+        <h1 class="mat-headline">
+            {{!this.editing ? "Add a Resource" : "Edit Resource Information"}}
+        </h1>
+        <mat-divider></mat-divider>
+        <form novalidate [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+            <mat-card *ngIf="formSubmitted && resourceForm.invalid">
+                There are problems with the form
+                <ul>
+                    <li *ngFor="let error of resourceForm.getFormValidationMessages()">
+                        {{error}}
+                    </li>
+                </ul>
+            </mat-card>
+            <div *ngFor="let control of resourceForm.formControls">
+                <mat-form-field fxFlex="100%" appearance="outline">
+                    <mat-label>
+                        {{control.label}}
+                    </mat-label>
+
+                    <input type="text" matInput formControlName="{{control.modelProperty}}">
+
+                    <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+                        A {{control.modelProperty}} is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary">
+                {{!this.editing ? 'Add Resource' : 'Update Resource Information'}}
+            </button>
+        </form>
+    </div>
+</div>

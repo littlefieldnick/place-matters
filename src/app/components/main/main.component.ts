@@ -66,8 +66,8 @@ export class MainComponent implements OnInit, AfterViewInit{
   //Clear the search form
   resetSearchForm(): void {
     this.searchForm.reset()
-    this.resourceService.getAllResources().subscribe((data) => {
-      this.resources = data.resources;
+    this.resourceService.getResources().subscribe((data) => {
+      this.resources = data["resources"];
     })
   }
 

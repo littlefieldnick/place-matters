@@ -9,7 +9,7 @@ import {Observable} from "rxjs";
 })
 export class ResourceViewComponent implements OnInit {
   displayedColumns: string[] = ["id", "name", "category", "description", "address", "website"];
-  dataSource = this.resourceService.getResource();
+  dataSource = this.resourceService.getResources();
 
   constructor(private resourceService: ResourceService) { }
 

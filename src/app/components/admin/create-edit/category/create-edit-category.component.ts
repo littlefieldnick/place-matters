@@ -4,7 +4,6 @@ import {ResourceCategory} from "../../../../models/resource_category";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../../../../services/category.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {User} from "../../../../models/user";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 
@@ -29,7 +28,6 @@ export class CreateEditCategoryComponent implements OnInit {
 
     if(this.editing){
       this.categoryService.getCategories(activatedRoute.snapshot.params["id"]).subscribe((categoryInfo: ResourceCategory) => {
-        console.log(categoryInfo);
         Object.assign(this.category, categoryInfo);
         Object.keys(this.category).forEach((p => {
           if (this.categoryForm.contains(p)) {

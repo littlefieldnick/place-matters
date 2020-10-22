@@ -37,20 +37,14 @@ export class CategoryService {
     }
 
     saveCategory(category: ResourceCategory): Observable<ResourceCategory> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + this.authService.getJWTTokenFromStorage()
-            }),
-        }
 
         if (category.id) {
             return this.http.put<ResourceCategory>(this.apiURL + "api/categories/" + category.id,
-                {category: category}, httpOptions)
+                {category: category}, this.authService.getOptions())
         }
 
         return this.http.post<ResourceCategory>(this.apiURL + "api/categories/",
-            {category: category}, httpOptions);
+            {category: category}, this.authService.getOptions());
     }
 
 

@@ -12,10 +12,10 @@ export class SingleResourceResolver implements Resolve <Observable<any>>{
   constructor(private resourceDs: ResourceService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-    return this.resourceDs.getResource(route.params.id).pipe(
+    return this.resourceDs.getResources(route.params.id).pipe(
       take(1),
       map(data => {
-        return data["data"]
+        return data
       }));
   }
 }

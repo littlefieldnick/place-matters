@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { take, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { Observable } from 'rxjs';
 import { CategoryService } from "../services/category.service";
