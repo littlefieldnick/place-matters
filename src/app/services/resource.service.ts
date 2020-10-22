@@ -15,17 +15,13 @@ export class ResourceService {
               private appConfigService: AppConfigService) {
   }
 
-  getAllResources(): Observable<any>{
-    const headers = new HttpHeaders().set('Content-Type', 'application-json')
 
-    return this.http.get<Resource>(this.apiURL + 'api/resources/', {headers}).pipe(map(resources => {
-      return resources["data"];
-    }));
-  }
-
-  getResource(id): Observable<any>{
+  getResource(id?): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application-json')
-    return this.http.get<Resource>(this.apiURL + 'api/resources/' + id, {headers})
+    if(id)
+      return this.http.get<Resource>(this.apiURL + 'api/resources/' + id, {headers})
+
+    return this.http.get<Resource>(this.apiURL + 'api/resources/', {headers});
   }
 
   searchResources(name: string, category: string): Observable<any> {

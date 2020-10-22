@@ -14,7 +14,8 @@ export class SingleResourceResolver implements Resolve <Observable<any>>{
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
     return this.resourceDs.getResource(route.params.id).pipe(
       take(1),
-      map(data => data.resource)
-    )
+      map(data => {
+        return data["data"]
+      }));
   }
 }
