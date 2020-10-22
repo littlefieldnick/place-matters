@@ -59,18 +59,27 @@ app.get("/api/categories/:id", (req, res, next) => {
     });
 });
 
-app.post("/api/categories", (req, res, next) => {
-    let sql = 'INSERT INTO resource_category(name) VALUES(?)'
-    console.log("POSTING CATEGORY");
-    let params = [req.body.category.name]
+app.post("/api/categories/", (req, res, next) => {
+    console.log("POSTING Category");
+    let errors = []
+    let cat = req.body.category;
+
+    if (!cat.name) {
+        errors.push("No category name is specified.");
+    }
+
+    let sql = 'INSERT INTO resource_category (name) VALUES (?)';
+    let params = [
+        cat.name
+    ];
 
     db.run(sql, params, function (err) {
         if (err) {
-            console.error(err)
-            res.json({success: false, error: err.message});
+            res.status(400).json({success:false, errors: err.message});
+            return;
         }
 
-        res.json({success: true});
+        res.status(200).json({success: true});
     });
 });
 
@@ -170,21 +179,28 @@ app.get("/api/users", (req, res, next) => {
 });
 
 app.post("/api/users/", (req, res, next) => {
-    errors = []
-    if (!req.body.firstName) {
+    console.log("POSTING USER");
+    let errors = []
+    let user = req.body.user;
+
+    if (!user.firstName) {
         errors.push("No first name is specified.");
     }
 
-    if (!req.body.lastName) {
+    if (!user.lastName) {
         errors.push("No last name is specified.")
     }
 
-    if (!req.body.email) {
+    if (!user.email) {
         errors.push("No email is specified.")
     }
 
-    if (!req.body.password || req.body.password.length < 8) {
+    if (!user.password || user.password.length < 8) {
         errors.push("A password is either not specified or does not meet the length requirements");
+    }
+
+    if(user.password != user.confirmPassword){
+        errors.push("Passwords provided do not match.")
     }
 
     if (errors.length) {
@@ -192,11 +208,12 @@ app.post("/api/users/", (req, res, next) => {
         return;
     }
 
-    let sql = 'INSERT INTO user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)';
-    let params = [req.body.firstName,
-        req.body.lastName,
-        req.body.email,
-        md5(req.body.password)
+    let sql = 'INSERT INTO user (firstName, lastName, email, password, confirmPassword) VALUES (?, ?, ?, ?, ?)';
+    let params = [user.firstName,
+        user.lastName,
+        user.email,
+        md5(user.password),
+        md5(user.confirmPassword)
     ];
 
     db.run(sql, params, function (err) {

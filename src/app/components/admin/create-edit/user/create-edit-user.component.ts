@@ -61,12 +61,8 @@ export class CreateEditUserComponent implements OnInit {
                 this.displayServerError(err);
                 return of([]);
             })).subscribe((res) => {
-                if (res["success"] && this.editing) {
+                if (res["success"]) {
                     this.router.navigate(["admin/view/users"]);
-                } else {
-                    this.registerForm.reset();
-                    this.user = new User();
-                    this.formSubmitted = false;
                 }
             });
         }

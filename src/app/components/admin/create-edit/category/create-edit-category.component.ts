@@ -52,18 +52,15 @@ export class CreateEditCategoryComponent implements OnInit {
     });
 
     if(this.categoryForm.valid){
-      console.log("saving data");
-      this.categoryService.saveCategory(this.category).pipe(catchError(err => {
+      console.log(this.category);
+
+      this.categoryService.saveCategory(this.category)
+          .pipe(catchError(err => {
         this.displayServerError(err);
         return of([])
-      })).subscribe((res) => {
-        console.log("Data saved!");
-        if (res["success"] && this.editing) {
+      })).subscribe((data) => {
+        if (data["success"]) {
           this.router.navigate(["admin/view/categories"]);
-        } else {
-          this.categoryForm.reset();
-          this.category = new ResourceCategory();
-          this.formSubmitted = false;
         }
       })
     }

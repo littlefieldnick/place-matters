@@ -41,8 +41,8 @@ export class AuthService {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
+                authorization: 'Bearer ' + this.getJWTTokenFromStorage()
             }),
-            authorization: 'Bearer ' + this.getJWTTokenFromStorage()
         }
 
         if (user.id) {

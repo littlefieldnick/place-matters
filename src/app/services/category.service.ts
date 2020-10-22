@@ -5,6 +5,7 @@ import {AppConfigService} from "./app-config.service";
 import {catchError, map} from "rxjs/operators";
 import {ErrorHandlerService} from "./error-handler.service";
 import {AuthService} from "./auth.service";
+import {Observable, throwError} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -35,34 +36,22 @@ export class CategoryService {
         }));
     }
 
-    saveCategory(category: ResourceCategory) {
+    saveCategory(category: ResourceCategory): Observable<ResourceCategory> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
+                authorization: 'Bearer ' + this.authService.getJWTTokenFromStorage()
             }),
-            authorization: 'Bearer ' + this.authService.getJWTTokenFromStorage()
         }
 
         if (category.id) {
-            return this.http.put(this.apiURL + "api/categories/" + category.id, {category: category}, httpOptions)
-                .pipe(catchError((err) => {
-                    return this.errorHandler.processServerError(err);
-                }));
+            return this.http.put<ResourceCategory>(this.apiURL + "api/categories/" + category.id,
+                {category: category}, httpOptions)
         }
 
-        // console.log("HTTP POST");
-        // return this.http.post(this.apiURL + "api/categories/", category, httpOptions)
-        //     .pipe(catchError((err) => {
-        //         return this.errorHandler.processServerError(err);
-        //     }));
-
-        return this.http.post(this.apiURL + "api/categories/", {category: category}, httpOptions)
-            .pipe(map(data => {
-                console.log(data)
-                return data;
-            }),catchError(err => {
-                return this.errorHandler.processServerError(err);
-            }));
+        return this.http.post<ResourceCategory>(this.apiURL + "api/categories/",
+            {category: category}, httpOptions);
     }
+
 
 }
