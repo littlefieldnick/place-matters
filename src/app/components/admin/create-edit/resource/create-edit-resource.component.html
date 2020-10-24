@@ -19,14 +19,21 @@
                         {{control.label}}
                     </mat-label>
                     <input type="text" matInput formControlName="{{control.modelProperty}}"
-                      *ngIf="control.modelProperty != 'category'; else elseBlock">
+                      *ngIf="(control.modelProperty != 'category' && control.modelProperty != 'county'); else elseBlock">
 
                     <ng-template #elseBlock>
                         <mat-select formControlName="{{control.modelProperty}}">
                             <mat-option>---</mat-option>
-                            <mat-option *ngFor="let category of formCategories" [value]="category.name">
-                                {{category.name}}
-                            </mat-option>
+                            <div *ngIf="control.modelProperty == 'category'; else countyOptions">
+                                <mat-option *ngFor="let category of formCategories" [value]="category.id">
+                                    {{category.name}}
+                                </mat-option>
+                            </div>
+                            <ng-template #countyOptions>
+                                <mat-option *ngFor="let county of formCounties" [value]="county.id">
+                                    {{county.name}}
+                                </mat-option>
+                            </ng-template>
                         </mat-select>
                     </ng-template>
 

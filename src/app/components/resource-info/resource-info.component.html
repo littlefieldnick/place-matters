@@ -3,7 +3,7 @@
     <button mat-raised-button [routerLink]="['/']">Back to Map</button>
     <br/><br/>
     <h1 class="mat-headline">{{resource.name}}</h1>
-    <h2 class="mat-title">{{resource.address}}</h2>
+    <h2 class="mat-title">{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource.zipcode}}</h2>
 
     <button mat-stroked-button color="primary">{{resource.category["name"]}}</button>
     <hr>

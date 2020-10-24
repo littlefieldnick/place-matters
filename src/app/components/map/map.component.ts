@@ -75,7 +75,8 @@ export class MapComponent implements OnInit, AfterViewInit {
         markerInfo: {
           id: this.resources[re].id,
           name: this.resources[re].name,
-          address: this.resources[re].address,
+          address: this.resources[re].street + ", " +  this.resources[re].city+ ", " + this.resources[re].state + ", "
+              + this.resources[re].zipcode,
           category: this.resources[re].category["name"]
         }
       }

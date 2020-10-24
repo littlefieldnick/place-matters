@@ -113,10 +113,23 @@ app.get("/api/resources/", (req, res, next) => {
     });
 });
 
+app.get("/api/counties", (req, res, next) => {
+    let sql = "SELECT * FROM county";
+    let params = [];
+    db.all(sql, params, (err, rows) => {
+        if(err)
+            res.status(400).json({success:false, error: err.message})
+
+        res.status(200).json({success: true, data: rows});
+    });
+})
+
 app.post("/api/resources/", async (req, res, next) => {
-    let resources = req.body;
-    let sql = "INSERT INTO resource(name, address, category, description, website, latitude, longitude) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?)"
+    let resources = req.body.resource;
+    console.log(resources);
+    let sql = "INSERT INTO resource(name, street, city, zipcode, state, county, " +
+        "category, description, website, latitude, longitude) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     let client = new Client({})
     let params = []
 
@@ -124,8 +137,7 @@ app.post("/api/resources/", async (req, res, next) => {
     for (const r of resources) {
         let address = r.address;
         let coords = await geocodeResource(client, address)
-        console.log(coords);
-        params.push([r.name, r.address,
+        params.push([r.name, r.street, r.city, r.zipcode, r.state, r.county,
             r.category, r.description,
             r.website, coords.location.lat,
             coords.location.lng]);

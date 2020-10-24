@@ -5,7 +5,8 @@ const db = require("./database");
 const APP_SECRET = "placemattersecret";
 const auth_mappings = {
     get: ["/api/users", "/api/users/:id"],
-    post: ["/api/resources", "/api/categories", "/auth/verify", "/api/users/register"]
+    post: ["/api/resources", "/api/categories", "/auth/verify", "/api/users/"],
+    put: ["/api/users/:id", "/api/resources/:id", "/api/categories/:id"]
 }
 
 function requiresAuthentication(method, endpoint) {

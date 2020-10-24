@@ -8,6 +8,8 @@ import {of} from "rxjs";
 import {ResourceService} from "../../../../services/resource.service";
 import {CategoryService} from "../../../../services/category.service";
 import {ResourceCategory} from "../../../../models/resource_category";
+import {ErrorHandlerService} from "../../../../services/error-handler.service";
+import {County} from "../../../../models/county";
 
 @Component({
   selector: 'app-create-edit-resource',
@@ -20,15 +22,21 @@ export class CreateEditResourceComponent implements OnInit {
   editing: boolean;
   formSubmitted: boolean;
   formCategories: ResourceCategory[];
+  formCounties: County[];
 
   constructor(activatedRoute: ActivatedRoute, private snackBar: MatSnackBar, private router: Router,
-              private resourceService: ResourceService) {
+              private errorHandler: ErrorHandlerService, private resourceService: ResourceService) {
 
     this.formSubmitted = false;
     this.resourceForm = new ResourceForm();
     this.resource = new Resource();
     this.editing = activatedRoute.snapshot.params["mode"] == 'edit';
     this.formCategories = activatedRoute.snapshot.data.categories;
+
+    this.resourceService.getCounties().subscribe((counties) => {
+      this.formCounties = counties["data"];
+    });
+
     if(this.editing){
       this.resourceService.getResources(activatedRoute.snapshot.params["id"]).subscribe((resourceInfo: Resource) => {
         Object.assign(this.resource, resourceInfo);
@@ -55,7 +63,8 @@ export class CreateEditResourceComponent implements OnInit {
     if(this.resourceForm.valid){
       this.resourceService.saveResource(this.resource)
           .pipe(catchError(err => {
-            this.displayServerError(err);
+            console.log(err)
+            this.displayServerError(this.errorHandler.processServerError(err));
             return of([])
           })).subscribe((data) => {
         if (data["success"]) {

@@ -6,6 +6,7 @@ import {AppConfigService} from "./app-config.service";
 import {ErrorHandlerService} from "./error-handler.service";
 import {ResourceCategory} from "../models/resource_category";
 import {AuthService} from "./auth.service";
+import {County} from "../models/county";
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class ResourceService {
 
     return this.http.post<Resource>(this.apiURL + "api/resource/",
         {resource: resource}, this.authService.getOptions());
+  }
+
+  getCounties(): Observable<County>{
+    return this.http.get<County>(this.apiURL + 'api/counties');
   }
 
   searchResources(name: string, category: string): Observable<any> {
