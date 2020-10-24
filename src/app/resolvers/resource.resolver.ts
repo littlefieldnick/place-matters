@@ -14,7 +14,6 @@ export class ResourceResolver implements Resolve <Observable<any>>{
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
     return this.resourceDs.getResources().pipe(
       map(data => {
-        console.log(data);
         return data;
       }));
   }

@@ -18,8 +18,17 @@
                     <mat-label>
                         {{control.label}}
                     </mat-label>
+                    <input type="text" matInput formControlName="{{control.modelProperty}}"
+                      *ngIf="control.modelProperty != 'category'; else elseBlock">
 
-                    <input type="text" matInput formControlName="{{control.modelProperty}}">
+                    <ng-template #elseBlock>
+                        <mat-select formControlName="{{control.modelProperty}}">
+                            <mat-option>---</mat-option>
+                            <mat-option *ngFor="let category of formCategories" [value]="category.name">
+                                {{category.name}}
+                            </mat-option>
+                        </mat-select>
+                    </ng-template>
 
                     <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
                         A {{control.modelProperty}} is required.

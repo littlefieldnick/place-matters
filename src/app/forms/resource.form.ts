@@ -9,7 +9,7 @@ export class ResourceForm extends FormGroup {
                 Validators.compose([Validators.required])),
             city: new DefaultFormControl("City", "city", "",
                 Validators.compose([Validators.required])),
-            zip: new DefaultFormControl("Zipcode", "zipcode", "",
+            zipcode: new DefaultFormControl("Zip Code", "zipcode", "",
                 Validators.compose([Validators.required])),
             state: new DefaultFormControl("State", "state", "ME",
                 Validators.compose([]), true),

@@ -8,6 +8,7 @@ import {MainViewComponent} from "./view/main-view.component";
 import {CreateEditResourceComponent} from "./create-edit/resource/create-edit-resource.component";
 import {CreateEditCategoryComponent} from "./create-edit/category/create-edit-category.component";
 import {CreateEditUserComponent} from "./create-edit/user/create-edit-user.component";
+import {CategoryResolver} from "../../resolvers/category.resolver";
 
 
 const routes: Routes = [
@@ -24,7 +25,10 @@ const routes: Routes = [
     {
         path: 'resources/:mode',
         component: CreateEditResourceComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        resolve: {
+            categories: CategoryResolver
+        }
     },
     {
         path: 'resources/:mode/:id',

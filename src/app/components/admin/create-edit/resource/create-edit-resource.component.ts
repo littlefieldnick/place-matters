@@ -6,6 +6,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 import {ResourceService} from "../../../../services/resource.service";
+import {CategoryService} from "../../../../services/category.service";
+import {ResourceCategory} from "../../../../models/resource_category";
 
 @Component({
   selector: 'app-create-edit-resource',
@@ -17,6 +19,7 @@ export class CreateEditResourceComponent implements OnInit {
   resource: Resource;
   editing: boolean;
   formSubmitted: boolean;
+  formCategories: ResourceCategory[];
 
   constructor(activatedRoute: ActivatedRoute, private snackBar: MatSnackBar, private router: Router,
               private resourceService: ResourceService) {
@@ -25,7 +28,7 @@ export class CreateEditResourceComponent implements OnInit {
     this.resourceForm = new ResourceForm();
     this.resource = new Resource();
     this.editing = activatedRoute.snapshot.params["mode"] == 'edit';
-
+    this.formCategories = activatedRoute.snapshot.data.categories;
     if(this.editing){
       this.resourceService.getResources(activatedRoute.snapshot.params["id"]).subscribe((resourceInfo: Resource) => {
         Object.assign(this.resource, resourceInfo);

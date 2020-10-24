@@ -15,6 +15,7 @@ export class CategoryResolver implements Resolve <Observable<any>>{
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
     return this.categoryDs.getCategories().pipe(
       map(data => {
+        console.log(data);
         return data;
       })
     )
