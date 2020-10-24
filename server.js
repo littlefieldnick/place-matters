@@ -97,6 +97,18 @@ app.put("/api/categories/:id", (req, res, next) => {
         res.status(200).json({success: true});
     });
 });
+
+app.delete("/api/categories/:id", (req, res, next) => {
+    let sql = "DELETE FROM resource_category WHERE id = ?"
+    let params = [req.params.id];
+
+    db.run(sql, params, (err) => {
+        if(err)
+            res.status(400).json({success: false, error: err.message});
+
+        res.status(200).json({success:true});
+    })
+})
 /**********************************************/
 /*              Resource API Routes           */
 /**********************************************/
@@ -197,6 +209,18 @@ app.put("/api/resources/:id", (req, res, next) => {
     });
 })
 
+app.delete("/api/resource/:id", (req, res, next) => {
+    let sql = "DELETE FROM resource WHERE id = ?"
+    let params = [req.params.id];
+
+    db.run(sql, params, (err) => {
+        if(err)
+            res.status(400).json({success: false, error: err.message});
+
+        res.status(200).json({success:true});
+    })
+})
+
 
 /**********************************************/
 /*              User API Routes               */
@@ -291,6 +315,18 @@ app.put("/api/users/:id", (req, res, next) => {
         res.status(200).json({success: true});
     });
 });
+
+app.delete("/api/users/:id", (req, res, next) => {
+    let sql = "DELETE FROM user WHERE id = ?"
+    let params = [req.params.id];
+
+    db.run(sql, params, (err) => {
+        if(err)
+            res.status(400).json({success: false, error: err.message});
+
+        res.status(200).json({success:true});
+    })
+})
 
 // ---- Serve static files ---- //
 app.get('*.*', express.static(app_folder, {maxAge: '1y'}));
