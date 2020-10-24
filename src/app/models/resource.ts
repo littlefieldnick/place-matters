@@ -1,12 +1,12 @@
 export class Resource {
   id: number
   name: string
-  category: string
+  category: number
   street: string
   city: string
   state: string
   zipcode: string
-  county: string
+  county: number
   latitude: number
   longitude: number
   description: string

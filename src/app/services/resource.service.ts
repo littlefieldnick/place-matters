@@ -26,12 +26,12 @@ export class ResourceService {
 
   saveResource(resource: Resource): Observable<Resource> {
     if (resource.id) {
-      return this.http.put<Resource>(this.apiURL + "api/resource/" + resource.id,
-          {resource: resource}, this.authService.getOptions())
+      return this.http.put<Resource>(this.apiURL + "api/resources/" + resource.id,
+          {resource: [resource]}, this.authService.getOptions())
     }
 
-    return this.http.post<Resource>(this.apiURL + "api/resource/",
-        {resource: resource}, this.authService.getOptions());
+    return this.http.post<Resource>(this.apiURL + "api/resources/",
+        {resource: [resource]}, this.authService.getOptions());
   }
 
   getCounties(): Observable<County>{

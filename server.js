@@ -48,7 +48,7 @@ app.get("/api/categories/:id", (req, res, next) => {
     let sql = "select * from resource_category where id = ?"
     let params = [req.params.id];
     db.get(sql, params, (err, rows) => {
-        if(err){
+        if (err) {
             res.status(400).json({error: err.message});
             return;
         }
@@ -75,7 +75,7 @@ app.post("/api/categories/", (req, res, next) => {
 
     db.run(sql, params, function (err) {
         if (err) {
-            res.status(400).json({success:false, errors: err.message});
+            res.status(400).json({success: false, errors: err.message});
             return;
         }
 
@@ -89,8 +89,8 @@ app.put("/api/categories/:id", (req, res, next) => {
     let sql = 'UPDATE resource_category SET name = ? WHERE id = ?'
     let params = [category.name, category.id];
     db.run(sql, params, (err, rows) => {
-        if(err) {
-            res.status(400).json({success:false, errors: err.message});
+        if (err) {
+            res.status(400).json({success: false, errors: err.message});
             return;
         }
 
@@ -113,12 +113,27 @@ app.get("/api/resources/", (req, res, next) => {
     });
 });
 
+app.get("/api/resources/:id", (req, res, next) => {
+    let sql = "select * from resource where id = ?"
+    let params = [req.params.id];
+    db.get(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({error: err.message});
+            return;
+        }
+
+        res.status(200).json({
+            data: rows
+        });
+    });
+});
+
 app.get("/api/counties", (req, res, next) => {
     let sql = "SELECT * FROM county";
     let params = [];
     db.all(sql, params, (err, rows) => {
-        if(err)
-            res.status(400).json({success:false, error: err.message})
+        if (err)
+            res.status(400).json({success: false, error: err.message})
 
         res.status(200).json({success: true, data: rows});
     });
@@ -126,17 +141,23 @@ app.get("/api/counties", (req, res, next) => {
 
 app.post("/api/resources/", async (req, res, next) => {
     let resources = req.body.resource;
-    console.log(resources);
     let sql = "INSERT INTO resource(name, street, city, zipcode, state, county, " +
         "category, description, website, latitude, longitude) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     let client = new Client({})
     let params = []
-
+    let geoError = false;
     //Reverse geocode location addresses and build params array for each entry
     for (const r of resources) {
-        let address = r.address;
-        let coords = await geocodeResource(client, address)
+        let address = r.street + ", " + r.city + ", " + r.state + ", " + r.zipcode;
+        let coords = await geocodeResource(client, address).catch((error) => {
+            res.status(400).json({success: false, error: "Could not geocode resource location!"});
+            geoError = true;
+        });
+
+        if (geoError)
+            break;
+
         params.push([r.name, r.street, r.city, r.zipcode, r.state, r.county,
             r.category, r.description,
             r.website, coords.location.lat,
@@ -159,6 +180,24 @@ app.post("/api/resources/", async (req, res, next) => {
     await res.json({success: true});
 })
 
+app.put("/api/resources/:id", (req, res, next) => {
+    let r = req.body.resource;
+    let sql = 'UPDATE resource SET name = ?, street = ?, city = ?, zipcode = ?, state = ?, county = ?,' +
+        'category = ?, description = ?, website = ? WHERE id = ?'
+    let params = [r.name, r.street, r.city, r.zipcode, r.state, r.county,
+        r.category, r.description,
+        r.website];
+    db.run(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({success: false, errors: err.message});
+            return;
+        }
+
+        res.status(200).json({success: true});
+    });
+})
+
+
 /**********************************************/
 /*              User API Routes               */
 /**********************************************/
@@ -166,7 +205,7 @@ app.get("/api/users/:id", (req, res, next) => {
     let sql = "select * from user where id = ?"
     let params = [req.params.id];
     db.get(sql, params, (err, rows) => {
-        if(err){
+        if (err) {
             res.status(400).json({error: err.message});
             return;
         }
@@ -211,12 +250,12 @@ app.post("/api/users/", (req, res, next) => {
         errors.push("A password is either not specified or does not meet the length requirements");
     }
 
-    if(user.password != user.confirmPassword){
+    if (user.password != user.confirmPassword) {
         errors.push("Passwords provided do not match.")
     }
 
     if (errors.length) {
-        res.status(400).json({success:false, errors: errors})
+        res.status(400).json({success: false, errors: errors})
         return;
     }
 
@@ -230,7 +269,7 @@ app.post("/api/users/", (req, res, next) => {
 
     db.run(sql, params, function (err) {
         if (err) {
-            res.status(400).json({success:false, errors: err.message});
+            res.status(400).json({success: false, errors: err.message});
             return;
         }
 
@@ -244,8 +283,8 @@ app.put("/api/users/:id", (req, res, next) => {
     let sql = 'UPDATE user SET firstName = ?, lastName = ?, email = ? WHERE id = ?'
     let params = [user.firstName, user.lastName, user.email, user.id];
     db.run(sql, params, (err, rows) => {
-        if(err) {
-            res.status(400).json({success:false, errors: err.message});
+        if (err) {
+            res.status(400).json({success: false, errors: err.message});
             return;
         }
 

@@ -25,13 +25,17 @@ export class CreateEditResourceComponent implements OnInit {
   formCounties: County[];
 
   constructor(activatedRoute: ActivatedRoute, private snackBar: MatSnackBar, private router: Router,
-              private errorHandler: ErrorHandlerService, private resourceService: ResourceService) {
+              private errorHandler: ErrorHandlerService, private categoryService: CategoryService,
+              private resourceService: ResourceService) {
 
     this.formSubmitted = false;
     this.resourceForm = new ResourceForm();
     this.resource = new Resource();
     this.editing = activatedRoute.snapshot.params["mode"] == 'edit';
-    this.formCategories = activatedRoute.snapshot.data.categories;
+
+    this.categoryService.getCategories().subscribe((cats) => {
+      this.formCategories = cats;
+    })
 
     this.resourceService.getCounties().subscribe((counties) => {
       this.formCounties = counties["data"];
@@ -39,7 +43,7 @@ export class CreateEditResourceComponent implements OnInit {
 
     if(this.editing){
       this.resourceService.getResources(activatedRoute.snapshot.params["id"]).subscribe((resourceInfo: Resource) => {
-        Object.assign(this.resource, resourceInfo);
+        Object.assign(this.resource, resourceInfo["data"]);
         Object.keys(this.resource).forEach((p => {
           if (this.resourceForm.contains(p)) {
             this.resourceForm.controls[p].setValue(this.resource[p]);
