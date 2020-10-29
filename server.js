@@ -194,11 +194,12 @@ app.post("/api/resources/", async (req, res, next) => {
 
 app.put("/api/resources/:id", (req, res, next) => {
     let r = req.body.resource;
-    let sql = 'UPDATE resource SET name = ?, street = ?, city = ?, zipcode = ?, state = ?, county = ?,' +
-        'category = ?, description = ?, website = ? WHERE id = ?'
+    console.log(r);
+    let sql = 'UPDATE resource SET name = ?, street = ?, city = ?, zipcode = ?, state = ?, county = ?, category = ?, description = ?, website = ? WHERE id = ?'
     let params = [r.name, r.street, r.city, r.zipcode, r.state, r.county,
         r.category, r.description,
-        r.website];
+        r.website, req.params.id];
+
     db.run(sql, params, (err, rows) => {
         if (err) {
             res.status(400).json({success: false, errors: err.message});

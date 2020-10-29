@@ -1,1 +1,36 @@
-<p>resource-csv-upload works!</p>
+<div class="container"
+     fxLayout="row wrap"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     style="padding-top: 10px">
+    <div fxFlex="70%" fxLayout="column wrap">
+        <h1 class="mat-headline" style="color:indigo">Upload List of Resources</h1>
+        <mat-divider></mat-divider>
+
+        <mat-horizontal-stepper linear="true" #stepper>
+            <mat-step label="Select County" [stepControl]="countyFormStep">
+                <mat-label>Select a County:</mat-label>
+                <form [formGroup]="countyFormStep">
+                    <mat-radio-group formControlName="county" class="csv-radio-group">
+                        <div *ngFor="let cty of countyListing">
+                            <mat-radio-button value="{{cty.name}}" class="csv-radio-button">
+                                {{cty.name}}
+                            </mat-radio-button>
+                        </div>
+                    </mat-radio-group>
+
+                    <div style="padding-top:10px;">
+                        <button mat-raised-button color="primary" matStepperNext >Next</button>
+                    </div>
+
+                </form>
+            </mat-step>
+            <mat-step label="Upload CSV File">
+
+            </mat-step>
+            <mat-step label="Confirm Upload">
+
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

@@ -9,6 +9,7 @@ import {CreateEditResourceComponent} from "./create-edit/resource/create-edit-re
 import {CreateEditCategoryComponent} from "./create-edit/category/create-edit-category.component";
 import {CreateEditUserComponent} from "./create-edit/user/create-edit-user.component";
 import {CategoryResolver} from "../../resolvers/category.resolver";
+import {ResourceCsvUploadComponent} from "./resource-csv-upload/resource-csv-upload.component";
 
 
 const routes: Routes = [
@@ -20,6 +21,11 @@ const routes: Routes = [
     {
         path: 'view', //No tab name given will activate the first tab
         component: MainViewComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'resources/upload',
+        component: ResourceCsvUploadComponent,
         canActivate: [AuthGuard]
     },
     {
