@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {County} from "../../../models/county";
 import {ResourceService} from "../../../services/resource.service";
@@ -9,12 +9,12 @@ import {ResourceService} from "../../../services/resource.service";
   styleUrls: ['./resource-csv-upload.component.scss']
 })
 export class ResourceCsvUploadComponent implements OnInit {
+  @ViewChild('file', { static: false }) file;
+  uploadedFile: File;
   countyFormStep: FormGroup;
-  fileUploadStep: FormGroup;
   countyListing: Array<County>;
-
-  favoriteSeason: string;
-  seasons: string[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
+  uploading: boolean = false;
+  uploadSuccessful: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private resourceService: ResourceService) {
 
@@ -27,7 +27,16 @@ export class ResourceCsvUploadComponent implements OnInit {
 
     this.countyFormStep = this.formBuilder.group({
       county: ['', Validators.required]
-    })
+    });
   }
 
+  addFiles(){
+    this.file.nativeElement.click();
+  }
+
+  onFilesAdded(){
+    let selectedFile = this.file.nativeElement.files[0];
+    console.log(selectedFile);
+    this.uploadedFile = selectedFile;
+  }
 }

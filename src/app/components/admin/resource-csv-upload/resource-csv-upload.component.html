@@ -22,11 +22,24 @@
                     <div style="padding-top:10px;">
                         <button mat-raised-button color="primary" matStepperNext >Next</button>
                     </div>
-
                 </form>
             </mat-step>
             <mat-step label="Upload CSV File">
-
+                <h1 class="mat-headline">Select CSV File for {{countyFormStep.controls["county"].value}}</h1>
+                <input type="file" #file style="display: none" (change)="onFilesAdded()" accept="text/csv"/>
+                <div *ngIf="!uploadedFile">
+                    <button [disabled]="uploadedFile !== undefined" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
+                        Add File
+                    </button>
+                </div>
+                <mat-card *ngIf="uploadedFile">
+                    <mat-card-content>
+                        {{uploadedFile.name}}
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary">Upload File</button>
+                    </mat-card-actions>
+                </mat-card>
             </mat-step>
             <mat-step label="Confirm Upload">
 
