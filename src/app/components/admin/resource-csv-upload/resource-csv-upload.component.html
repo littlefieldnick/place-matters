@@ -26,22 +26,28 @@
             </mat-step>
             <mat-step label="Upload CSV File">
                 <h1 class="mat-headline">Select CSV File for {{countyFormStep.controls["county"].value}}</h1>
-                <input type="file" #file style="display: none" (change)="onFilesAdded()" accept="text/csv"/>
-                <div *ngIf="!uploadedFile">
-                    <button [disabled]="uploadedFile !== undefined" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
+                <form [formGroup]="csvFormStep">
+                    <input type="file" #file style="display: none" (change)="onFilesAdded($event)" accept="text/csv"/>
+                    <button [disabled]="uploading" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
                         Add File
                     </button>
-                </div>
-                <mat-card *ngIf="uploadedFile">
+                </form>
+
+
+
+                <mat-card *ngFor="let file of csvFormStep.controls['csv'].value">
                     <mat-card-content>
-                        {{uploadedFile.name}}
+                        {{file.name}}
+
+                        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async"></mat-progress-bar>
                     </mat-card-content>
-                    <mat-card-actions>
-                        <button mat-raised-button color="primary">Upload File</button>
-                    </mat-card-actions>
                 </mat-card>
+
+                <div>
+                    <button *ngIf="this.csvFormStep.controls['csv'].value.length > 0" mat-raised-button color="primary" (click)="uploadFiles()">Upload File(s)</button>
+                </div>
             </mat-step>
-            <mat-step label="Confirm Upload">
+            <mat-step label="Upload Confirmation">
 
             </mat-step>
         </mat-horizontal-stepper>

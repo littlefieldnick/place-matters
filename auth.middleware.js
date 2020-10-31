@@ -71,6 +71,7 @@ module.exports = function (req, res, next) {
     }
     else if (requiresAuthentication(req.method, req.url)) { //authentication needed
         let token = req.headers["authorization"] || "";
+
         if (token.startsWith("Bearer ")) {
             token = token.substring(7, token.length);
             try {

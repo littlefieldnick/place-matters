@@ -5,7 +5,8 @@ const md5 = require("md5");
 const {Client} = require("@googlemaps/google-maps-services-js");
 const port = 5000;
 const app_folder = 'dist/place-matters';
-
+const IncomingForm = require('formidable').IncomingForm;
+const fs = require('fs');
 const db = require("./database.js");
 const auth = require("./auth.middleware");
 const app = express();
@@ -151,6 +152,25 @@ app.get("/api/counties", (req, res, next) => {
     });
 })
 
+app.post('/api/resources/upload', (req, res, next) => {
+    const form = new IncomingForm();
+
+    form.on('file', (field, file) =>{
+        console.log(file.name);
+        const readStream = fs.createReadStream(file.path);
+    });
+
+    form.on('error', (err) => {
+        res.json({error: err});
+    })
+
+    form.on('end', () => {
+        res.json()
+    });
+
+    form.parse(req);
+})
+
 app.post("/api/resources/", async (req, res, next) => {
     let resources = req.body.resource;
     let sql = "INSERT INTO resource(name, street, city, zipcode, state, county, " +
@@ -194,7 +214,6 @@ app.post("/api/resources/", async (req, res, next) => {
 
 app.put("/api/resources/:id", (req, res, next) => {
     let r = req.body.resource;
-    console.log(r);
     let sql = 'UPDATE resource SET name = ?, street = ?, city = ?, zipcode = ?, state = ?, county = ?, category = ?, description = ?, website = ? WHERE id = ?'
     let params = [r.name, r.street, r.city, r.zipcode, r.state, r.county,
         r.category, r.description,
