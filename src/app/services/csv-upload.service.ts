@@ -24,9 +24,16 @@ export class CsvUploadService {
             const formData: FormData = new FormData();
             formData.append('file', file, file.name);
             const progress = new Subject<number>();
-            let options = this.authService.getOptions();
-            options["reportProgress"] = true;
+            let options = {
+                headers: new HttpHeaders({
+                    authorization: "Bearer " + this.authService.getJWTTokenFromStorage(),
+                })
+            }
 
+            options["reportProgress"] = true;
+            options["observe"] = 'events';
+
+            console.log(options);
             this.http.post(this.apiURL + "api/resources/upload", formData, options)
                 .subscribe((event: HttpEvent<any>) => {
                     if(event.type === HttpEventType.UploadProgress){
