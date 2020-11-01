@@ -70,6 +70,7 @@ export class ResourceCsvUploadComponent implements OnInit {
     //When all progress is completed, set uploading to false to move on the next step!
     forkJoin(allProgressObservables).subscribe((end) =>{
       this.uploading = false;
+      this.uploadSuccessful = true;
     })
   }
 }

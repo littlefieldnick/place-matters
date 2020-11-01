@@ -22,7 +22,7 @@ export class CsvUploadService {
         for(let i = 0; i < files.length; i++){
             let file = files[i];
             const formData: FormData = new FormData();
-            formData.append('file', file, file.name);
+            formData.append('file', file);
             const progress = new Subject<number>();
             let options = {
                 headers: new HttpHeaders({

@@ -33,18 +33,19 @@
                     </button>
                 </form>
 
-
-
                 <mat-card *ngFor="let file of csvFormStep.controls['csv'].value">
                     <mat-card-content>
                         {{file.name}}
-
-                        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async"></mat-progress-bar>
+                        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async">
+                        </mat-progress-bar>
                     </mat-card-content>
                 </mat-card>
 
                 <div>
-                    <button *ngIf="this.csvFormStep.controls['csv'].value.length > 0" mat-raised-button color="primary" (click)="uploadFiles()">Upload File(s)</button>
+                    <button *ngIf="this.csvFormStep.controls['csv'].value.length > 0 && !this.uploadSuccessful" mat-raised-button color="primary" (click)="uploadFiles()">Upload File(s)</button>
+                </div>
+                <div>
+                    <button *ngIf="this.uploadSuccessful" mat-raised-button matStepperNext color="primary" >Next</button>
                 </div>
             </mat-step>
             <mat-step label="Upload Confirmation">

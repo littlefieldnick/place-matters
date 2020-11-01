@@ -6,6 +6,7 @@ const {Client} = require("@googlemaps/google-maps-services-js");
 const port = 5000;
 const app_folder = 'dist/place-matters';
 const IncomingForm = require('formidable').IncomingForm;
+const csv = require('csv-parser');
 const fs = require('fs');
 const db = require("./database.js");
 const auth = require("./auth.middleware");
@@ -157,16 +158,22 @@ app.post('/api/resources/upload', (req, res, next) => {
 
     form.on('file', (field, file) =>{
         console.log(file.name);
-        const readStream = fs.createReadStream(file.path);
+        let parsed = [];
+        fs.createReadStream(file.path).pipe(csv())
+            .on('data', (data) => {
+                parsed.push(data);
+            })
+            .on('header', (headers) => console.log(headers))
+            .on('error', (err) => {
+                res.json({error: err});
+            })
+            .on('end', () => res.json({data: parsed}));
+
     });
 
     form.on('error', (err) => {
         res.json({error: err});
     })
-
-    form.on('end', () => {
-        res.json()
-    });
 
     form.parse(req);
 })
