@@ -3,7 +3,9 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {County} from "../../../models/county";
 import {ResourceService} from "../../../services/resource.service";
 import {CsvUploadService} from "../../../services/csv-upload.service";
-import {forkJoin} from "rxjs";
+import { Papa } from "ngx-papaparse";
+import {forkJoin, from, Observable} from "rxjs";
+import {CsvHeader} from "../../../models/csv-record";
 
 @Component({
   selector: 'resource-csv-upload',
@@ -12,15 +14,17 @@ import {forkJoin} from "rxjs";
 })
 export class ResourceCsvUploadComponent implements OnInit {
   @ViewChild('file', { static: false }) file;
-  uploadedFiles: Set<File> = new Set();
+  uploadedFile: File;
   countyFormStep: FormGroup;
   csvFormStep: FormGroup;
   countyListing: Array<County>;
   progress: {[key: string]: any};
+  dataSource: CsvHeader[];
   uploading: boolean = false;
   uploadSuccessful: boolean = false;
+  displayedColumns = ["csvColumn", "example", "dbColumn"];
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private papa: Papa, private formBuilder: FormBuilder,
               private resourceService: ResourceService, private uploader: CsvUploadService) {
 
   }
@@ -35,7 +39,7 @@ export class ResourceCsvUploadComponent implements OnInit {
     });
 
     this.csvFormStep = this.formBuilder.group({
-      csv: ['']
+      csv: ['', Validators.required]
     })
   }
 
@@ -44,11 +48,39 @@ export class ResourceCsvUploadComponent implements OnInit {
   }
 
   onFilesAdded(event){
-    let selectedFiles = (event.target as HTMLInputElement).files;
-    this.csvFormStep.patchValue({'csv': selectedFiles});
+    this.uploadedFile = (event.target as HTMLInputElement).files[0];
+    this.csvFormStep.patchValue({'csv': this.uploadedFile});
     this.csvFormStep.get('csv').updateValueAndValidity();
 
-    console.log(this.csvFormStep.controls['csv'].value);
+    this.getCsvHeaders();
+  }
+
+  parseFile() {
+
+  }
+
+  getCsvHeaders(){
+    let options = {
+      header: false,
+      preview: 2,
+      complete: (results, file) => {
+        console.log("Processing headers!");
+        let data = []
+        for(let row = 0; row < results.data[0].length; row++){
+          data.push(new CsvHeader(results.data[0][row], results.data[1][row]));
+        }
+
+        this.dataSource = data;
+
+      }
+    }
+
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      this.papa.parse(reader.result.toString(), options);
+    }
+    reader.readAsText(this.uploadedFile)
+
   }
 
   uploadFiles(){

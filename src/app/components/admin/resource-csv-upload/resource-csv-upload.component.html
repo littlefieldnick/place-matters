@@ -24,8 +24,8 @@
                     </div>
                 </form>
             </mat-step>
-            <mat-step label="Upload CSV File">
-                <h1 class="mat-headline">Select CSV File for {{countyFormStep.controls["county"].value}}</h1>
+            <mat-step label="Upload CSV File" [stepControl]="csvFormStep">
+                <h1 class="mat-headline">Select CSV File {{countyFormStep.controls["county"].value}}</h1>
                 <form [formGroup]="csvFormStep">
                     <input type="file" #file style="display: none" (change)="onFilesAdded($event)" accept="text/csv"/>
                     <button [disabled]="uploading" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
@@ -33,22 +33,47 @@
                     </button>
                 </form>
 
-                <mat-card *ngFor="let file of csvFormStep.controls['csv'].value">
+                <mat-card *ngIf="csvFormStep.controls['csv'].value">
                     <mat-card-content>
-                        {{file.name}}
+                        {{csvFormStep.controls['csv'].value.name}}
+
                         <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async">
                         </mat-progress-bar>
                     </mat-card-content>
                 </mat-card>
 
-                <div>
-                    <button *ngIf="this.csvFormStep.controls['csv'].value.length > 0 && !this.uploadSuccessful" mat-raised-button color="primary" (click)="uploadFiles()">Upload File(s)</button>
-                </div>
-                <div>
-                    <button *ngIf="this.uploadSuccessful" mat-raised-button matStepperNext color="primary" >Next</button>
+<!--                <div>-->
+<!--                    <button *ngIf="this.csvFormStep.controls['csv'].value.length > 0 && !this.uploadSuccessful" mat-raised-button color="primary" (click)="uploadFiles()">Upload File(s)</button>-->
+<!--                </div>-->
+                <div style="padding-top:10px;">
+                    <button  mat-raised-button color="primary" matStepperNext >Next</button>
                 </div>
             </mat-step>
-            <mat-step label="Upload Confirmation">
+            <mat-step label="Map Columns">
+                <h1 class="mat-headline">Map CSV Fields</h1>
+                <p>Select the corresponding field that matches each of the CSV fields.</p>
+                <table mat-table [dataSource]="this.dataSource">
+                    <ng-container matColumnDef="csvColumn">
+                        <th mat-header-cell *matHeaderCellDef> CSV Column Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.header}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="example">
+                        <th mat-header-cell *matHeaderCellDef> Example Row </th>
+                        <td mat-cell *matCellDef="let element"> {{element.exampleVal}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dbColumn">
+                        <th mat-header-cell *matHeaderCellDef> Database Column to Store Value </th>
+                        <td mat-cell *matCellDef="let element"> {{element}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+            </mat-step>
+            <mat-step label="Complete Upload">
 
             </mat-step>
         </mat-horizontal-stepper>
