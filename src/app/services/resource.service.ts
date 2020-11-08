@@ -24,6 +24,12 @@ export class ResourceService {
     return this.http.get<Resource>(this.apiURL + 'api/resources/');
   }
 
+  bulkResourceSave(resources: Resource[]): Observable<Resource[]>{
+    console.log(resources);
+    return this.http.post<Resource[]>(this.apiURL + "api/resources/",
+        {resource: resources}, this.authService.getOptions());
+  }
+
   saveResource(resource: Resource): Observable<Resource> {
     if (resource.id) {
       return this.http.put<Resource>(this.apiURL + "api/resources/" + resource.id,

@@ -17,6 +17,7 @@ import { AdminViewComponent } from './view/admin-view/admin-view.component';
 import { CreateEditUserComponent } from './create-edit/user/create-edit-user.component';
 import { CreateEditResourceComponent } from './create-edit/resource/create-edit-resource.component';
 import { CreateEditCategoryComponent } from './create-edit/category/create-edit-category.component';
+import { UploadDialogComponent } from './resource-csv-upload/upload-dialog/upload-dialog.component';
 
 @NgModule({
     imports: [CommonModule,
@@ -30,6 +31,6 @@ import { CreateEditCategoryComponent } from './create-edit/category/create-edit-
     declarations: [DashComponent, LoginComponent,
         MainViewComponent, ResourceCsvUploadComponent,
         ResourceViewComponent, CategoryViewComponent, AdminViewComponent,
-        CreateEditUserComponent, CreateEditResourceComponent, CreateEditCategoryComponent]
+        CreateEditUserComponent, CreateEditResourceComponent, CreateEditCategoryComponent, UploadDialogComponent]
 })
 export class AdminModule {}

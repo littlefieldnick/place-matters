@@ -180,12 +180,14 @@ app.post('/api/resources/upload', (req, res, next) => {
 
 app.post("/api/resources/", async (req, res, next) => {
     let resources = req.body.resource;
+    console.log(resources);
     let sql = "INSERT INTO resource(name, street, city, zipcode, state, county, " +
         "category, description, website, latitude, longitude) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     let client = new Client({})
     let params = []
     let geoError = false;
+
     //Reverse geocode location addresses and build params array for each entry
     for (const r of resources) {
         let address = r.street + ", " + r.city + ", " + r.state + ", " + r.zipcode;

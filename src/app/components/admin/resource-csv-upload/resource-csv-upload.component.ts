@@ -4,9 +4,10 @@ import {County} from "../../../models/county";
 import {ResourceService} from "../../../services/resource.service";
 import {CsvUploadService} from "../../../services/csv-upload.service";
 import { Papa } from "ngx-papaparse";
-import {forkJoin, from, Observable} from "rxjs";
 import {CsvHeader} from "../../../models/csv-record";
 import {AppConfigService} from "../../../services/app-config.service";
+import {MatDialog} from "@angular/material/dialog";
+import {UploadDialogComponent} from "./upload-dialog/upload-dialog.component";
 
 @Component({
   selector: 'resource-csv-upload',
@@ -19,13 +20,12 @@ export class ResourceCsvUploadComponent implements OnInit {
   countyFormStep: FormGroup;
   csvFormStep: FormGroup;
   countyListing: Array<County>;
-  progress: {[key: string]: any};
   dataSource: CsvHeader[];
-  uploading: boolean = false;
-  uploadSuccessful: boolean = false;
   displayedColumns = ["csvColumn", "example", "dbColumn"];
   resourceDbColumnNames = this.appConfigService.resourceDbColumnMappingLabels;
-  constructor(private papa: Papa, private formBuilder: FormBuilder, private appConfigService: AppConfigService,
+  finalColumnMapping = {};
+
+  constructor(private papa: Papa, private dialog: MatDialog, private formBuilder: FormBuilder, private appConfigService: AppConfigService,
               private resourceService: ResourceService, private uploader: CsvUploadService) {
 
   }
@@ -55,14 +55,8 @@ export class ResourceCsvUploadComponent implements OnInit {
     this.getCsvHeaders();
   }
 
-  parseFile() {
-
-  }
-
-  attemptColumnMapping(column){
-    let idx = this.resourceDbColumnNames.indexOf(column.toLowerCase())
-    if (idx > -1)
-      return this.resourceDbColumnNames[idx];
+  updateColumnMapping(column, event){
+    this.finalColumnMapping[column] = event.value;
   }
 
   getCsvHeaders(){
@@ -70,14 +64,17 @@ export class ResourceCsvUploadComponent implements OnInit {
       header: false,
       preview: 2,
       complete: (results, file) => {
-        console.log("Processing headers!");
         let data = []
         for(let row = 0; row < results.data[0].length; row++){
           data.push(new CsvHeader(results.data[0][row], results.data[1][row]));
+          let idx = this.resourceDbColumnNames.indexOf(results.data[0][row].toLowerCase())
+          if(idx > -1){
+            this.finalColumnMapping[results.data[0][row]] = results.data[0][row].toLowerCase()
+          } else {
+            this.finalColumnMapping[results.data[0][row]] = '';
+          }
         }
-
         this.dataSource = data;
-
       }
     }
 
@@ -89,26 +86,14 @@ export class ResourceCsvUploadComponent implements OnInit {
 
   }
 
-  uploadFiles(){
-    this.uploading = true;
+  openUploadDialog(){
+    let dialogRef = this.dialog.open(UploadDialogComponent)
+    let dialogInstance = dialogRef.componentInstance;
+    dialogInstance.uploadedFile = this.uploadedFile;
+    dialogInstance.mappedHeaders = this.finalColumnMapping;
 
-    this.progress = this.uploader.upload(this.csvFormStep.controls['csv'].value);
-    console.log(this.progress);
-
-    for(let key in this.progress){
-      this.progress[key].progress.subscribe(val => console.log(val));
-    }
-
-    // convert the progress map into an array
-    let allProgressObservables = [];
-    for (let key in this.progress) {
-      allProgressObservables.push(this.progress[key].progress);
-    }
-
-    //When all progress is completed, set uploading to false to move on the next step!
-    forkJoin(allProgressObservables).subscribe((end) =>{
-      this.uploading = false;
-      this.uploadSuccessful = true;
+    dialogRef.afterClosed().subscribe((progress) => {
+      console.log(progress);
     })
   }
 }
