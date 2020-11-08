@@ -14,6 +14,7 @@ export class AppConfigService {
     public assetsDirectory: string;
     public maineCenterCoords: Object;
     public dashLayout: Object;
+    public resourceDbColumnMappingLabels: string[]
 
     constructor(private http: HttpClient, private domSanitizer: DomSanitizer, private iconRegistry: MatIconRegistry){
 

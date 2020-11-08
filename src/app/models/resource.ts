@@ -11,4 +11,6 @@ export class Resource {
   longitude: number
   description: string
   website: string
+  phone?:string
+  email?:string
 }

@@ -6,6 +6,7 @@ import {CsvUploadService} from "../../../services/csv-upload.service";
 import { Papa } from "ngx-papaparse";
 import {forkJoin, from, Observable} from "rxjs";
 import {CsvHeader} from "../../../models/csv-record";
+import {AppConfigService} from "../../../services/app-config.service";
 
 @Component({
   selector: 'resource-csv-upload',
@@ -23,12 +24,11 @@ export class ResourceCsvUploadComponent implements OnInit {
   uploading: boolean = false;
   uploadSuccessful: boolean = false;
   displayedColumns = ["csvColumn", "example", "dbColumn"];
-
-  constructor(private papa: Papa, private formBuilder: FormBuilder,
+  resourceDbColumnNames = this.appConfigService.resourceDbColumnMappingLabels;
+  constructor(private papa: Papa, private formBuilder: FormBuilder, private appConfigService: AppConfigService,
               private resourceService: ResourceService, private uploader: CsvUploadService) {
 
   }
-
   ngOnInit(): void {
     this.resourceService.getCounties().subscribe((counties) => {
       this.countyListing = counties["data"];
@@ -57,6 +57,12 @@ export class ResourceCsvUploadComponent implements OnInit {
 
   parseFile() {
 
+  }
+
+  attemptColumnMapping(column){
+    let idx = this.resourceDbColumnNames.indexOf(column.toLowerCase())
+    if (idx > -1)
+      return this.resourceDbColumnNames[idx];
   }
 
   getCsvHeaders(){

@@ -14,5 +14,17 @@
   "maineCenterCoords": {
     "lat": 45.2538,
     "lng": -69.4455
-  }
+  },
+  "resourceDbColumnMappingLabels": [
+    "name",
+    "category",
+    "description",
+    "website",
+    "street",
+    "city",
+    "state",
+    "zip",
+    "phone",
+    "email"
+  ]
 }
