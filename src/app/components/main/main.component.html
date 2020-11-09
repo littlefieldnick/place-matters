@@ -8,7 +8,7 @@
           <div *ngIf="control.modelProperty == 'category'; else inputBlock">
             <mat-select formControlName="{{control.modelProperty}}">
               <mat-option></mat-option>
-              <mat-option *ngFor="let cat of categories" value="{{cat.name}}">{{cat.name}}</mat-option>
+              <mat-option *ngFor="let cat of categories" value="{{cat.categoryName}}">{{cat.categoryName}}</mat-option>
             </mat-select>
           </div>
           <ng-template #inputBlock>
@@ -27,10 +27,10 @@
         <mat-card>
           <mat-card-content>
             <h2>{{resource.name}}</h2>
-            <h4>{{resource.address}}</h4>
+            <h4>{{resource.street}}</h4>
             <mat-chip-list>
               <mat-chip color="accent" selected>
-                {{resource.category["name"]}}
+                {{resource.categoryName}}
               </mat-chip>
             </mat-chip-list>
             <br>

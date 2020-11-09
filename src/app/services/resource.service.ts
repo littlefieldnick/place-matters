@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import {from, Observable} from "rxjs";
 import { Resource } from "../models/resource";
 import { AppConfigService } from "./app-config.service";
 import {ErrorHandlerService} from "./error-handler.service";
@@ -24,10 +24,17 @@ export class ResourceService {
     return this.http.get<Resource>(this.apiURL + 'api/resources/');
   }
 
-  bulkResourceSave(resources: Resource[]): Observable<Resource[]>{
-    console.log(resources);
-    return this.http.post<Resource[]>(this.apiURL + "api/resources/",
-        {resource: resources}, this.authService.getOptions());
+  bulkResourceSave(resources: Resource[]){
+    let errs = []
+    resources.forEach((r) => {
+      this.http.post<Resource[]>(this.apiURL + "api/resources/",
+          {resource: r}, this.authService.getOptions()).subscribe((data) => {
+            if(!data["success"])
+              errs.push(r);
+      });
+    });
+    let status = errs.length == 0;
+    return  {success: status, errors: errs}
   }
 
   saveResource(resource: Resource): Observable<Resource> {

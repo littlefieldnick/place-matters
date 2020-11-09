@@ -16,7 +16,7 @@ export class ResourceViewComponent implements OnInit {
   constructor(private resourceService: ResourceService) {
     this.resourceService.getResources().subscribe((resources) => {
       console.log(resources);
-      this.dataSource = [resources["data"]];
+      this.dataSource = resources["data"];
     })
   }
 

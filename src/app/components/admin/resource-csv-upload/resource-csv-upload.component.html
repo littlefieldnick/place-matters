@@ -13,8 +13,8 @@
                 <form [formGroup]="countyFormStep">
                     <mat-radio-group formControlName="county" class="csv-radio-group">
                         <div *ngFor="let cty of countyListing">
-                            <mat-radio-button value="{{cty.name}}" class="csv-radio-button">
-                                {{cty.name}}
+                            <mat-radio-button value="{{cty.id}}" class="csv-radio-button">
+                                {{cty.countyName}}
                             </mat-radio-button>
                         </div>
                     </mat-radio-group>
@@ -25,14 +25,18 @@
                 </form>
             </mat-step>
             <mat-step label="Upload CSV File" [stepControl]="csvFormStep">
-                <h1 class="mat-headline">Select CSV File {{countyFormStep.controls["county"].value}}</h1>
+                <h1 class="mat-headline">Select CSV File {{this.getSelectedCounty()}}</h1>
                 <form [formGroup]="csvFormStep">
                     <input type="file" #file style="display: none" (change)="onFilesAdded($event)" accept="text/csv"/>
                     <button mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
                         Add File
                     </button>
                 </form>
-
+                <mat-card>
+                    <mat-card-header *ngIf="this.uploadedFile">
+                        {{this.uploadedFile.name}}
+                    </mat-card-header>
+                </mat-card>
                 <div style="padding-top:10px;">
                     <button  mat-raised-button color="primary" matStepperNext >Next</button>
                 </div>

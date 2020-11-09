@@ -29,8 +29,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit():void {
     setTimeout(() => {
-      console.log(this.mapDisplay.nativeElement.offsetWidth);
-      console.log(this.mapDisplay.nativeElement.offsetHeight);
       if(this.mapDisplay.nativeElement.offsetWidth != 0)
         this.width = this.mapDisplay.nativeElement.offsetWidth;
       if(this.mapDisplay.nativeElement.offsetHeight != 0)
@@ -52,8 +50,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     let lngCenter = 0.0
 
     this.mapMarkers.forEach((loc) => {
-      latCenter += loc.position.lat;
-      lngCenter += loc.position.lng;
+      latCenter += Number(loc.position.lat);
+      lngCenter += Number(loc.position.lng);
     })
 
     this.center = {
@@ -76,8 +74,8 @@ export class MapComponent implements OnInit, AfterViewInit {
           id: this.resources[re].id,
           name: this.resources[re].name,
           address: this.resources[re].street + ", " +  this.resources[re].city+ ", " + this.resources[re].state + ", "
-              + this.resources[re].zipcode,
-          category: this.resources[re].category["name"]
+              + this.resources[re].zip,
+          category: this.resources[re].categoryName
         }
       }
 

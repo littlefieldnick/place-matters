@@ -14,7 +14,7 @@ export class ResourceInfoComponent implements OnInit {
   constructor(private route: ActivatedRoute, private resourceService: ResourceService) { }
 
   ngOnInit(): void {
-    this.resource = this.route.snapshot.data.id;
+    this.resource = this.route.snapshot.data.id.data;
     console.log(this.resource)
   }
 }

@@ -3,9 +3,9 @@
     <button mat-raised-button [routerLink]="['/']">Back to Map</button>
     <br/><br/>
     <h1 class="mat-headline">{{resource.name}}</h1>
-    <h2 class="mat-title">{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource.zipcode}}</h2>
+    <h2 class="mat-title">{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource.zip}}</h2>
 
-    <button mat-stroked-button color="primary">{{resource.category["name"]}}</button>
+    <button mat-stroked-button color="primary">{{resource.categoryName}}</button>
     <hr>
     <p><b class="mat-body-2">Website: </b> <a href="{{resource.website}}">{{resource.website}}</a></p>
 

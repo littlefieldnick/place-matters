@@ -70,7 +70,7 @@ app.post("/api/categories/", (req, res, next) => {
         errors.push("No category name is specified.");
     }
 
-    let sql = 'INSERT INTO resource_category (name) VALUES (?)';
+    let sql = 'INSERT INTO resource_category (categoryName) VALUES (?)';
     let params = [
         cat.name
     ];
@@ -88,7 +88,7 @@ app.post("/api/categories/", (req, res, next) => {
 app.put("/api/categories/:id", (req, res, next) => {
     let category = req.body.category;
     console.log(req.body);
-    let sql = 'UPDATE resource_category SET name = ? WHERE id = ?'
+    let sql = 'UPDATE resource_category SET categoryName = ? WHERE id = ?'
     let params = [category.name, category.id];
     db.run(sql, params, (err, rows) => {
         if (err) {
@@ -105,19 +105,21 @@ app.delete("/api/categories/:id", (req, res, next) => {
     let params = [req.params.id];
 
     db.run(sql, params, (err) => {
-        if(err)
+        if (err)
             res.status(400).json({success: false, error: err.message});
 
-        res.status(200).json({success:true});
+        res.status(200).json({success: true});
     })
-})
+});
+
 /**********************************************/
 /*              Resource API Routes           */
 /**********************************************/
 app.get("/api/resources/", (req, res, next) => {
-    let sql = 'select * from resource';
+    let sql = 'select r.*, c.categoryName,cty.countyName from resource r, resource_category c, county cty ' +
+        `where r.categoryName = c.id and r.countyName = cty.id`;
     let params = [];
-    db.get(sql, params, (err, rows) => {
+    db.all(sql, params, (err, rows) => {
         if (err) {
             res.status(400).json({"error": err.message});
             return;
@@ -128,7 +130,9 @@ app.get("/api/resources/", (req, res, next) => {
 });
 
 app.get("/api/resources/:id", (req, res, next) => {
-    let sql = "select * from resource where id = ?"
+    let sql = 'select r.*, c.categoryName,cty.countyName from resource r, resource_category c, county cty ' +
+        `where r.id  = ? and r.categoryName = c.id and r.countyName = cty.id`;
+    console.log(sql);
     let params = [req.params.id];
     db.get(sql, params, (err, rows) => {
         if (err) {
@@ -153,79 +157,43 @@ app.get("/api/counties", (req, res, next) => {
     });
 })
 
-app.post('/api/resources/upload', (req, res, next) => {
-    const form = new IncomingForm();
-
-    form.on('file', (field, file) =>{
-        console.log(file.name);
-        let parsed = [];
-        fs.createReadStream(file.path).pipe(csv())
-            .on('data', (data) => {
-                parsed.push(data);
-            })
-            .on('header', (headers) => console.log(headers))
-            .on('error', (err) => {
-                res.json({error: err});
-            })
-            .on('end', () => res.json({data: parsed}));
-
-    });
-
-    form.on('error', (err) => {
-        res.json({error: err});
-    })
-
-    form.parse(req);
-})
-
 app.post("/api/resources/", async (req, res, next) => {
-    let resources = req.body.resource;
-    console.log(resources);
-    let sql = "INSERT INTO resource(name, street, city, zipcode, state, county, " +
-        "category, description, website, latitude, longitude) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    let r = req.body.resource;
+
+    let sql = "INSERT INTO resource(name, street, city, zipcode, state, countyName, categoryName, description, website, " +
+        "latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     let client = new Client({})
-    let params = []
     let geoError = false;
+    console.log(req.body.resource.street);
 
     //Reverse geocode location addresses and build params array for each entry
-    for (const r of resources) {
-        let address = r.street + ", " + r.city + ", " + r.state + ", " + r.zipcode;
-        let coords = await geocodeResource(client, address).catch((error) => {
-            res.status(400).json({success: false, error: "Could not geocode resource location!"});
-            geoError = true;
-        });
+    let address = req.body.resource.street + ", " + req.body.resource.city + ", " + req.body.resource.state + ", " + req.body.resource.zip;
+    let coords = await geocodeResource(client, address).catch((error) => {
+        res.status(400).json({success: false, error: "Could not geocode resource location!"});
+        geoError = true;
+    })
 
-        if (geoError)
-            break;
+    let params = [r.name, r.street, r.city, r.zip, r.state, r.countyName,
+        r.categoryName, r.description,
+        r.website, coords.location.lat,
+        coords.location.lng];
+    console.log(params);
 
-        params.push([r.name, r.street, r.city, r.zipcode, r.state, r.county,
-            r.category, r.description,
-            r.website, coords.location.lat,
-            coords.location.lng]);
-    }
+    db.run(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({success: false, errors: err.message});
+            return;
+        }
 
-    db.serialize(function () {
-        db.run("begin transaction");
-        params.forEach((entry) => {
-            db.run(sql, entry, function (err) {
-                if (err) {
-                    res.json({success: false, error: err.message});
-                    return;
-                }
-            });
-        });
-        db.run("commit");
+        res.status(200).json({success: true});
     });
-
-    await res.json({success: true});
 })
 
 app.put("/api/resources/:id", (req, res, next) => {
     let r = req.body.resource;
-    let sql = 'UPDATE resource SET name = ?, street = ?, city = ?, zipcode = ?, state = ?, county = ?, category = ?, description = ?, website = ? WHERE id = ?'
-    let params = [r.name, r.street, r.city, r.zipcode, r.state, r.county,
-        r.category, r.description,
+    let sql = 'UPDATE resource SET name = ?, street = ?, city = ?, zipcode = ?, state = ?, countyName = ?, categoryName = ?, description = ?, website = ? WHERE id = ?'
+    let params = [r.name, r.street, r.city, r.zipcode, r.state, r.countyName,
+        r.categoryName, r.description,
         r.website, req.params.id];
 
     db.run(sql, params, (err, rows) => {
@@ -243,10 +211,10 @@ app.delete("/api/resource/:id", (req, res, next) => {
     let params = [req.params.id];
 
     db.run(sql, params, (err) => {
-        if(err)
+        if (err)
             res.status(400).json({success: false, error: err.message});
 
-        res.status(200).json({success:true});
+        res.status(200).json({success: true});
     })
 })
 
@@ -350,10 +318,10 @@ app.delete("/api/users/:id", (req, res, next) => {
     let params = [req.params.id];
 
     db.run(sql, params, (err) => {
-        if(err)
+        if (err)
             res.status(400).json({success: false, error: err.message});
 
-        res.status(200).json({success:true});
+        res.status(200).json({success: true});
     })
 })
 

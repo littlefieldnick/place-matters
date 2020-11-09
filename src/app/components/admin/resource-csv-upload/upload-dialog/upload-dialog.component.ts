@@ -1,65 +1,89 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {CsvUploadService} from "../../../../services/csv-upload.service";
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {Papa} from "ngx-papaparse";
-import {CsvHeader} from "../../../../models/csv-record";
 import {Resource} from "../../../../models/resource";
 import {ResourceService} from "../../../../services/resource.service";
+import {ResourceCategory} from "../../../../models/resource_category";
+import {CategoryService} from "../../../../services/category.service";
 
 @Component({
-  selector: 'app-upload-dialog',
-  templateUrl: './upload-dialog.component.html',
-  styleUrls: ['./upload-dialog.component.scss']
+    selector: 'upload-dialog',
+    templateUrl: './upload-dialog.component.html',
+    styleUrls: ['./upload-dialog.component.scss']
 })
 export class UploadDialogComponent implements OnInit {
-  step: string;
-  parsedResources: Resource[] = [];
+    step: string;
 
-  @Input()
-  uploadedFile: File;
+    @Input()
+    uploadedFile: File;
 
-  @Input()
-  mappedHeaders: Object;
+    @Input()
+    mappedHeaders: Object;
 
-  constructor(private resourceService: ResourceService, private papa: Papa) {
+    @Input()
+    county: number;
 
-  }
+    @Output()
+    success: Object;
 
-  ngOnInit(): void {
-    this.uploadFile();
-  }
+    constructor(private resourceService: ResourceService, private categoryService: CategoryService, private papa: Papa) {
 
-  uploadFile(){
-    this.step = "Processing data...";
-    let options = {
-      header: true,
-      transformHeader: (header) => {
-        return this.mappedHeaders[header];
-      },
+    }
 
-      complete: (results, file) => {
+    ngOnInit(): void {
+        this.uploadFile();
+    }
 
-        let data = []
-        for(let row = 0; row < results.data.length; row++){
-          let resource = new Resource();
-          Object.assign(resource, results.data[row]);
-          data.push(resource);
+
+
+    uploadFile() {
+        this.step = "Processing data...";
+        let categories;
+
+        this.categoryService.getCategories().subscribe((cats: ResourceCategory[]) => {
+            categories = cats;
+        });
+
+        let options = {
+            header: true,
+            transformHeader: (header) => {
+                return this.mappedHeaders[header];
+            },
+
+            complete: (results, file) => {
+                let data = []
+                for (let row = 0; row < results.data.length; row++) {
+                    let resource = new Resource();
+                    Object.assign(resource, results.data[row]);
+                    resource.countyName = this.county;
+                    resource.categoryName = -1;
+                    categories.forEach((cat) => {
+                        if (cat.categoryName == results.data[row].category) {
+                            console.log("CATEGORY MATCH");
+                            resource.categoryName = cat.id;
+                        }
+                    });
+                    console.log(resource);
+                    data.push(resource);
+                }
+
+                this.step = "Uploading data...";
+                let uploadStatus = this.resourceService.bulkResourceSave(data)
+                if (uploadStatus["success"]) {
+                    this.step = "Uploading complete!";
+                } else {
+                    this.step = "An error occurred while uploading the resources.";
+                }
+
+                this.success = uploadStatus;
+            }
         }
 
-        this.step = "Uploading data...";
-        this.resourceService.bulkResourceSave(data).subscribe((data) => {
-          if(data["success"])
-            this.step = "Uploading complete!";
-          else
-            this.step = "An error occurred while uploading the resources.";
-        });
-      }
-    }
+        let reader = new FileReader()
+        reader.onload = (e) => {
+            this.papa.parse(reader.result.toString(), options);
+        }
 
-    let reader = new FileReader()
-    reader.onload = (e) => {
-      this.papa.parse(reader.result.toString(), options);
+        reader.readAsText(this.uploadedFile)
     }
-    reader.readAsText(this.uploadedFile)
-  }
 
 }

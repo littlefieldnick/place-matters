@@ -22,7 +22,6 @@ export class CategoryService {
         const headers = new HttpHeaders().set('Content-Type', 'application-json')
         if (id) {
             return this.http.get(this.apiURL + 'api/categories/' + id).pipe(map((cat) => {
-                console.log(cat);
                 return cat["data"];
             }), catchError((err) => {
                 return this.errorHandler.processServerError(err);

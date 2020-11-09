@@ -26,12 +26,12 @@
                             <mat-option>---</mat-option>
                             <div *ngIf="control.modelProperty == 'category'; else countyOptions">
                                 <mat-option *ngFor="let category of formCategories" [value]="category.id">
-                                    {{category.name}}
+                                    {{category.categoryName}}
                                 </mat-option>
                             </div>
                             <ng-template #countyOptions>
                                 <mat-option *ngFor="let county of formCounties" [value]="county.id">
-                                    {{county.name}}
+                                    {{county.countyName}}
                                 </mat-option>
                             </ng-template>
                         </mat-select>

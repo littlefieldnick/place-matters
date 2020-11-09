@@ -36,9 +36,9 @@ export class MainComponent implements OnInit, AfterViewInit{
   //Get the page data loaded by the resolver
   ngOnInit(): void {
     this.categories = this.activatedRoute.snapshot.data.categories;
-    this.resources = this.activatedRoute.snapshot.data.resources;
+    this.resources = this.activatedRoute.snapshot.data.resources.data;
 
-    console.log(this.categories);
+    console.log(this.resources);
   }
 
   //Load hidden main (when screen size is smaller than md device)

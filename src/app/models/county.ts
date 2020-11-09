@@ -1,4 +1,4 @@
 export class County {
     id: number;
-    name: string;
+    countyName: string;
 }
