@@ -17,7 +17,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   center: google.maps.LatLngLiteral;
   currentInfoMarker: MapInfoWindow;
   mapMarkers: Array<any> = []
-  zoom = 15;
+  zoom = 8;
 
 
   @Input()
@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, AfterViewInit {
           id: this.resources[re].id,
           name: this.resources[re].name,
           address: this.resources[re].street + ", " +  this.resources[re].city+ ", " + this.resources[re].state + ", "
-              + this.resources[re].zip,
+              + this.resources[re]["zipcode"],
           category: this.resources[re].categoryName
         }
       }

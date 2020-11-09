@@ -27,7 +27,7 @@
         <mat-card>
           <mat-card-content>
             <h2>{{resource.name}}</h2>
-            <h4>{{resource.street}}</h4>
+            <h4>{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource["zipcode"]}}</h4>
             <mat-chip-list>
               <mat-chip color="accent" selected>
                 {{resource.categoryName}}
