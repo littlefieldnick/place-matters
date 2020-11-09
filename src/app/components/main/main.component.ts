@@ -50,16 +50,23 @@ export class MainComponent implements OnInit, AfterViewInit{
   search(): void {
     let category = this.searchForm.get("category").value;
     let resourceName = this.searchForm.get("name").value;
-    if (category.length == 0) {
+    if (!category) {
       category = ''
     }
 
-    if (resourceName.length == null) {
+    if (resourceName == null) {
       resourceName = ''
     }
+    if(category.length == 0 && resourceName.length == 0)
+      return;
 
-    this.resourceService.searchResources(resourceName, category).subscribe((data: Resource[]) => {
-      this.resources = data["results"];
+    this.resources = this.resources.filter((re) => {
+      if(category.length > 0 && resourceName.length > 0)
+        return re.categoryName == category && re.name.startsWith(resourceName);
+      else if(category.length > 0){
+        return re.categoryName == category;
+      } else if(resourceName.length > 0)
+        return re.name.startsWith(resourceName);
     });
   }
 
@@ -67,7 +74,7 @@ export class MainComponent implements OnInit, AfterViewInit{
   resetSearchForm(): void {
     this.searchForm.reset()
     this.resourceService.getResources().subscribe((data) => {
-      this.resources = data["resources"];
+      this.resources = data["data"];
     })
   }
 
