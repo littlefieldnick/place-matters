@@ -25,6 +25,7 @@ export class ResourceCsvUploadComponent implements OnInit {
     displayedColumns = ["csvColumn", "example", "dbColumn"];
     resourceDbColumnNames = this.appConfigService.resourceDbColumnMappingLabels;
     finalColumnMapping = {};
+    fileSizeLimit = 5;
 
     constructor(private papa: Papa, private dialog: MatDialog, private formBuilder: FormBuilder, private appConfigService: AppConfigService,
                 private resourceService: ResourceService, private uploader: CsvUploadService) {
@@ -55,6 +56,9 @@ export class ResourceCsvUploadComponent implements OnInit {
         this.file.nativeElement.click();
     }
 
+    getFileModifiedDate(d){
+        return new Date(d);
+    }
     onFilesAdded(event) {
         this.uploadedFile = (event.target as HTMLInputElement).files[0];
         this.csvFormStep.patchValue({'csv': this.uploadedFile});
@@ -64,7 +68,10 @@ export class ResourceCsvUploadComponent implements OnInit {
     }
 
     updateColumnMapping(column, event) {
-        this.finalColumnMapping[column] = event.value;
+        this.finalColumnMapping[column].mappedName = event.value;
+        if(event.value == undefined)
+            this.finalColumnMapping[column].valid = false;
+        console.log(this.finalColumnMapping);
     }
 
     getCsvHeaders() {
@@ -77,9 +84,15 @@ export class ResourceCsvUploadComponent implements OnInit {
                     data.push(new CsvHeader(results.data[0][row], results.data[1][row]));
                     let idx = this.resourceDbColumnNames.indexOf(results.data[0][row].toLowerCase().trim())
                     if (idx > -1) {
-                        this.finalColumnMapping[results.data[0][row]] = results.data[0][row].toLowerCase().trim();
+                        this.finalColumnMapping[results.data[0][row]] = {
+                            mappedName: results.data[0][row].toLowerCase().trim(),
+                            valid: true
+                        };
                     } else {
-                        this.finalColumnMapping[results.data[0][row]] = '';
+                        this.finalColumnMapping[results.data[0][row]] = {
+                            mappedName: undefined,
+                            valid: false
+                        };
                     }
                 }
                 this.dataSource = data;
@@ -94,7 +107,19 @@ export class ResourceCsvUploadComponent implements OnInit {
         reader.readAsText(this.uploadedFile)
     }
 
-    openUploadDialog() {
+    verifyMapping(){
+        for(let key in this.finalColumnMapping){
+            if(!this.finalColumnMapping[key].valid)
+                return false;
+        }
+
+        return true;
+    }
+
+    verifyAndOpenUploadDialog() {
+        if(!this.verifyMapping())
+            return;
+
         let dialogRef = this.dialog.open(UploadDialogComponent)
         let dialogInstance = dialogRef.componentInstance;
         dialogInstance.uploadedFile = this.uploadedFile;

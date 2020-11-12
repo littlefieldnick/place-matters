@@ -26,18 +26,24 @@
             </mat-step>
             <mat-step label="Upload CSV File" [stepControl]="csvFormStep">
                 <h1 class="mat-headline">Select CSV File {{this.getSelectedCounty()}}</h1>
+                <mat-card *ngIf="this.uploadedFile">
+                    <mat-card-title>
+                        File: {{this.uploadedFile.name}}
+                    </mat-card-title>
+                    <mat-card-content>
+                        <p class="mat-typography">Size: {{this.uploadedFile.size/1000000}} MB</p>
+                        <p class="mat-typography">File Type: {{this.uploadedFile.type}}</p>
+                        <p class="mat-typography">Last Modified: {{getFileModifiedDate(this.uploadedFile.lastModified)}}</p>
+                    </mat-card-content>
+                </mat-card>
                 <form [formGroup]="csvFormStep">
                     <input type="file" #file style="display: none" (change)="onFilesAdded($event)" accept="text/csv"/>
-                    <button mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
+                    <button mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()" *ngIf="!this.uploadedFile">
                         Add File
                     </button>
                 </form>
-                <mat-card>
-                    <mat-card-header *ngIf="this.uploadedFile">
-                        {{this.uploadedFile.name}}
-                    </mat-card-header>
-                </mat-card>
-                <div style="padding-top:10px;">
+
+                <div style="padding-top:10px;" *ngIf="this.uploadedFile">
                     <button  mat-raised-button color="primary" matStepperNext >Next</button>
                 </div>
             </mat-step>
@@ -58,8 +64,8 @@
                     <ng-container matColumnDef="dbColumn">
                         <th mat-header-cell *matHeaderCellDef> Associated Database Column </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-select [value]="this.finalColumnMapping[element.header]"
-                                        (selectionChange)="updateColumnMapping(this.finalColumnMapping[element.header], $event)">
+                            <mat-select [value]="this.finalColumnMapping[element.header].mappedName"
+                                        (selectionChange)="updateColumnMapping(element.header, $event)">
                                 <mat-option>
                                     ---
                                 </mat-option>
@@ -74,7 +80,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-                <button mat-raised-button color="primary" (click)="this.openUploadDialog()">Upload Resources</button>
+                <button mat-raised-button color="primary" (click)="this.verifyAndOpenUploadDialog()">Upload Resources</button>
             </mat-step>
         </mat-horizontal-stepper>
     </div>
