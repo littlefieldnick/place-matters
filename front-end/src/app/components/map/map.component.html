@@ -1,0 +1,17 @@
+<div #mapDisplay (mapSizeChanged)="this.resizeMap($event)"
+     class="map-responsive" mapContainer>
+    <google-map [center]="center" [zoom]="zoom" [height]="this.height" [width]="this.width">
+      <map-marker #markerElem="mapMarker" *ngFor="let marker of this.mapMarkers; let idx = index"
+                  [position]="marker.position"
+                  [label]="marker.label"
+                  [title]="marker.title"
+                  (mapClick)="openInfoMarker(idx, markerElem)">
+
+        <map-info-window [options]="marker.options" (close)="this.userClosed()">
+          <h3 class="mat-h3">{{ marker.markerInfo.name }}</h3>
+          <p>{{ marker.markerInfo.address }}</p>
+          <a [routerLink]="['/info/', marker.markerInfo.id]" mat-raised-button color="primary">More Information</a>
+        </map-info-window>
+      </map-marker>
+    </google-map>
+  </div>

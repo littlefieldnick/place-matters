@@ -1,0 +1,30 @@
+{
+  "production": false,
+  "externalApi": "http://localhost:5000/",
+  "apiRoutes": {
+    "getResources": "api/resources/",
+    "getCategories": "api/categories/",
+    "search": "api/search",
+    "getUsers": "api/users/",
+    "registerUser": "api/users/register",
+    "login": "auth/login",
+    "verifyJwt": "auth/verify"
+  },
+  "assetsDirectory": "assets",
+  "maineCenterCoords": {
+    "lat": 45.2538,
+    "lng": -69.4455
+  },
+  "resourceDbColumnMappingLabels": [
+    "name",
+    "category",
+    "description",
+    "website",
+    "street",
+    "city",
+    "state",
+    "zip",
+    "phone",
+    "email"
+  ]
+}
