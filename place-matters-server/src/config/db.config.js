@@ -1,8 +1,8 @@
 module.exports = {
     host: "localhost",
     port: 3306,
-    user: "", // Replace with mysql db username
-    password: "", //Replace with mysql db password
+    user: "littlefield", // Replace with mysql db username
+    password: "Those321!", //Replace with mysql db password
     db: "placematters",
     dialect: "mysql",
     pool: {
