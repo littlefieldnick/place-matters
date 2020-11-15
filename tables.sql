@@ -67,4 +67,4 @@ insert into  county(countyName) values("Sagadahoc County");
 insert into  county(countyName) values("Somerset County");
 insert into  county(countyName) values("Waldo County");
 insert into  county(countyName) values("Washington County");
-insert into  county(countyName) values("York County");county
+insert into  county(countyName) values("York County");
