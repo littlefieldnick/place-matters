@@ -93,7 +93,6 @@ module.exports = (sequelize) => {
                     msg: "Please provide a valid email for resource."
                 }
             }
-
         }
     });
 

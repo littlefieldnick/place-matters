@@ -22,8 +22,8 @@ const modelDefiners = [
     require("./models/category.model"),
     require("./models/county.model"),
     require("./models/resource.model"),
-    require("./models/role.model"),
     require("./models/permission.model"),
+    require("./models/role.model"),
     require("./models/user.model")
 ];
 
@@ -33,5 +33,4 @@ for(const modelDefiner of modelDefiners){
 
 applyAssociations(sequelize)
 
-
-module.exports = sequelize;
+module.exports = sequelize

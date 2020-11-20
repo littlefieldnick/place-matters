@@ -3,21 +3,56 @@ const {DataTypes} = require('sequelize')
 module.exports = (sequelize) => {
     const User = sequelize.define("user", {
         firstName: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         lastName: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         email: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isEmail: true
+            }
         },
 
         password: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                min: 8,
+                max: 32,
+                passwordValidate(value){
+                    let counter = 0;
+                    if(value.matches(/.*\\d.*/))
+                        counter ++;
+                    if(value.matches(/.*[a-z].*/))
+                        counter ++;
+                    if(value.matches(/.*[A-Z].*/))
+                        counter ++;
+                    if(value.matches(/.*[*.!@#$%^&(){}[]:\";\'<>,.?\/~`_+-=|\\].*/))
+                        counter++;
+
+                    if(counter > 3)
+                        throw new Error("Password must contain at least three of the following:\n 1. Numbers " +
+                            "\n2. Lowercase letters \n3. Capital letters \n4.Punctuation marks. ")
+                }
+            }
         },
+
         confirmPassword: {
-            type: DataTypes.STRING
-        },
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate:{
+                isConfirmed(value){
+                    if(value !== this.password)
+                        throw new Error("Password confirmation is different than the password provided.");
+                }
+            }
+
+        }
     });
 
     return User;

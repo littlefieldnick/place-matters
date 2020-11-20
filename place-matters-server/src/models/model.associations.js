@@ -1,4 +1,4 @@
-function applyAssociations(sequelize){
+async function applyAssociations(sequelize){
     const {category, county, resource, user, role, permission} = sequelize.models
 
     //Foreign key for category
@@ -8,6 +8,9 @@ function applyAssociations(sequelize){
     //Foreign key for County
     resource.belongsTo(county);
     county.hasMany(resource);
+
+    role.belongsToMany(permission, {through: "role_permission"});
+    permission.belongsToMany(role, {through: "role_permission"});
 }
 
 module.exports = {applyAssociations};

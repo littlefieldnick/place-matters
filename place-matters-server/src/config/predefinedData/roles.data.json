@@ -1,0 +1,14 @@
+[
+  {
+    "name": "ADMIN",
+    "permissions": [
+      {
+        "id": 1
+      },
+      {
+        "name": "UPDATE_USER",
+        "description": "Update a users information"
+      }
+    ]
+  }
+]
