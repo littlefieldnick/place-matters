@@ -5,5 +5,7 @@ var router = require("express").Router();
 router.get("/", resources.getAll);
 router.get("/:id", resources.getById);
 router.post("/", resources.create);
+router.put("/:id", resources.update)
+router.delete("/:id", resources.deleteResource)
 
 module.exports = router;

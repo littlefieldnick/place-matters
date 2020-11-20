@@ -67,7 +67,9 @@ buildDb().then(async (db) => {
 
     //Check for default ADMIN
     const result = await role.findOne({
-        where: {name: "ADMIN"},
+        where: {
+            name: "ADMIN"
+        },
         include: [
             {
                 model: permission

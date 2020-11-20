@@ -1,5 +1,4 @@
 const {DataTypes} = require('sequelize')
-const {hooks} = require("../hooks/role-permission.hook")
 module.exports = (sequelize) => {
     const Role = sequelize.define("role", {
         name: {

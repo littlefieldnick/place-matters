@@ -7,6 +7,7 @@ if (process.env.mode === "development")
 else
     dbConfig = process.env.dbConfig;
 
+console.log(dbConfig);
 const sequelize = new Sequelize(dbConfig.db, dbConfig.user, dbConfig.password, {
     host: dbConfig.host,
     dialect: dbConfig.dialect,
