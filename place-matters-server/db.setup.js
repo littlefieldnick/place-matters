@@ -1,6 +1,5 @@
 const mysql = require("mysql2/promise")
 const fs = require("fs")
-const Permission = require("./src/models/permission.model");
 let dbConfig;
 
 if (process.env.mode === "development")
