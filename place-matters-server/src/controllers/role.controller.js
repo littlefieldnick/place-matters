@@ -98,9 +98,31 @@ async function update(req, res) {
     }).catch((err) => {
         res.status(500).json({error: err.message || "An unknown error occurred while removing permissions."})
     })
+}
 
+async function deleteRole(req, res) {
+    let id = req.params.id;
+
+    if (!id) {
+        res.status(400)
+            .json({
+                error: "Bad request. An id parameter needs to provided."
+            });
+
+        return;
+    }
+
+    db.models.role.destroy({
+        where: {
+            id: id
+        }
+    }).then((deleted) => {
+        res.status(200).json({success:true, deleted: deleted})
+    }).catch((err) => {
+        res.status(500).json({error: err.message || "An error occurred deleting a role with id: " + id})
+    });
 }
 
 module.exports = {
-    getAll, getById, create, update
+    getAll, getById, create, update, deleteRole
 }
