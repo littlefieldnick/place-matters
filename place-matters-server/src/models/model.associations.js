@@ -11,6 +11,9 @@ async function applyAssociations(sequelize){
 
     role.belongsToMany(permission, {through: "role_permission"});
     permission.belongsToMany(role, {through: "role_permission"});
+
+    user.belongsToMany(role, {through: "user_roles"})
+    role.belongsToMany(user, {through: "user_roles"})
 }
 
 module.exports = {applyAssociations};

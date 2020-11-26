@@ -26,18 +26,18 @@ module.exports = (sequelize) => {
                 max: 32,
                 passwordValidate(value){
                     let counter = 0;
-                    if(value.matches(/.*\\d.*/))
+                    if(value.match(/.*\\d.*/))
                         counter ++;
-                    if(value.matches(/.*[a-z].*/))
+                    if(value.match(/.*[a-z].*/))
                         counter ++;
-                    if(value.matches(/.*[A-Z].*/))
+                    if(value.match(/.*[A-Z].*/))
                         counter ++;
-                    if(value.matches(/.*[*.!@#$%^&(){}[]:\";\'<>,.?\/~`_+-=|\\].*/))
+                    if(value.match(/.*[*.!@#$%^&(){}[]:\";\'<>,.?\/~`_+-=|\\].*/))
                         counter++;
 
-                    if(counter > 3)
+                    if(counter < 3)
                         throw new Error("Password must contain at least three of the following:\n 1. Numbers " +
-                            "\n2. Lowercase letters \n3. Capital letters \n4.Punctuation marks. ")
+                            "\n2. Lowercase letters \n3. Capital letters \n4.Punctuation characters. ")
                 }
             }
         },
@@ -51,7 +51,6 @@ module.exports = (sequelize) => {
                         throw new Error("Password confirmation is different than the password provided.");
                 }
             }
-
         }
     });
 

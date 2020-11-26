@@ -15,4 +15,21 @@ async function removePermissionFromRoles(role, permsToRemove, transaction){
         await role.removePermission(perm.id, {transaction});
     }
 }
-module.exports = {assignPermissionToRoles, removePermissionFromRoles}
+
+async function assignRolesToUser(user, rolesToAdd, transaction){
+    for (let role of rolesToAdd) {
+        if(role.id){
+            await user.addRole(role.id, {transaction});
+        } else {
+            let rCreated = await models.roles.create(role, {transaction});
+            await user.addRole(rCreated, {transaction});
+        }
+    }
+}
+
+async function removeRolesFromUser(user, rolesToRemove, transaction){
+    for (let role of rolesToRemove) {
+        await user.removeRole(role.id, {transaction});
+    }
+}
+module.exports = {assignPermissionToRoles, removePermissionFromRoles, assignRolesToUser, removeRolesFromUser}

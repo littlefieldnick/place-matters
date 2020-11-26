@@ -13,6 +13,7 @@ app.use("/api/resources", require("./routes/resource.route"));
 app.use("/api/categories", require("./routes/category.route"));
 app.use("/api/permissions", require("./routes/permission.route"));
 app.use("/api/roles", require("./routes/role.route"));
+app.use("/api/users", require("./routes/user.route"));
 
 // ---- Start the Node server  ---- //
 app.listen(port, function () {
