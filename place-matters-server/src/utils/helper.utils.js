@@ -1,19 +1,18 @@
 const {models} = require("../database.js")
-async function assignPermissionToRoles(createdRole, permissions, transaction){
+async function assignPermissionToRoles(role, permissions, transaction){
     for (let perm of permissions) {
-        if (perm.id) {
-            let p = await models.permission.findAll({
-                where: {
-                    id: perm.id
-                }
-            }, {transaction})
-
-            await createdRole.addPermission(p, {transaction});
+        if(perm.id){
+            await role.addPermission(perm.id, {transaction});
         } else {
             let pCreated = await models.permission.create(perm, {transaction});
-            await createdRole.addPermission(pCreated, {transaction});
+            await role.addPermission(pCreated, {transaction});
         }
     }
 }
 
-module.exports = {assignPermissionToRoles}
+async function removePermissionFromRoles(role, permsToRemove, transaction){
+    for (let perm of permsToRemove) {
+        await role.removePermission(perm.id, {transaction});
+    }
+}
+module.exports = {assignPermissionToRoles, removePermissionFromRoles}
