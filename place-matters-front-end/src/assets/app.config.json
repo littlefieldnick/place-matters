@@ -6,7 +6,6 @@
     "getCategories": "api/categories/",
     "search": "api/search",
     "getUsers": "api/users/",
-    "registerUser": "api/users/register",
     "login": "auth/login",
     "verifyJwt": "auth/verify"
   },

@@ -1,0 +1,77 @@
+@import '~@angular/material/theming';
+
+@include mat-core()
+
+$customPrimary: (
+        50: #b0d3d2,
+        100: #a0cac9,
+        200: #8fc1bf,
+        300: #7fb8b6,
+        400: #6eafac,
+        500: #5ea6a3,
+        600: #539794,
+        700: #4a8784,
+        800: #417674,
+        900: #386664,
+        A100: #c1dcdb,
+        A200: #d1e6e5,
+        A400: #e1efee,
+        A700: #2f5554
+);
+
+$customAccent: (
+        50: #4b6c33,
+        100: #577e3b,
+        200: #638f43,
+        300: #6fa14b,
+        400: #7bb055,
+        500: #88b867,
+        600: #a4c889,
+        700: #b1d09b,
+        800: #bfd8ac,
+        900: #cce0be,
+        A100: #a4c889,
+        A200: #96c078,
+        A400: #88b867,
+        A700: #dae9cf
+);
+
+$customWarn: (
+        50: #ffffff,
+        100: #fefbf8,
+        200: #fdede1,
+        300: #fbdfc9,
+        400: #f9d0b2,
+        500: #f7c29a,
+        600: #f5b482,
+        700: #f3a56b,
+        800: #f19753,
+        900: #f0893b,
+        A100: #ffffff,
+        A200: #ffffff,
+        A300: #ffffff,
+        A700: #ee7b24
+);
+
+$customBackground: (
+        50: #7d8f94,
+        100: #708388,
+        200: #65757a,
+        300: #59686c,
+        400: #4e5a5e,
+        500: #424d50,
+        600: #364042,
+        700: #2b3234,
+        800: #1f2526,
+        900: #141718,
+        A100: #8b9ba0,
+        A200: #99a7ab,
+        A400: #a7b3b7,
+        A700: #080a0a
+);
+
+$place-matters-primary: mat-palette(customPrimary);
+$place-matters-accent: mat-palette(customAccent);
+$place-matters-warn: mat-palette(customWarm);
+$place-matters-background: mat-palette(customBackground);
+
