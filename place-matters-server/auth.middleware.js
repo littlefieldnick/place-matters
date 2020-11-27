@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
-const db = require("../place-matters-front-end/database");
+
+const db = require("./database");
 
 const APP_SECRET = "placemattersecret";
 const auth_mappings = {
