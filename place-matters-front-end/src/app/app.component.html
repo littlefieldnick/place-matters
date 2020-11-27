@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <span>Place Matters Maine</span>
+  <span class="pull-right"></span>
+  <button mat-icon-button
+          matTooltip="Admin Login"
+          aria-label="Admin Login"
+          routerLink="admin/login">
+    <mat-icon [svgIcon]="loginIcon"></mat-icon>
+  </button>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

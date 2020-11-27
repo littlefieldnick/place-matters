@@ -1,0 +1,20 @@
+<div fxLayout="row wrap" fxLayout.sm="column" style="margin-left:10px; margin-right: 10px">
+  <div fxFlex.lt-xl="25%" fxFlex.lt-sm="100%" style="padding-top:10px" >
+    <button mat-raised-button [routerLink]="['/']">Back to Map</button>
+    <br/><br/>
+    <h1 class="mat-headline">{{resource.name}}</h1>
+    <h2 class="mat-title">{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource.zip}}</h2>
+
+    <button mat-stroked-button color="primary">{{resource.categoryName}}</button>
+    <hr>
+    <p><b class="mat-body-2">Website: </b> <a href="{{resource.website}}">{{resource.website}}</a></p>
+
+    <p><b class="mat-body-2">Description:</b> {{resource.description}}</p>
+
+  </div>
+  <div fxLayout="column">
+    <google-map [center]="{lat: resource.latitude, lng: resource.longitude}">
+      <map-marker [position]="{lat: resource.latitude, lng: resource.longitude}"></map-marker>
+    </google-map>
+  </div>
+</div>

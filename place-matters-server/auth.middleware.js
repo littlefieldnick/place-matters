@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
+
 const db = require("./database");
 
 const APP_SECRET = "placemattersecret";
