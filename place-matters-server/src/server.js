@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors")
 const bodyParser = require("body-parser");
+const auth = require("./auth.middleware")
 const port = 5000;
 const app = express();
 
 app.use(cors())
 app.use(bodyParser.json());
+app.use(auth);
 
 //Define API Routes
 app.use("/api/counties", require("./routes/county.route"));

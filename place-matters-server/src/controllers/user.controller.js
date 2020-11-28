@@ -1,4 +1,6 @@
 let db = require("../database");
+let bcrypt = require("bcrypt");
+let saltRounds = process.env.saltRounds || require("../config/dev.config").saltRounds;
 const {assignRolesToUser, removeRolesFromUser} = require("../utils/helper.utils.js")
 
 function getAll(req, res) {
@@ -35,18 +37,25 @@ function getById(req, res) {
 }
 
 async function create(req, res) {
-    let user = req.body
+    let user = req.body;
+    let salt = await bcrypt.genSalt(saltRounds);
+
+    user.password = await bcrypt.hash(user.password, salt);
+    user.confirmPassword = await bcrypt.hash(user.confirmPassword, salt);
+
     if (user.id) {
         res.status(400)
             .json({
                 error: "Bad request. An id parameter was provided. An id is automatically created by the database."
             });
+
+        return;
     } else {
         let transaction = await db.transaction();
         let createdUser = await db.models.user.create(user, {transaction}).catch(err => {
             res.status(500).json({
                 message: err.message || "An error occurred while creating the user."
-            })
+            });
 
             return;
         });
@@ -54,9 +63,8 @@ async function create(req, res) {
         if (user.rolesToAdd) {
             await assignRolesToUser(createdUser, user.rolesToAdd, transaction).catch((err) => {
                 res.status(500).json({err: err.message || "An error occurred while setting roles for the user provided."});
+                return;
             })
-
-            return;
         }
 
         try{

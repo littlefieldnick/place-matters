@@ -147,7 +147,7 @@ $place-matters-primary: mat-palette($customPrimary);
 $place-matters-accent: mat-palette($customAccent);
 
 // The warn palette is optional (defaults to red).
-$place-matters-warn: mat-palette($customWarn);
+$place-matters-warn: mat-palette($customWarn, A700);
 
 //Background Colors:
 $place-matters-background: mat-palette($customBackground);

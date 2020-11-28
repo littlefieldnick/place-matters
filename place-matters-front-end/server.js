@@ -3,7 +3,7 @@ const cors = require("cors")
 const bodyParser = require("body-parser");
 const port = 5000;
 const app_folder = 'dist/place-matters';
-const auth = require("../place-matters-server/auth.middleware");
+const auth = require("../place-matters-server/src/auth.middleware");
 const app = express();
 
 app.use(cors())
