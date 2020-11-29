@@ -31,7 +31,7 @@ export function dashboardLayoutInit(appConfigService: AppConfigService){
 
 @NgModule({
   declarations: [
-    MapContainerDirective,
+      MapContainerDirective,
       AppComponent,
       MainComponent,
       ResourceInfoComponent,

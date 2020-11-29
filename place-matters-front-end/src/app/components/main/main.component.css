@@ -12,6 +12,8 @@
 
 .map-format{
   padding: 10px 10px 10px 10px;
+  width: 100%;
+  height: 100%;
 }
 
 /*mat-form-field.mat-form-field {*/

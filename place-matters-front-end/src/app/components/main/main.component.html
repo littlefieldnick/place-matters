@@ -33,7 +33,7 @@
             </div>
         </cdk-virtual-scroll-viewport>
     </div>
-    <mat-card fxFlex.gt-sm="70%">
+    <mat-card fxFlex.gt-sm="70%" class="map-format">
         <form [formGroup]="searchForm" (ngSubmit)="search()">
             <mat-form-field fxFlex="20" *ngFor="let control of searchForm.formControls">
                 <mat-label>{{control.label}}</mat-label>
@@ -53,7 +53,8 @@
             </div>
         </form>
 
-        <map-display class="map-format" [fxShow.lt-md]="mapOpen" [resources]="resources"></map-display>
+        <map-display class="map-format"
+                     [fxShow.lt-md]="mapOpen" [resources]="resources"></map-display>
     </mat-card>
 
 
