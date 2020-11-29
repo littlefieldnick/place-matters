@@ -4,6 +4,7 @@ import {Resource} from "../../../../models/resource";
 import {ResourceService} from "../../../../services/resource.service";
 import {ResourceCategory} from "../../../../models/resource_category";
 import {CategoryService} from "../../../../services/category.service";
+import {catchError} from "rxjs/operators";
 
 @Component({
     selector: 'upload-dialog',
@@ -22,8 +23,12 @@ export class UploadDialogComponent implements OnInit {
     @Input()
     county: number;
 
+    @Input()
+    categories: Array<ResourceCategory>
+
     @Output()
     success: Object;
+
 
     constructor(private resourceService: ResourceService, private categoryService: CategoryService, private papa: Papa) {
 
@@ -35,46 +40,49 @@ export class UploadDialogComponent implements OnInit {
 
 
 
-    uploadFile() {
+    async uploadFile() {
         this.step = "Processing data...";
         let categories;
-
-        this.categoryService.getCategories().subscribe((cats: ResourceCategory[]) => {
-            categories = cats;
-        });
 
         let options = {
             header: true,
             transformHeader: (header) => {
-                return this.mappedHeaders[header];
+                return this.mappedHeaders[header].mappedName;
             },
 
             complete: (results, file) => {
                 let data = []
+
+
                 for (let row = 0; row < results.data.length; row++) {
+                    console.log(results.data[row]);
                     let resource = new Resource();
                     Object.assign(resource, results.data[row]);
                     resource.countyName = this.county;
                     resource.categoryName = -1;
-                    categories.forEach((cat) => {
+                    for(let cat of this.categories) {
+
                         if (cat.categoryName == results.data[row].category) {
-                            console.log("CATEGORY MATCH");
                             resource.categoryName = cat.id;
                         }
-                    });
+                    }
                     console.log(resource);
                     data.push(resource);
-                }
+                };
 
                 this.step = "Uploading data...";
-                let uploadStatus = this.resourceService.bulkResourceSave(data)
-                if (uploadStatus["success"]) {
-                    this.step = "Uploading complete!";
-                } else {
-                    this.step = "An error occurred while uploading the resources.";
-                }
+                let uploadStatus = {};
 
-                this.success = uploadStatus;
+                this.resourceService.bulkResourceSave(data).subscribe((re) => {
+                    if (uploadStatus["success"]) {
+                        this.step = "Uploading complete!";
+                    } else {
+                        this.step = "An error occurred while uploading the resources.";
+                    }
+                    this.success = uploadStatus["success"];
+                }), catchError((err) => {
+                    return err;
+                });
             }
         }
 

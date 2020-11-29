@@ -37,7 +37,6 @@ export class MainComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.categories = this.activatedRoute.snapshot.data.categories;
     this.resources = this.activatedRoute.snapshot.data.resources.data;
-
     console.log(this.resources);
   }
 

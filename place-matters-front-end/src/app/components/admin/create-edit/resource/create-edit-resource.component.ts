@@ -35,7 +35,7 @@ export class CreateEditResourceComponent implements OnInit {
 
     this.categoryService.getCategories().subscribe((cats) => {
       this.formCategories = cats;
-    })
+    });
 
     this.resourceService.getCounties().subscribe((counties) => {
       this.formCounties = counties["data"];

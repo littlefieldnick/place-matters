@@ -8,6 +8,8 @@ import {CsvHeader} from "../../../models/csv-record";
 import {AppConfigService} from "../../../services/app-config.service";
 import {MatDialog} from "@angular/material/dialog";
 import {UploadDialogComponent} from "./upload-dialog/upload-dialog.component";
+import {CategoryService} from "../../../services/category.service";
+import {ResourceCategory} from "../../../models/resource_category";
 
 @Component({
     selector: 'resource-csv-upload',
@@ -21,20 +23,28 @@ export class ResourceCsvUploadComponent implements OnInit {
     countyFormStep: FormGroup;
     csvFormStep: FormGroup;
     countyListing: Array<County>;
+    categories: Array<ResourceCategory>;
     dataSource: CsvHeader[];
     displayedColumns = ["csvColumn", "example", "dbColumn"];
     resourceDbColumnNames = this.appConfigService.resourceDbColumnMappingLabels;
     finalColumnMapping = {};
     fileSizeLimit = 5;
 
-    constructor(private papa: Papa, private dialog: MatDialog, private formBuilder: FormBuilder, private appConfigService: AppConfigService,
-                private resourceService: ResourceService, private uploader: CsvUploadService) {
+    constructor(private papa: Papa, private dialog: MatDialog, private formBuilder: FormBuilder,
+                private appConfigService: AppConfigService,
+                private categoryService: CategoryService,
+                private resourceService: ResourceService,
+                private uploader: CsvUploadService) {
 
     }
 
     ngOnInit(): void {
         this.resourceService.getCounties().subscribe((counties) => {
             this.countyListing = counties["data"];
+        });
+
+        this.categoryService.getCategories().subscribe((cats) => {
+            this.categories = cats;
         });
 
         this.countyFormStep = this.formBuilder.group({
@@ -125,6 +135,7 @@ export class ResourceCsvUploadComponent implements OnInit {
         dialogInstance.uploadedFile = this.uploadedFile;
         dialogInstance.mappedHeaders = this.finalColumnMapping;
         dialogInstance.county = this.countyFormStep.controls["county"].value;
+        dialogInstance.categories = this.categories;
         dialogRef.afterClosed().subscribe((success) => {
             console.log(success);
         });

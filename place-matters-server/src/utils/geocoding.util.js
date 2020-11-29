@@ -10,7 +10,7 @@ async function geocodeResource(resource) {
     return await client.geocode({
         params: {
             address: buildGeocodingAddress(resource),
-            key: process.env.googleMapsApi
+            key: process.env.GOOGLE_API
         }
     }).then((geocoded) => geocoded.data.results[0].geometry);
 }

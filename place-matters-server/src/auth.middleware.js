@@ -27,7 +27,6 @@ module.exports = async function (req, res, next) {
                 }
             })).toJSON();
 
-            console.log(await bcrypt.compare(password, user.password));
             if (user && await bcrypt.compare(password, user.password)) {
                 jwt.sign({
                     data: user.email,
@@ -71,6 +70,7 @@ module.exports = async function (req, res, next) {
             res.status(401).json({success: false, error: "JWT Token provided is invalid."})
         }
     } else if (requiresAuthentication(req.method, req.url)) { //authentication needed
+        console.log(req.url);
         let token = req.headers["authorization"] || "";
 
         if (token.startsWith("Bearer ")) {
@@ -85,5 +85,7 @@ module.exports = async function (req, res, next) {
         } else {
             res.status(401).json({success: false, error: "JWT Token provided is invalid."})
         }
+    } else {
+        next();
     }
 }

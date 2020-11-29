@@ -4,11 +4,11 @@
      fxLayoutGap="10px"
      style="padding-top: 10px">
     <div fxFlex="70%" fxLayout="column wrap">
-        <h1 class="mat-headline" style="color:indigo">Admin Dashboard</h1>
+        <p class="mat-headline" style="color:indigo">Admin Dashboard</p>
         <h5>Welcome, $$placeholder$$</h5>
         <mat-divider></mat-divider>
         <div *ngFor="let card of cards | async" fxLayoutGap="10px">
-            <h1 class="mat-h1">{{card.section}}</h1>
+            <p class="mat-headline">{{card.section}}</p>
             <mat-divider></mat-divider>
 
             <div fxLayout="row wrap">

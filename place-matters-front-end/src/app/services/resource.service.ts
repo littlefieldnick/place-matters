@@ -25,16 +25,8 @@ export class ResourceService {
   }
 
   bulkResourceSave(resources: Resource[]){
-    let errs = []
-    resources.forEach((r) => {
-      this.http.post<Resource[]>(this.apiURL + "api/resources/",
-          {resource: r}, this.authService.getOptions()).subscribe((data) => {
-            if(!data["success"])
-              errs.push(r);
-      });
-    });
-    let status = errs.length == 0;
-    return  {success: status, errors: errs}
+    return this.http.post<Resource[]>(this.apiURL + "api/resources/upload",
+          {resource: resources}, this.authService.getOptions());
   }
 
   saveResource(resource: Resource): Observable<Resource> {
@@ -44,10 +36,11 @@ export class ResourceService {
     }
 
     return this.http.post<Resource>(this.apiURL + "api/resources/",
-        {resource: [resource]}, this.authService.getOptions());
+        {resource: resource}, this.authService.getOptions());
   }
 
   getCounties(): Observable<County>{
+    console.log("Getting Counties!");
     return this.http.get<County>(this.apiURL + 'api/counties');
   }
 
@@ -62,6 +55,7 @@ export class ResourceService {
     if(category.length > 0){
       params["category"] = category
     }
+
     return this.http.get<Resource>(this.apiURL +"api/resources/search",
       {headers: headers, params: params})
   }
