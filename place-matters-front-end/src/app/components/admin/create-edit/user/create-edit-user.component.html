@@ -19,12 +19,13 @@
                         {{control.label}}
                     </mat-label>
 
-                    <mat-select *ngIf="control.modelProperty == 'role'; else elseBlock" formControlName="{{control.modelProperty}}">
-                        <mat-option *ngFor="let r of roles | async" [value]="r.id">
-                            {{r.name}}
-                        </mat-option>
-                    </mat-select>
-
+                    <div *ngIf="control.modelProperty == 'role'; else elseBlock">
+                        <mat-select formControlName="{{control.modelProperty}}">
+                            <mat-option *ngFor="let r of roles | async" [value]="r.id">
+                                {{r.name}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
                     <ng-template #elseBlock>
                         <div *ngIf="control.modelProperty.toLowerCase().search('password') >= 0; else inputBlock">
                             <input type="password" matInput formControlName="{{control.modelProperty}}">
@@ -32,7 +33,7 @@
                     </ng-template>
 
                     <ng-template #inputBlock>
-                        <input  type="text" matInput formControlName="{{control.modelProperty}}">
+                        <input type="text" matInput formControlName="{{control.modelProperty}}">
                     </ng-template>
 
                     <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">

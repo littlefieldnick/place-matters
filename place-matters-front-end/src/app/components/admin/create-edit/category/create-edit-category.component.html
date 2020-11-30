@@ -18,12 +18,9 @@
                     <mat-label>
                         {{control.label}}
                     </mat-label>
-                    <div *ngIf="control.modelProperty.toLowerCase().search('password') >= 0; else inputBlock">
-                        <input type="password" matInput formControlName="{{control.modelProperty}}">
-                    </div>
-                    <ng-template #inputBlock>
-                        <input type="text" matInput formControlName="{{control.modelProperty}}">
-                    </ng-template>
+
+                    <input type="text" matInput formControlName="{{control.modelProperty}}">
+
                     <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
                         A {{control.modelProperty}} is required.
                     </mat-error>

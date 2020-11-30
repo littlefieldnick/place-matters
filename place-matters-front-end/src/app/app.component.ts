@@ -8,7 +8,7 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  title = 'Place Matters';
+  title = 'Place Matters Maine';
   icon: string;
   authenticated = false
   adminNav = ["View Map", "Edit/View Resources", "Add Resource", "Upload Resources",
@@ -18,16 +18,10 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.authService.isAuthenticated().subscribe((auth) => {
-      this.authenticated = auth["success"];
-      if(this.authenticated)
-        this.icon = "logout";
-      else
-        this.icon = "person";
-    });
+
   }
 
-  checkAuthentication(){
-    this.authService.isAuthenticated();
+  isAuthenticated(){
+    return localStorage.getItem("loggedInUser");
   }
 }

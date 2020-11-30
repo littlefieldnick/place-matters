@@ -8,6 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { DashComponent } from './dash.component';
+import {RouterTestingModule} from "@angular/router/testing";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {AppConfigService} from "../../../services/app-config.service";
+
+export class MockAppConfigService extends AppConfigService{
+
+}
 
 describe('DashComponent', () => {
   let component: DashComponent;
@@ -24,17 +31,22 @@ describe('DashComponent', () => {
         MatGridListModule,
         MatIconModule,
         MatMenuModule,
-      ]
+        RouterTestingModule,
+        HttpClientTestingModule
+
+    ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashComponent);
     component = fixture.componentInstance;
+    component.loggedInUser = {firstName: "John", lastName: "Smith"};
     fixture.detectChanges();
   });
 
   it('should compile', () => {
+
     expect(component).toBeTruthy();
   });
 });
