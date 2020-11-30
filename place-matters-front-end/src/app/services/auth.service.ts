@@ -45,12 +45,12 @@ export class AuthService {
             }));
     }
 
-    getUser(id?: number){
-        if(id){
+    getUser(id?: number) {
+        if (id) {
             return this.http.get(this.apiRoute + "api/users/" + id, this.getOptions())
                 .pipe(map((users: User) => {
                     return users["data"];
-                }))
+                }));
         }
 
         return this.http.get(this.apiRoute + "api/users", this.getOptions())
@@ -63,7 +63,7 @@ export class AuthService {
         return localStorage.getItem("accessToken");
     }
 
-    logout(){
+    logoutUser() {
         localStorage.removeItem("accessToken");
     }
 
@@ -72,9 +72,18 @@ export class AuthService {
 
         let headers = new HttpHeaders({
             authorization: "Bearer " + jwtToken
-        })
+        });
+
+        let user = JSON.parse(localStorage.getItem("loggedInUser"));
 
         return this.http.post(this.apiRoute + "auth/verify", {}, this.getOptions()).pipe(
+            map((auth) => {
+                if (auth["success"] && auth["decoded"]["data"] == user.email) {
+                    return true;
+                }
+
+                return false;
+            }),
             catchError(err => {
                 let errMsg = this.errorHandler.processServerError(err);
                 return throwError(errMsg);
@@ -89,5 +98,4 @@ export class AuthService {
             })
         }
     }
-
 }

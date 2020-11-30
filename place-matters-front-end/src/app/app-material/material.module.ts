@@ -29,12 +29,14 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
     exports: [
         MatInputModule,
         MatAutocompleteModule,
         MatButtonModule,
+        MatCheckboxModule,
         MatDatepickerModule,
         MatFormFieldModule,
         MatRadioModule,

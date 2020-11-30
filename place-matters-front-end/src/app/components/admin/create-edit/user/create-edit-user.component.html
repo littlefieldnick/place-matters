@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
+<div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px">
     <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
         <h1 class="mat-headline">
             {{!this.editing ? "Add a User" : "Edit User Information"}}
@@ -18,12 +18,23 @@
                     <mat-label>
                         {{control.label}}
                     </mat-label>
-                    <div *ngIf="control.modelProperty.toLowerCase().search('password') >= 0; else inputBlock">
-                        <input type="password" matInput formControlName="{{control.modelProperty}}">
-                    </div>
-                    <ng-template #inputBlock>
-                        <input type="text" matInput formControlName="{{control.modelProperty}}">
+
+                    <mat-select *ngIf="control.modelProperty == 'role'; else elseBlock" formControlName="{{control.modelProperty}}">
+                        <mat-option *ngFor="let r of roles | async" [value]="r.id">
+                            {{r.name}}
+                        </mat-option>
+                    </mat-select>
+
+                    <ng-template #elseBlock>
+                        <div *ngIf="control.modelProperty.toLowerCase().search('password') >= 0; else inputBlock">
+                            <input type="password" matInput formControlName="{{control.modelProperty}}">
+                        </div>
                     </ng-template>
+
+                    <ng-template #inputBlock>
+                        <input  type="text" matInput formControlName="{{control.modelProperty}}">
+                    </ng-template>
+
                     <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
                         A {{control.modelProperty}} is required.
                     </mat-error>

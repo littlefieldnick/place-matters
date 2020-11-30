@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {DomSanitizer} from "@angular/platform-browser";
-import {MatIconRegistry} from "@angular/material/icon";
 import {AuthService} from "./services/auth.service";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -21,17 +18,16 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.checkAuthentication();
-  }
-
-  checkAuthentication(){
     this.authService.isAuthenticated().subscribe((auth) => {
       this.authenticated = auth["success"];
-      console.log(auth);
       if(this.authenticated)
         this.icon = "logout";
       else
-        this.icon = "person"
-    })
+        this.icon = "person";
+    });
+  }
+
+  checkAuthentication(){
+    this.authService.isAuthenticated();
   }
 }

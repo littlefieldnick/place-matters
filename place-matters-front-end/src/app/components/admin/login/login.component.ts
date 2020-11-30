@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
         if (response["success"]) {
           this.snackBar.dismiss(); //dismiss server error if open
           localStorage.setItem("accessToken", response["token"]);
+          localStorage.setItem("loggedInUser", JSON.stringify(response["user"]))
           this.router.navigateByUrl("admin/dash");
         }
       });

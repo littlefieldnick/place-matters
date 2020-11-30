@@ -24,7 +24,13 @@ module.exports = async function (req, res, next) {
             let user = (await db.models.user.findOne({
                 where: {
                     email: email
-                }
+                },
+                include: [{
+                    model: db.models.role,
+                    include: [{
+                        model: db.models.permission
+                    }]
+                }]
             })).toJSON();
 
             if (user && await bcrypt.compare(password, user.password)) {
@@ -35,7 +41,7 @@ module.exports = async function (req, res, next) {
                     if (err) {
                         res.status(401).json({success: false, errors: err});
                     } else {
-                        res.status(200).json({success: true, token: token});
+                        res.status(200).json({success: true, user:user, token: token});
                     }
                 });
             } else {

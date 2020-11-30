@@ -19,6 +19,7 @@ async function removePermissionFromRoles(role, permsToRemove, transaction){
 async function assignRolesToUser(user, rolesToAdd, transaction){
     for (let role of rolesToAdd) {
         if(role.id){
+            console.log("Adding Role");
             await user.addRole(role.id, {transaction});
         } else {
             let rCreated = await models.roles.create(role, {transaction});

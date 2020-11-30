@@ -6,6 +6,9 @@ import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 import {User} from "../../../../models/user";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Role} from "../../../../models/role";
+import {RoleService} from "../../../../services/role.service";
+
 
 @Component({
     selector: 'create-edit-user',
@@ -13,19 +16,19 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     styleUrls: ['./create-edit-user.component.scss']
 })
 export class CreateEditUserComponent implements OnInit {
-    registerForm: RegistrationForm
-    formSubmitted: boolean
+    registerForm: RegistrationForm;
+    formSubmitted: boolean;
     editing: boolean;
     errors: string [];
     user: User;
+    roles = this.roleService.getRole();
 
     constructor(private authService: AuthService, activatedRoute: ActivatedRoute, private router: Router,
-                private snackBar: MatSnackBar) {
+                private snackBar: MatSnackBar, private roleService: RoleService) {
         this.registerForm = new RegistrationForm();
         this.formSubmitted = false;
         this.user = new User();
         this.editing = activatedRoute.snapshot.params["mode"] == 'edit';
-
 
         if (this.editing) {
             this.authService.getUser(activatedRoute.snapshot.params["id"]).subscribe((userInfo: User) => {
@@ -55,6 +58,10 @@ export class CreateEditUserComponent implements OnInit {
             console.log(c);
             this.user[c] = this.registerForm.controls[c].value
         });
+
+        this.user["rolesToAdd"] = [{
+            id: this.registerForm.controls["role"].value
+        }];
 
         if (this.registerForm.valid) {
             this.authService.saveUser(this.user).pipe(catchError(err => {

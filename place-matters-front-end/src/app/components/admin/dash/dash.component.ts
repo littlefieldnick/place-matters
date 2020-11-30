@@ -2,9 +2,9 @@ import {Component, ViewChild} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {DomSanitizer} from "@angular/platform-browser";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AppConfigService} from "../../../services/app-config.service";
-import {MatSidenav} from "@angular/material/sidenav";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'dash',
@@ -26,9 +26,12 @@ export class DashComponent {
       return this.appConfigService.dashLayout["main"];
     })
   );
-
-  constructor(private router: Router, private breakpointObserver: BreakpointObserver,
-              private sanitizer: DomSanitizer, private appConfigService: AppConfigService) {}
+  loggedInUser;
+  constructor(private route: ActivatedRoute, private router: Router, private breakpointObserver: BreakpointObserver,
+              private sanitizer: DomSanitizer, private appConfigService: AppConfigService,
+              private authService: AuthService) {
+      this.loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  }
 
   navigate(url){
     this.router.navigate([url]);

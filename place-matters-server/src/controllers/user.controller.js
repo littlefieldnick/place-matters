@@ -4,7 +4,8 @@ let saltRounds = process.env.saltRounds || require("../config/dev.config").saltR
 const {assignRolesToUser, removeRolesFromUser} = require("../utils/helper.utils.js")
 
 function getAll(req, res) {
-    db.models.user.findAll({include: [
+    db.models.user.findAll({
+        include: [
             {
                 model: db.models.role,
                 include: [{
@@ -21,7 +22,8 @@ function getAll(req, res) {
 
 function getById(req, res) {
     const id = req.params.id;
-    db.models.user.findByPk(id, {include: [
+    db.models.user.findByPk(id, {
+        include: [
             {
                 model: db.models.role,
                 include: [{
@@ -37,12 +39,9 @@ function getById(req, res) {
 }
 
 async function create(req, res) {
-    let user = req.body;
+    let user = req.body.user;
     let salt = await bcrypt.genSalt(saltRounds);
-
-    user.password = await bcrypt.hash(user.password, salt);
-    user.confirmPassword = await bcrypt.hash(user.confirmPassword, salt);
-
+    console.log(user);
     if (user.id) {
         res.status(400)
             .json({
@@ -50,7 +49,18 @@ async function create(req, res) {
             });
 
         return;
+    } else if (user.password == undefined || user.confirmPassword == undefined) {
+        res.status(400)
+            .json({
+                error: "Bad request. Either the password or password confirmation is not provided."
+            });
+
+        return;
     } else {
+
+        user.password = await bcrypt.hash(user.password, salt);
+        user.confirmPassword = await bcrypt.hash(user.confirmPassword, salt);
+
         let transaction = await db.transaction();
         let createdUser = await db.models.user.create(user, {transaction}).catch(err => {
             res.status(500).json({
@@ -66,16 +76,17 @@ async function create(req, res) {
                 res.status(500).json({err: err.message || "An error occurred while setting roles for the user provided."});
                 return;
             })
+
+            createdUser.reload();
         }
 
-        try{
+        try {
             await transaction.commit().then(() => {
                 res.status(200).json({data: createdUser});
             });
         } catch {
 
         }
-
     }
 }
 
@@ -123,7 +134,7 @@ async function update(req, res) {
         return;
     })
 
-    try{
+    try {
         await transaction.commit().then(() => {
             res.status(200).json({success: true})
         }).catch((err) => {
@@ -153,7 +164,7 @@ async function deleteUser(req, res) {
             id: id
         }
     }).then((deleted) => {
-        res.status(200).json({success:true, deleted: deleted})
+        res.status(200).json({success: true, deleted: deleted})
     }).catch((err) => {
         res.status(500).json({error: err.message || "An error occurred deleting a user with id: " + id})
     });

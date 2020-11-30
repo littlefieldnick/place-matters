@@ -1,13 +1,12 @@
 <mat-toolbar color="primary">
-  <button [fxHide]="" mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  <button [fxHide]="!authenticated" mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
   <img src="assets/logos/placematters_white_sm.png" class="logo">
 
   <span class="pull-right"></span>
-  <button mat-icon-button
-          matTooltip="Admin Login"
-          aria-label="Admin Login"
-          routerLink="admin/login">
-    <mat-icon [svgIcon]="icon"></mat-icon>
+  <button mat-icon-button (click)="authService.logoutUser()"
+          [matTooltip]="!authenticated ? 'Admin Login' : 'Logout'"
+          [routerLink]="!authenticated ? 'admin/login': '/'">
+    <mat-icon [svgIcon]="!authenticated ? 'person' : 'logout'"></mat-icon>
   </button>
 </mat-toolbar>
 

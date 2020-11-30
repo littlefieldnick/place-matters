@@ -4,10 +4,10 @@
      fxLayoutGap="10px"
      style="padding-top: 10px">
     <div fxFlex="70%" fxLayout="column wrap">
-        <p class="mat-headline" style="color:indigo">Admin Dashboard</p>
-        <h5>Welcome, $$placeholder$$</h5>
+        <p class="mat-headline" style="color:indigo">Dashboard</p>
+        <h5>Welcome, {{loggedInUser.firstName}} {{loggedInUser.lastName}}!</h5>
         <mat-divider></mat-divider>
-        <div *ngFor="let card of cards | async" fxLayoutGap="10px">
+        <div *ngFor="let card of cards | async" fxLayoutGap="10px" [hidden]="card.section === 'Admin' && loggedInUser.roles[0].name !== 'ADMIN'">
             <p class="mat-headline">{{card.section}}</p>
             <mat-divider></mat-divider>
 
@@ -22,23 +22,3 @@
         </div>
     </div>
 </div>
-
-<!--<div class="grid-container">-->
-<!--    <h1 class="mat-h1">Dashboard</h1>-->
-<!--    <div *ngFor="let card of cards | async">-->
-<!--        <h1 class="mat-h1">{{card.section}}</h1>-->
-<!--        <mat-divider></mat-divider>-->
-<!--        <mat-grid-list [cols]="columns" [rowHeight]="rowHeight">-->
-<!--            <mat-grid-tile class="grid-tile" *ngFor="let route of card.routes" [colspan]="route.cols" [rowspan]="route.rows">-->
-<!--                <mat-card (click)="navigate(route.route)" class="dashboard-card" matTooltip="{{route.tooltip}}">-->
-<!--                    <mat-card-title>-->
-<!--                        {{route.title}}-->
-<!--                    </mat-card-title>-->
-<!--                    <mat-card-content class="dashboard-card-content">-->
-<!--                        <mat-icon class="card-icon" [svgIcon]="route.icon"></mat-icon>-->
-<!--                    </mat-card-content>-->
-<!--                </mat-card>-->
-<!--            </mat-grid-tile>-->
-<!--        </mat-grid-list>-->
-<!--    </div>-->
-<!--</div>-->

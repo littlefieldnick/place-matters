@@ -7,6 +7,7 @@ export class RegistrationForm extends FormGroup{
       firstName: new DefaultFormControl('First Name', 'firstName', '', [Validators.required], false),
       lastName: new DefaultFormControl('Last Name', 'lastName', '', [Validators.required], false ),
       email: new DefaultFormControl('Email', 'email', '', [Validators.required], false ),
+      role: new DefaultFormControl('Role', 'role', '', [Validators.required], false),
       password: new DefaultFormControl('Password', 'password', '', [Validators.required], false ),
       confirmPassword: new DefaultFormControl('Confirm Password', 'confirmPassword', '', [Validators.required], false )
     })
