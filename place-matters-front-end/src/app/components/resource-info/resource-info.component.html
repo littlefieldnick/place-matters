@@ -1,0 +1,33 @@
+<div class="info-container">
+    <span class="pull-right">
+        <button mat-icon-button
+                matTooltip="Close Information"
+                aria-label="Close Information"
+                (click)="this.closeInfo.emit(true)">
+                <mat-icon [svgIcon]="icon"></mat-icon>
+        </button>
+    </span>
+
+    <h1 class="mat-headline">{{resource.name}}</h1>
+    <h1 class="mat-headline">{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource.zip}}</h1>
+
+    <button mat-stroked-button color="primary">{{resource.category.categoryName}}</button>
+    <br/><br/>
+
+    <google-map [height]="375" [width]="700" [center]="{lat: resource.latitude, lng: resource.longitude}">
+        <map-marker [position]="{lat: resource.latitude, lng: resource.longitude}"></map-marker>
+    </google-map>
+
+
+    <p class="mat-headline">Website</p>
+    <a href="{{resource.website}}">{{resource.website}}</a>
+
+    <p class="mat-headline">Phone</p>
+    <p>{{resource.phone || "Not Available"}}</p>
+
+    <p class="mat-headline">Email</p>
+    <p>{{resource.email || "Not Available"}}</p>
+
+    <p class="mat-headline">Description</p>
+    <p>{{resource.description}}</p>
+</div>

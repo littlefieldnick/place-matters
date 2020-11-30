@@ -1,0 +1,24 @@
+<div class="container"
+     fxLayout="row wrap"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     style="padding-top: 10px">
+    <div fxFlex="70%" fxLayout="column wrap">
+        <p class="mat-headline" style="color:indigo">Dashboard</p>
+        <h5>Welcome, {{loggedInUser.firstName}} {{loggedInUser.lastName}}!</h5>
+        <mat-divider></mat-divider>
+        <div *ngFor="let card of cards | async" fxLayoutGap="10px" [hidden]="card.section === 'Admin' && loggedInUser.roles[0].name !== 'ADMIN'">
+            <p class="mat-headline">{{card.section}}</p>
+            <mat-divider></mat-divider>
+
+            <div fxLayout="row wrap">
+                <mat-card (click)="navigate(route.route)" fxFlexOffset="10px" fxFlex="30%" *ngFor="let route of card.routes">
+                    <mat-card-subtitle>
+                        <mat-icon [svgIcon]="route.icon"></mat-icon>
+                        {{route.title}}
+                    </mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

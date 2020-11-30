@@ -1,0 +1,48 @@
+[
+  {
+    "name": "ADMIN",
+    "description": "Maintains mapping application. Has same permissions as a DATA_MANAGER, but with the addition of maintaining user accounts.",
+    "permissions": [
+      {
+        "id": 1
+      },
+      {
+        "id": 2
+      },
+      {
+        "id": 3
+      },
+      {
+        "id": 4
+      },
+      {
+        "id": 5
+      },
+      {
+        "id": 6
+      },
+      {
+        "id": 7
+      }
+    ]
+  },
+
+  {
+    "name": "DATA_MANAGER",
+    "description": "Maintains mapping data. Can view, create, update, and delete records.",
+    "permissions": [
+      {
+        "id": 1
+      },
+      {
+        "id": 2
+      },
+      {
+        "id": 3
+      },
+      {
+        "id": 4
+      }
+    ]
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "READ",
+    "description": "Access data records from the database."
+  },
+  {
+    "name": "WRITE",
+    "description": "Create new data records and save them to the database."
+  },
+  {
+    "name": "UPDATE",
+    "description": "Update data records already saved in the database."
+  },
+  {
+    "name": "DELETE",
+    "description": "Delete a data record from the database."
+  },
+  {
+    "name": "CREATE_USER",
+    "description": "Add new users to the database."
+  },
+  {
+    "name": "DELETE_USER",
+    "description": "Delete a user from the database."
+  },
+  {
+    "name": "VIEW_USER",
+    "description": "View all users in the database."
+  }
+]

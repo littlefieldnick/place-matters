@@ -1,0 +1,50 @@
+<div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
+    <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
+        <h1 class="mat-headline">
+            {{!this.editing ? "Add a Resource" : "Edit Resource Information"}}
+        </h1>
+        <mat-divider></mat-divider>
+        <form novalidate [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+            <mat-card *ngIf="formSubmitted && resourceForm.invalid">
+                There are problems with the form
+                <ul>
+                    <li *ngFor="let error of resourceForm.getFormValidationMessages()">
+                        {{error}}
+                    </li>
+                </ul>
+            </mat-card>
+            <div *ngFor="let control of resourceForm.formControls">
+                <mat-form-field fxFlex="100%" appearance="outline">
+                    <mat-label>
+                        {{control.label}}
+                    </mat-label>
+                    <input type="text" matInput formControlName="{{control.modelProperty}}"
+                      *ngIf="(control.modelProperty != 'category' && control.modelProperty != 'county'); else elseBlock">
+
+                    <ng-template #elseBlock>
+                        <mat-select formControlName="{{control.modelProperty}}">
+                            <mat-option>---</mat-option>
+                            <div *ngIf="control.modelProperty == 'category'; else countyOptions">
+                                <mat-option *ngFor="let category of formCategories" [value]="category.id">
+                                    {{category.categoryName}}
+                                </mat-option>
+                            </div>
+                            <ng-template #countyOptions>
+                                <mat-option *ngFor="let county of formCounties" [value]="county.id">
+                                    {{county.countyName}}
+                                </mat-option>
+                            </ng-template>
+                        </mat-select>
+                    </ng-template>
+
+                    <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+                        A {{control.modelProperty}} is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary">
+                {{!this.editing ? 'Add Resource' : 'Update Resource Information'}}
+            </button>
+        </form>
+    </div>
+</div>

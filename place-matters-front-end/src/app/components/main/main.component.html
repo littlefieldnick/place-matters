@@ -1,0 +1,73 @@
+<div fxLayout="row wrap" fxLayout.sm="column" style="margin-left:10px; margin-right: 10px">
+    <div fxFlex.gt-sm="30%" fxFlex.lt-sm="100%" [fxHide]="mapOpen">
+        <mat-card>
+            <mat-card-content>
+                <p class="mat-headline">ABOUT</p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Vivamus at augue eget arcu dictum
+                    varius duis. Non sodales neque sodales ut etiam sit amet nisl purus. Neque gravida
+                    in fermentum et sollicitudin ac orci. Feugiat in fermentum posuere urna nec tincidunt
+                    praesent semper.
+                </p>
+            </mat-card-content>
+        </mat-card>
+
+        <cdk-virtual-scroll-viewport itemSize="10" class="map-list-viewport">
+            <div *cdkVirtualFor="let resource of resources; let idx = index">
+                <mat-card>
+                    <mat-card-content>
+                        <h2>{{resource.name}}</h2>
+                        <h4>{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource["zipcode"]}}</h4>
+                        <mat-chip-list>
+                            <mat-chip color="accent" selected>
+                                {{resource.category.categoryName || ""}}
+                            </mat-chip>
+                        </mat-chip-list>
+                        <br>
+                        <a (click)="openResourceInfo(resource)" mat-raised-button color="primary">More Information</a>
+                        <a (click)="this.openInfoBox(resource.id)" mat-raised-button color="primary">Show on Map</a>
+                    </mat-card-content>
+                </mat-card>
+                <hr>
+            </div>
+        </cdk-virtual-scroll-viewport>
+    </div>
+    <mat-card class="map-format" fxFlex.gt-sm="70%" *ngIf="resourceOpen; else mapDisplay">
+        <resource-info [resource]="resourceInfoSelection" (closeInfo)="closeResourceInfo()"></resource-info>
+    </mat-card>
+    <ng-template #mapDisplay>
+        <mat-card  class="map-format" fxFlex.gt-sm="70%">
+            <form [formGroup]="searchForm" (ngSubmit)="search()">
+                <mat-form-field fxFlex="25" *ngFor="let control of searchForm.formControls">
+                    <mat-label>{{control.label}}</mat-label>
+                    <mat-select
+                            *ngIf="control.modelProperty == 'category' || control.modelProperty == 'county'; else inputBlock"
+                            formControlName="{{control.modelProperty}}">
+                        <mat-option></mat-option>
+                        <div *ngIf="control.modelProperty == 'category'; else countyBlock">
+                            <mat-option *ngFor="let cat of categories"
+                                        value="{{cat.categoryName}}">{{cat.categoryName}}</mat-option>
+                        </div>
+                        <ng-template #countyBlock>
+                            <mat-option *ngFor="let county of counties"
+                                        value="{{county.countyName}}">{{county.countyName}}</mat-option>
+                        </ng-template>
+                    </mat-select>
+                    <ng-template #inputBlock>
+                        <input type="text" matInput formControlName="{{control.modelProperty}}">
+                    </ng-template>
+                </mat-form-field>
+                <div>
+                    <span><button mat-raised-button color="primary" type="submit">Search</button></span>
+                    <span><button mat-raised-button class="reset" (click)="this.resetSearchForm()">Reset</button></span>
+                </div>
+            </form>
+            <mat-error>
+                {{this.searchError}}
+            </mat-error>
+            <map-display class="map-format"
+                         [fxShow.lt-md]="mapOpen" [resources]="resources"></map-display>
+        </mat-card>
+    </ng-template>
+</div>

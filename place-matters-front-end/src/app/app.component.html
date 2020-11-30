@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <button [fxHide]="!authenticated" mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  <img src="assets/logos/placematters_white_sm.png" class="logo">
+
+  <span class="pull-right"></span>
+  <button mat-icon-button (click)="authService.logoutUser()"
+          [matTooltip]="!authenticated ? 'Admin Login' : 'Logout'"
+          [routerLink]="!authenticated ? 'admin/login': '/'">
+    <mat-icon [svgIcon]="!authenticated ? 'person' : 'logout'"></mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #snav [mode]="'side'">
+    <mat-nav-list>
+      <a mat-list-item routerLink="." *ngFor="let nav of adminNav">{{nav}}</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
