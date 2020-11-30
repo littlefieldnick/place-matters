@@ -62,6 +62,7 @@ async function create(req, res) {
 
         if (user.rolesToAdd) {
             await assignRolesToUser(createdUser, user.rolesToAdd, transaction).catch((err) => {
+                console.log("ERROR ASSIGNING ROLES");
                 res.status(500).json({err: err.message || "An error occurred while setting roles for the user provided."});
                 return;
             })

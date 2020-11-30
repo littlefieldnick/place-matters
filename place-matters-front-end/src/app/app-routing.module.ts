@@ -5,6 +5,7 @@ import {ResourceResolver} from "./resolvers/resource.resolver";
 import {CategoryResolver} from "./resolvers/category.resolver";
 import {ResourceInfoComponent} from "./components/resource-info/resource-info.component";
 import {SingleResourceResolver} from "./resolvers/single-resource.resolver";
+import {CountyResolver} from "./resolvers/county.resolver";
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     component: MainComponent,
     resolve: {
       resources: ResourceResolver,
+      counties: CountyResolver,
       categories: CategoryResolver
     }
   },

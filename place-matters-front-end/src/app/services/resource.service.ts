@@ -39,9 +39,9 @@ export class ResourceService {
         {resource: resource}, this.authService.getOptions());
   }
 
-  getCounties(): Observable<County>{
+  getCounties(): Observable<County[]>{
     console.log("Getting Counties!");
-    return this.http.get<County>(this.apiURL + 'api/counties');
+    return this.http.get<County[]>(this.apiURL + 'api/counties');
   }
 
   searchResources(name: string, category: string): Observable<any> {

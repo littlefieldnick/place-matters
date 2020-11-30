@@ -2,7 +2,18 @@ const {models} = require("../database.js")
 const {geocodeResource} = require("../utils/geocoding.util");
 
 function getAll(req, res) {
-    models.resource.findAll({include: [{model: models.category}, {model: models.county} ]}).then((data) => {
+    models.resource.findAll({
+        include: [
+            {
+                model: models.category,
+            },
+            {
+                model: models.county
+            }],
+        attributes: {
+            exclude: ["countyId", "categoryId"]
+        }
+    }).then((data) => {
         res.status(200).json({data: data});
     }).catch((err) => {
         res.status(400).json({error: err.message || "An error occurred while retrieving the list of resources."})
@@ -11,7 +22,18 @@ function getAll(req, res) {
 
 function getById(req, res) {
     const id = req.params.id;
-    models.resource.findByPk(id).then((data) => {
+    models.resource.findByPk(id, {
+        include: [
+            {
+                model: models.category,
+            },
+            {
+                model: models.county
+            }],
+        attributes: {
+            exclude: ["countyId", "categoryId"]
+        }
+    }).then((data) => {
         res.status(200).json({data: data});
     }).catch((err) => {
         res.status(400).json({error: "Could not find resource with id: " + id})
@@ -46,9 +68,10 @@ async function bulkCreate(req, res) {
 
     await models.resource.bulkCreate(resources).then((data) => {
         console.log(data);
-        res.status(201).json({data: data, failedGeocode: failedGeocode});
+        res.status(201).json({success: true, data: data, failedGeocode: failedGeocode});
     }).catch(err => {
         res.status(500).json({
+            success: false,
             message: err || "An error occurred while creating the resource"
         })
     });

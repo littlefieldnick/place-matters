@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ResourceService} from "../../services/resource.service";
 import { Resource } from "../../models/resource";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-resource-info',
+  selector: 'resource-info',
   templateUrl: './resource-info.component.html',
   styleUrls: ['./resource-info.component.scss']
 })
+
 export class ResourceInfoComponent implements OnInit {
-  id: number
+  icon: string = "close"
+  @Input()
   resource: Resource;
-  constructor(private route: ActivatedRoute, private resourceService: ResourceService) { }
+
+  @Output()
+  closeInfo = new EventEmitter<boolean>();
+
+  constructor() { }
 
   ngOnInit(): void {
-    this.resource = this.route.snapshot.data.id.data;
-    console.log(this.resource)
+
   }
 }

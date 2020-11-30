@@ -1,14 +1,13 @@
 import {FormGroup} from '@angular/forms'
 import {DefaultFormControl} from "./default.form";
 
-
-
 export class SearchForm extends FormGroup{
   constructor() {
     super({
-      name: new DefaultFormControl('Name', 'name', '', [], false),
-      category: new DefaultFormControl('Category', 'category', '', [], false )
-    })
+      name: new DefaultFormControl('Organization Name', 'name', '', [], false),
+      category: new DefaultFormControl('Category', 'category', '', [], false ),
+      county: new DefaultFormControl('County', 'county', '', [], false)
+    });
   }
 
   get formControls(): DefaultFormControl[] {

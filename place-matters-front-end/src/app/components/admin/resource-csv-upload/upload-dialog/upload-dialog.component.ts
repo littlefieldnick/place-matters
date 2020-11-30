@@ -58,15 +58,12 @@ export class UploadDialogComponent implements OnInit {
                     console.log(results.data[row]);
                     let resource = new Resource();
                     Object.assign(resource, results.data[row]);
-                    resource.countyName = this.county;
-                    resource.categoryName = -1;
+                    resource.countyId = this.county; //database expects an integer mapping
                     for(let cat of this.categories) {
-
                         if (cat.categoryName == results.data[row].category) {
-                            resource.categoryName = cat.id;
+                            resource.categoryId = cat.id;
                         }
                     }
-                    console.log(resource);
                     data.push(resource);
                 };
 

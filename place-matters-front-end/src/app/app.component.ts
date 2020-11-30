@@ -12,12 +12,26 @@ import {environment} from "../environments/environment";
 })
 export class AppComponent implements OnInit{
   title = 'Place Matters';
-  loginIcon: string;
-  userLoggedIn: boolean;
-  constructor(private authService: AuthService, private http: HttpClient) {
+  icon: string;
+  authenticated = false
+  adminNav = ["View Map", "Edit/View Resources", "Add Resource", "Upload Resources",
+    "Edit/View Categories", "Add Categories", "View/Edit Users", "Add a User"]
+
+  constructor(public authService: AuthService, private http: HttpClient) {
   }
 
   ngOnInit(){
-    this.loginIcon = "person";
+    this.checkAuthentication();
+  }
+
+  checkAuthentication(){
+    this.authService.isAuthenticated().subscribe((auth) => {
+      this.authenticated = auth["success"];
+      console.log(auth);
+      if(this.authenticated)
+        this.icon = "logout";
+      else
+        this.icon = "person"
+    })
   }
 }

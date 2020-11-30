@@ -57,11 +57,14 @@ export class AuthService {
             .pipe(map((users: Array<User>) => {
                 return users["data"];
             }));
-
     }
 
     getJWTTokenFromStorage() {
         return localStorage.getItem("accessToken");
+    }
+
+    logout(){
+        localStorage.removeItem("accessToken");
     }
 
     isAuthenticated() {
