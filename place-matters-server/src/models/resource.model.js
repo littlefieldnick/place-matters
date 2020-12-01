@@ -62,10 +62,10 @@ module.exports = (sequelize) => {
         },
 
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(5000),
             validate: {
                 notEmpty: true,
-                len: [0, 500]
+                len: [0, 5000]
             }
         },
 
