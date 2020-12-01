@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ResourceService} from "../../../../services/resource.service";
 import {Observable} from "rxjs";
 import {Resource} from "../../../../models/resource";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'resource-view',
@@ -9,19 +11,29 @@ import {Resource} from "../../../../models/resource";
   styleUrls: ['./resource-view.component.scss']
 })
 export class ResourceViewComponent implements OnInit {
-  displayedColumns: string[] = ["id", "name", "category", "description", "street", "city",
-    "state", "zipcode", "county", "website", "action"];
-  dataSource: Resource[];
-
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  displayedColumns: string[] = ["id", "name", "category", "description", "county",];
+  dataSource: MatTableDataSource<Resource[]>;
+  resource;
   constructor(private resourceService: ResourceService) {
-    this.resourceService.getResources().subscribe((resources) => {
-      console.log(resources);
-      this.dataSource = resources["data"];
-    })
+
+
   }
 
   ngOnInit(): void {
 
   }
 
+  ngAfterViewInit(){
+    this.resourceService.getResources().subscribe((resources) => {
+      this.dataSource = new MatTableDataSource(resources["data"]);
+      this.dataSource.paginator = this.paginator;
+    })
+  }
+
+  setResource(resource){
+
+    this.resource = resource;
+    console.log(resource);
+  }
 }

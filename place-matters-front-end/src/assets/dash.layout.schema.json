@@ -8,7 +8,7 @@
           "icon": "location_on",
           "cols": 1,
           "rows": 1,
-          "route": "admin/view/resources",
+          "route": "admin/resources/view",
           "tooltip": "View, edit, or delete a resource"
         },
         {
@@ -37,7 +37,7 @@
           "icon": "category",
           "cols": 1,
           "rows": 1,
-          "route": "admin/view/categories",
+          "route": "admin/categories/view",
           "tooltip": "View, edit, or delete a category"
         },
         {
@@ -58,7 +58,7 @@
           "icon": "supervisor_account",
           "cols": 1,
           "rows": 1,
-          "route": "admin/view/users",
+          "route": "admin/users/view",
           "tooltip": "View, edit, or delete a administrator"
         },
         {
@@ -81,7 +81,7 @@
           "icon": "location_on",
           "cols": 1,
           "rows": 1,
-          "route": "admin/view/resources",
+          "route": "admin/resources/view",
           "tooltip": ""
         },
         {
@@ -110,7 +110,7 @@
           "icon": "category",
           "cols": 2,
           "rows": 1,
-          "route": "admin/view/categories",
+          "route": "admin/categories/view",
           "tooltip": ""
         },
         {
@@ -131,7 +131,7 @@
           "icon": "supervisor_account",
           "cols": 2,
           "rows": 1,
-          "route": "admin/view/users",
+          "route": "admin/users/view",
           "tooltip": ""
         },
         {

@@ -14,7 +14,7 @@ export class AuthGuard {
         let user = JSON.parse(localStorage.getItem("loggedInUser"));
         return this.auth.isAuthenticated().pipe(map(isAuth => {
                 //Restrict access to user listings, creation, and edits
-                if (state.url.toString() === "/admin/users/add" || state.url.toString() === "/admin/view/users") {
+                if (state.url.toString() === "/admin/users/add" || state.url.toString() === "/admin/users/view") {
                     if (isAuth && user.roles[0].name == "ADMIN")
                         return true;
                     else

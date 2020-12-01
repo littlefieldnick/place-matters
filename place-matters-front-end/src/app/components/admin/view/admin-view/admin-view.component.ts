@@ -7,12 +7,17 @@ import {AuthService} from "../../../../services/auth.service";
   styleUrls: ['./admin-view.component.scss']
 })
 export class AdminViewComponent implements OnInit {
-  displayedColumns: string[] = ["id", "firstName", "lastName", "email", "action"];
+  displayedColumns: string[] = ["id",  "email"];
   dataSource = this.authService.getUser();
-
+  user;
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+  }
+
+  setUser(user){
+    console.log(user);
+    this.user = user;
   }
 
 }

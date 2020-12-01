@@ -1,74 +1,69 @@
-<table mat-table [dataSource]="dataSource">
-    <!--- These columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
+<div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px">
+    <div fxLayout="column" fxLayoutGap="20px" >
+        <h1 class="mat-headline" style="padding-left: 10px">All Resources</h1>
+        <table mat-table  [dataSource]="dataSource" fxFlex="100%">
+            <!--- These columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
 
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Id No. </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> Id No.</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef> Category </th>
-        <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
-    </ng-container>
+            <!-- Description Column -->
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef> Category</th>
+                <td mat-cell *matCellDef="let element"> {{element.category.categoryName}} </td>
+            </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef> Description </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-    </ng-container>
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Description</th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="street">
-        <th mat-header-cell *matHeaderCellDef> Street </th>
-        <td mat-cell *matCellDef="let element"> {{element.street}} </td>
-    </ng-container>
+            <ng-container matColumnDef="county">
+                <th mat-header-cell *matHeaderCellDef> County</th>
+                <td mat-cell *matCellDef="let element"> {{element.county.countyName}} </td>
+            </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="city">
-        <th mat-header-cell *matHeaderCellDef> City </th>
-        <td mat-cell *matCellDef="let element"> {{element.city}} </td>
-    </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="state">
-        <th mat-header-cell *matHeaderCellDef> State </th>
-        <td mat-cell *matCellDef="let element"> {{element.state}} </td>
-    </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="this.setResource(row)"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+    </div>
+    <div fxFlex="100%">
+        <mat-card *ngIf="resource">
+            <mat-card-content>
+                <h1 class="mat-headline">{{resource.name}}</h1>
+                <h1 class="mat-headline">{{resource.street}}, {{resource.city}}, {{resource.state}}, {{resource.zip}}</h1>
+                <h1 class="mat-headline">{{resource.county.countyName}} County</h1>
 
-    <ng-container matColumnDef="zipcode">
-        <th mat-header-cell *matHeaderCellDef> Zip Code </th>
-        <td mat-cell *matCellDef="let element"> {{element.zipcode}} </td>
-    </ng-container>
-    <ng-container matColumnDef="county">
-        <th mat-header-cell *matHeaderCellDef> County </th>
-        <td mat-cell *matCellDef="let element"> {{element.countyName}} </td>
-    </ng-container>
+                <h3 class="mat-headline">Category</h3>
+                <p>{{resource.category.categoryName}}</p>
 
-    <ng-container matColumnDef="website">
-        <th mat-header-cell *matHeaderCellDef> Website </th>
-        <td mat-cell *matCellDef="let element"> {{element.website}} </td>
-    </ng-container>
-    <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-icon-button matTooltip="Edit" color="primary" routerLink="/admin/resources/edit/{{element.id}}">
-                <mat-icon svgIcon="edit"></mat-icon>
-            </button>
+                <h3 class="mat-headline">Description</h3>
+                <p>{{resource.description}}</p>
 
-            <button mat-icon-button matTooltip="Delete" color="primary">
-                <mat-icon svgIcon="delete"></mat-icon>
-            </button>
-        </td>
-    </ng-container>
+                <h3 class="mat-headline">Phone</h3>
+                <p>{{resource.phone || "Not Available"}}</p>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+                <h3 class="mat-headline">Email</h3>
+                <p>{{resource.email || "Not Available"}}</p>
+                <div>
+                    <button mat-raised-button color="accent" fxFlex>Edit Resource</button>
+                    <button mat-raised-button color="warn" fxFlex> Delete Resource</button>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</div>

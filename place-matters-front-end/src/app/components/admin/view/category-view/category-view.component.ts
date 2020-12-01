@@ -10,12 +10,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./category-view.component.scss']
 })
 export class CategoryViewComponent implements OnInit {
-  displayedColumns = ["id", "name", "description", "action"]
+  displayedColumns = ["id", "name"]
   dataSource = this.categoryService.getCategories();
+  category;
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
 
+  }
+
+  setCategory(category){
+    this.category = category;
   }
 
 }

@@ -9,7 +9,6 @@ import {MaterialModule} from "../../app-material/material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {LayoutModule} from "@angular/cdk/layout";
 import {IsSignedInGuard} from "./isSignedIn.guard";
-import { MainViewComponent } from './view/main-view.component';
 import { ResourceCsvUploadComponent } from './resource-csv-upload/resource-csv-upload.component';
 import { ResourceViewComponent } from './view/resource-view/resource-view.component';
 import { CategoryViewComponent } from './view/category-view/category-view.component';
@@ -28,8 +27,7 @@ import { UploadDialogComponent } from './resource-csv-upload/upload-dialog/uploa
         MaterialModule,
         AdminRoutingModule],
     providers: [AuthGuard, IsSignedInGuard],
-    declarations: [DashComponent, LoginComponent,
-        MainViewComponent, ResourceCsvUploadComponent,
+    declarations: [DashComponent, LoginComponent, ResourceCsvUploadComponent,
         ResourceViewComponent, CategoryViewComponent, AdminViewComponent,
         CreateEditUserComponent, CreateEditResourceComponent, CreateEditCategoryComponent, UploadDialogComponent]
 })
