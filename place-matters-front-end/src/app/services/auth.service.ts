@@ -65,6 +65,7 @@ export class AuthService {
 
     logoutUser() {
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("loggedInUser");
     }
 
     isAuthenticated() {
@@ -86,6 +87,9 @@ export class AuthService {
             }),
             catchError(err => {
                 let errMsg = this.errorHandler.processServerError(err);
+                //An error occurred, user is no longer authenticated (JWTTokenExpiration error)
+                if(localStorage.getItem("loggedInUser"))
+                    localStorage.removeItem("loggedInUser");
                 return throwError(errMsg);
             })
         );

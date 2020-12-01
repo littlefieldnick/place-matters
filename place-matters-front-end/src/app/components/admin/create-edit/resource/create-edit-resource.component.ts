@@ -10,9 +10,10 @@ import {CategoryService} from "../../../../services/category.service";
 import {ResourceCategory} from "../../../../models/resource_category";
 import {ErrorHandlerService} from "../../../../services/error-handler.service";
 import {County} from "../../../../models/county";
+import {DefaultErrorMatcher} from "../../../../error-matchers/default.error-matcher";
 
 @Component({
-  selector: 'app-create-edit-resource',
+  selector: 'create-edit-resource',
   templateUrl: './create-edit-resource.component.html',
   styleUrls: ['./create-edit-resource.component.scss']
 })
@@ -23,7 +24,7 @@ export class CreateEditResourceComponent implements OnInit {
   formSubmitted: boolean;
   formCategories: ResourceCategory[];
   formCounties: County[];
-
+  matcher: DefaultErrorMatcher;
   constructor(activatedRoute: ActivatedRoute, private snackBar: MatSnackBar, private router: Router,
               private errorHandler: ErrorHandlerService, private categoryService: CategoryService,
               private resourceService: ResourceService) {

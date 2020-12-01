@@ -8,6 +8,7 @@ import {User} from "../../../../models/user";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Role} from "../../../../models/role";
 import {RoleService} from "../../../../services/role.service";
+import {DefaultErrorMatcher} from "../../../../error-matchers/default.error-matcher";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class CreateEditUserComponent implements OnInit {
     errors: string [];
     user: User;
     roles = this.roleService.getRole();
+    matcher = new DefaultErrorMatcher()
 
     constructor(private authService: AuthService, activatedRoute: ActivatedRoute, private router: Router,
                 private snackBar: MatSnackBar, private roleService: RoleService) {

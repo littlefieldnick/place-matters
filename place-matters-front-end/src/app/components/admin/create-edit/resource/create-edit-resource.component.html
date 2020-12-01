@@ -18,13 +18,14 @@
                     <mat-label>
                         {{control.label}}
                     </mat-label>
-                    <input type="text" matInput formControlName="{{control.modelProperty}}"
-                      *ngIf="(control.modelProperty != 'category' && control.modelProperty != 'county'); else elseBlock">
+                    <div *ngIf="(control.modelProperty !== 'category' && control.modelProperty !== 'county'); else elseBlock">
+                        <input type="text" matInput formControlName="{{control.modelProperty}}" [errorStateMatcher]="matcher">
+                    </div>
 
                     <ng-template #elseBlock>
-                        <mat-select formControlName="{{control.modelProperty}}">
+                        <mat-select formControlName="{{control.modelProperty}}" [errorStateMatcher]="matcher">
                             <mat-option>---</mat-option>
-                            <div *ngIf="control.modelProperty == 'category'; else countyOptions">
+                            <div *ngIf="control.modelProperty == 'category'; else countyOptions" >
                                 <mat-option *ngFor="let category of formCategories" [value]="category.id">
                                     {{category.categoryName}}
                                 </mat-option>
@@ -37,7 +38,7 @@
                         </mat-select>
                     </ng-template>
 
-                    <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+                    <mat-error *ngIf="control.invalid">
                         A {{control.modelProperty}} is required.
                     </mat-error>
                 </mat-form-field>

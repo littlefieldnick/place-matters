@@ -1,7 +1,9 @@
+
 <div fxLayout="row" fxLayoutAlign="center" style="padding-top: 10px" >
-  <div fxLayout="column" fxFlex="50%" fxLayoutGap="20px">
-    <p class="mat-headline" style="color:indigo">Admin Login</p>
-    <span><mat-divider></mat-divider></span>
+
+  <div fxLayout="column" fxLayoutGap="20px">
+    <img src="assets/logos/logo_2020.png" class="login-logo">
+
     <form novalidate [formGroup]="loginForm" (ngSubmit)="loginUser()">
       <mat-card style="background-color: rgba(217,83,79,0.5);"
                 *ngIf="formSubmitted && loginForm.invalid">

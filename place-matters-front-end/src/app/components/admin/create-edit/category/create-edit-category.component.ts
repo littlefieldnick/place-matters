@@ -6,6 +6,7 @@ import {CategoryService} from "../../../../services/category.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
+import {DefaultErrorMatcher} from "../../../../error-matchers/default.error-matcher";
 
 @Component({
   selector: 'create-edit-category',
@@ -17,6 +18,7 @@ export class CreateEditCategoryComponent implements OnInit {
   formSubmitted: boolean
   categoryForm: CategoryForm;
   category: ResourceCategory;
+  matcher = new DefaultErrorMatcher()
 
   constructor(activatedRoute: ActivatedRoute, private snackBar: MatSnackBar, private router: Router,
               private categoryService: CategoryService) {

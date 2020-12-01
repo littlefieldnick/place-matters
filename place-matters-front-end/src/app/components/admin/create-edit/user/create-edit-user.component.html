@@ -4,15 +4,15 @@
             {{!this.editing ? "Add a User" : "Edit User Information"}}
         </h1>
         <mat-divider></mat-divider>
+        <mat-card *ngIf="formSubmitted && registerForm.invalid">
+            There are problems with the form
+            <ul>
+                <li *ngFor="let error of registerForm.getFormValidationMessages()">
+                    {{error}}
+                </li>
+            </ul>
+        </mat-card>
         <form novalidate [formGroup]="registerForm" (ngSubmit)="submitForm()">
-            <mat-card *ngIf="formSubmitted && registerForm.invalid">
-                There are problems with the form
-                <ul>
-                    <li *ngFor="let error of registerForm.getFormValidationMessages()">
-                        {{error}}
-                    </li>
-                </ul>
-            </mat-card>
             <div *ngFor="let control of registerForm.formControls">
                 <mat-form-field fxFlex="100%" appearance="outline">
                     <mat-label>
@@ -20,7 +20,7 @@
                     </mat-label>
 
                     <div *ngIf="control.modelProperty == 'role'; else elseBlock">
-                        <mat-select formControlName="{{control.modelProperty}}">
+                        <mat-select formControlName="{{control.modelProperty}}" [errorStateMatcher]="matcher">
                             <mat-option *ngFor="let r of roles | async" [value]="r.id">
                                 {{r.name}}
                             </mat-option>
@@ -28,15 +28,14 @@
                     </div>
                     <ng-template #elseBlock>
                         <div *ngIf="control.modelProperty.toLowerCase().search('password') >= 0; else inputBlock">
-                            <input type="password" matInput formControlName="{{control.modelProperty}}">
+                            <input type="password" matInput [errorStateMatcher]="matcher" formControlName="{{control.modelProperty}}">
                         </div>
                     </ng-template>
 
                     <ng-template #inputBlock>
-                        <input type="text" matInput formControlName="{{control.modelProperty}}">
+                        <input type="text" matInput formControlName="{{control.modelProperty}}" [errorStateMatcher]="matcher">
                     </ng-template>
-
-                    <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+                    <mat-error *ngIf="control.invalid">
                         A {{control.modelProperty}} is required.
                     </mat-error>
                 </mat-form-field>
